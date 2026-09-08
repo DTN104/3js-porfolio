@@ -9,7 +9,7 @@ Repo theo quy trình **Spec Kit**.
 
 | Feature | Giai đoạn | Ghi chú |
 |---------|-----------|---------|
-| `001-3d-world-portfolio` | Spec v0.1 (Draft) | Còn 3 câu hỏi chặn — xem `specs/001-3d-world-portfolio/open-questions.md` |
+| `001-3d-world-portfolio` | Spec v0.2 (Draft) | Không còn câu hỏi chặn — sẵn sàng cho `speckit-plan` |
 
 ## Cấu trúc
 

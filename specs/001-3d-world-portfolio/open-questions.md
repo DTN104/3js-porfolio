@@ -1,16 +1,16 @@
 # Open Questions: Website portfolio developer dạng thế giới 3D tương tác
 
-**Feature**: `001-3d-world-portfolio` · **Spec version**: 0.1 · **Cập nhật**: 2026-09-08
+**Feature**: `001-3d-world-portfolio` · **Spec version**: 0.2 · **Cập nhật**: 2026-09-08
 
-> **Trạng thái: còn 3 câu hỏi chặn (OQ-01, OQ-02, OQ-03).** Cần chốt trước khi chuyển sang `speckit-plan`.
+> **Trạng thái: không còn câu hỏi chặn.** Spec đủ điều kiện chuyển sang `speckit-plan`.
 
-## A. Câu hỏi chặn — phải chốt trước khi thiết kế
+## A. Đã chốt
 
-| ID | Câu hỏi | Phương án | Ảnh hưởng | Liên quan |
-|----|---------|-----------|-----------|-----------|
-| OQ-01 | Khách liên hệ với chủ portfolio bằng cách nào? | (a) Chỉ hiển thị thư điện tử và liên kết mạng xã hội; (b) Có form nhập và gửi trực tiếp trên trang | (a) phạm vi nhỏ nhất, không phát sinh xử lý dữ liệu cá nhân, không cần dịch vụ phía sau. (b) tăng tỷ lệ liên hệ nhưng kéo theo dịch vụ nhận thư, chống spam, thông báo kết quả gửi và nghĩa vụ xử lý dữ liệu cá nhân | FR-035, FR-036, FR-063, FR-065, DEP-06, SC-010 |
-| OQ-02 | Khi thiết bị không hiển thị được thế giới 3D thì cung cấp gì? | (a) Một phiên bản 2D đầy đủ toàn bộ nội dung portfolio; (b) Chỉ thông báo kèm liên kết tải CV và kênh liên hệ | (a) bảo vệ được BO-03, BO-04 và SC-007 với mọi nhóm khách, nhưng nhân đôi bề mặt nội dung phải xây và bảo trì. (b) chi phí thấp, chấp nhận mất phần lớn giá trị với nhóm khách thiết bị yếu | FR-047, FR-057, SC-006, SC-007, EC-01 |
-| OQ-03 | Ngôn ngữ nội dung của phiên bản đầu? | (a) Tiếng Anh; (b) Tiếng Việt | (a) hướng tới nhà tuyển dụng và khách hàng quốc tế. (b) hướng tới thị trường trong nước. Chọn cả hai đồng nghĩa với việc đưa đa ngôn ngữ ra khỏi Out of Scope (OOS-05), làm tăng phạm vi nội dung và kiểm thử | FR-031, OOS-05 |
+| ID | Câu hỏi | Quyết định | Ngày | Ảnh hưởng tới spec |
+|----|---------|-----------|------|--------------------|
+| OQ-01 | Khách liên hệ với chủ portfolio bằng cách nào? | **Chỉ hiển thị địa chỉ thư điện tử và liên kết mạng xã hội công khai** — không có form gửi trên trang | 2026-09-08 | FR-035, FR-036; DEP-06; OOS-10 |
+| OQ-02 | Khi thiết bị không hiển thị được thế giới 3D thì cung cấp gì? | **Chế độ 2D đầy đủ toàn bộ nội dung portfolio**, dùng chung nguồn nội dung với thế giới 3D | 2026-09-08 | FR-047; mục 3.15 (FR-073…FR-079); US-10; EC-01, EC-02, EC-19; SC-017; AS-13 |
+| OQ-03 | Ngôn ngữ nội dung của phiên bản đầu? | **Song ngữ tiếng Việt và tiếng Anh** | 2026-09-08 | FR-031; mục 3.14 (FR-066…FR-072); US-13; EC-16…EC-18; SC-015, SC-016; AS-12; DEP-08; retire OOS-05; thêm OOS-11 |
 
 ## B. Câu hỏi cần xác nhận (non-blocking) — có thể vừa thiết kế vừa chốt
 
@@ -26,5 +26,11 @@
 | OQ-11 | Cơ chế rà soát liên kết ngoài của dự án bị hỏng (thủ công định kỳ hay tự động cảnh báo) | EC-12, FR-027 |
 | OQ-12 | Có nhạc nền không, và trạng thái mặc định là bật hay tắt? | FR-040, FR-041, DEP-02 |
 | OQ-13 | Danh sách trình duyệt và phiên bản tối thiểu được hỗ trợ chính thức | FR-005, EC-01 |
-| OQ-14 | Ảnh xem trước khi chia sẻ: ảnh tĩnh thiết kế riêng hay ảnh chụp thế giới 3D? | FR-056, SC-013 |
+| OQ-14 | Ảnh xem trước khi chia sẻ: ảnh tĩnh thiết kế riêng hay ảnh chụp thế giới 3D? Có cần ảnh riêng cho từng ngôn ngữ không? | FR-056, FR-071, SC-013 |
 | OQ-15 | Trạng thái "sẵn sàng nhận cơ hội" cập nhật theo tần suất nào và ai chịu trách nhiệm cập nhật? | FR-034 |
+| OQ-16 | Ai dịch nội dung và quy trình cập nhật bản dịch khi thêm dự án mới (bắt buộc đủ 2 ngôn ngữ mới được xuất bản, hay cho phép xuất bản thiếu và hiển thị chỉ dấu)? | AS-12, FR-060, FR-070, DEP-08 |
+| OQ-17 | Chế độ 2D dùng bố cục nào (một trang cuộn hay nhiều trang) và có bắt buộc khớp phong cách hình ảnh với thế giới 3D không? | FR-073, FR-077 |
+| OQ-18 | Địa chỉ thư điện tử công khai có cần biện pháp hạn chế thu thập tự động không? | FR-035, FR-063 |
+
+> OQ-04 không chặn thiết kế kiến trúc nhưng **chặn việc viết test case hiệu năng** cho SC-001 và SC-005.
+> OQ-16 không chặn thiết kế nhưng **chặn việc chốt quy tắc xuất bản nội dung** ở FR-060.

@@ -2,6 +2,7 @@
 
 **Purpose**: Validate specification completeness and quality before proceeding to planning
 **Created**: 2026-09-08
+**Cập nhật**: 2026-09-08 (spec v0.2)
 **Feature**: [spec.md](../spec.md)
 
 ## Content Quality
@@ -13,24 +14,24 @@
 
 ## Requirement Completeness
 
-- [ ] No [NEEDS CLARIFICATION] markers remain — **còn 3**: FR-031 (ngôn ngữ nội dung), FR-035 (cơ chế liên hệ), FR-047 (mức độ dự phòng khi không chạy được 3D). Xem `open-questions.md` mục A
-- [x] Requirements are testable and unambiguous — trừ 3 requirement đang chờ chốt ở trên
+- [x] No [NEEDS CLARIFICATION] markers remain — 3 marker của v0.1 đã được chốt ở v0.2 (OQ-01, OQ-02, OQ-03)
+- [x] Requirements are testable and unambiguous
 - [x] Success criteria are measurable
 - [x] Success criteria are technology-agnostic (no implementation details)
 - [x] All acceptance scenarios are defined
-- [x] Edge cases are identified — EC-01…EC-15
-- [x] Scope is clearly bounded — mục 7 Out of Scope, OOS-01…OOS-09
-- [x] Dependencies and assumptions identified — mục 5 (AS-01…AS-11) và mục 6 (DEP-01…DEP-07)
+- [x] Edge cases are identified — EC-01…EC-19
+- [x] Scope is clearly bounded — mục 7 Out of Scope, OOS-01…OOS-11 (OOS-05 đã retire)
+- [x] Dependencies and assumptions identified — mục 5 (AS-01…AS-13) và mục 6 (DEP-01…DEP-08)
 
 ## Feature Readiness
 
-- [ ] All functional requirements have clear acceptance criteria — FR-031, FR-035, FR-047 chưa có do đang chờ quyết định
-- [x] User scenarios cover primary flows — US-01…US-12, ưu tiên P1 phủ luồng khởi động → điều khiển → tương tác → nội dung → liên hệ
-- [x] Feature meets measurable outcomes defined in Success Criteria
+- [x] All functional requirements have clear acceptance criteria
+- [x] User scenarios cover primary flows — US-01…US-13; nhóm P1 phủ luồng khởi động → điều khiển → tương tác → nội dung → liên hệ
+- [x] Feature meets measurable outcomes defined in Success Criteria — SC-001…SC-017
 - [x] No implementation details leak into specification
 
 ## Notes
 
-- Spec **chưa đủ điều kiện** chuyển sang `speckit-plan`: 3 câu hỏi chặn (OQ-01, OQ-02, OQ-03) phải được chủ portfolio chốt trước.
-- Toàn bộ giả định ở mục 5 chưa được xác nhận; cần xác nhận song song, không chặn bước kế tiếp.
-- Các giá trị ngưỡng định lượng (OQ-04) không chặn thiết kế kiến trúc nhưng **chặn việc viết test case hiệu năng** cho SC-001 và SC-005.
+- Spec **đủ điều kiện** chuyển sang `speckit-clarify` hoặc `speckit-plan`.
+- Toàn bộ giả định ở mục 5 (AS-01…AS-13) **chưa được chủ portfolio xác nhận**; cần xác nhận song song, không chặn bước kế tiếp.
+- OQ-04 (ngưỡng hiệu năng) chặn việc viết test case cho SC-001 và SC-005; OQ-16 (quy trình dịch) chặn việc chốt quy tắc xuất bản ở FR-060.

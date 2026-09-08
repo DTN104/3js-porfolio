@@ -3,7 +3,7 @@
 **Feature Branch**: `001-3d-world-portfolio`
 **Created**: 2026-09-08
 **Status**: Draft
-**Version**: 0.1
+**Version**: 0.2 (2026-09-08) — chốt 3 câu hỏi chặn: liên hệ chỉ qua email/social link, chế độ 2D đầy đủ nội dung, nội dung song ngữ Việt–Anh
 **Input**: User description: "Dựng website portfolio cá nhân của developer dưới dạng thế giới 3D isometric tương tác — khách truy cập điều khiển nhân vật đi lại trong một không gian 3D, tương tác với các vật thể để xem giới thiệu bản thân, kỹ năng, dự án, kinh nghiệm và thông tin liên hệ. Tham chiếu: worawork.vercel.app"
 
 ---
@@ -192,19 +192,21 @@ Trải nghiệm tham chiếu (worawork.vercel.app) có các đặc trưng: màn 
 
 ---
 
-### US-10 — Truy cập nội dung khi không chạy được thế giới 3D (Priority: P2)
+### US-10 — Truy cập đầy đủ nội dung ở chế độ 2D (Priority: P2)
 
 **As a** khách truy cập trên máy cấu hình yếu hoặc trình duyệt hạn chế, **I want** vẫn đọc được nội dung portfolio, **so that** tôi không bỏ qua ứng viên chỉ vì thiết bị của tôi.
 
 **Why this priority**: Bảo vệ mục tiêu kinh doanh khi trải nghiệm chính không khả dụng; là rủi ro lớn nhất của hướng tiếp cận 3D.
 
-**Independent Test**: Mở trang trên môi trường không hiển thị được đồ họa 3D, xác nhận hệ thống chuyển sang chế độ dự phòng và nội dung vẫn tiếp cận được.
+**Independent Test**: Mở trang trên môi trường không hiển thị được đồ họa 3D, xác nhận hệ thống chuyển sang chế độ 2D và toàn bộ nội dung portfolio vẫn tiếp cận được; từ thế giới 3D, chủ động chuyển sang chế độ 2D và ngược lại.
 
 **Acceptance Scenarios**:
 
-1. **Given** thiết bị không đáp ứng điều kiện hiển thị thế giới 3D, **When** khách mở trang, **Then** hệ thống chuyển sang chế độ dự phòng thay vì hiển thị màn hình lỗi hoặc màn hình trắng.
+1. **Given** thiết bị không đáp ứng điều kiện hiển thị thế giới 3D, **When** khách mở trang, **Then** hệ thống chuyển sang chế độ 2D chứa đầy đủ nội dung portfolio, thay vì hiển thị màn hình lỗi hoặc màn hình trắng.
 2. **Given** khách chỉ dùng bàn phím, **When** một bảng nội dung đang mở, **Then** khách di chuyển được qua toàn bộ nội dung và các liên kết trong bảng bằng bàn phím.
 3. **Given** khách muốn tới thẳng một khu vực nội dung, **When** khách sử dụng lối vào trực tiếp, **Then** hệ thống mở khu vực đó mà không bắt buộc phải điều khiển nhân vật đi tới.
+4. **Given** khách đang ở trong thế giới 3D, **When** khách chủ động chuyển sang chế độ 2D, **Then** khách xem được đúng những nội dung đã có trong thế giới 3D và quay lại được chế độ 3D.
+5. **Given** khách đang ở chế độ 2D, **When** chủ portfolio cập nhật một dự án, **Then** nội dung mới hiển thị ở cả chế độ 2D và thế giới 3D mà không phải cập nhật hai lần.
 
 ---
 
@@ -239,12 +241,29 @@ Trải nghiệm tham chiếu (worawork.vercel.app) có các đặc trưng: màn 
 
 ---
 
+### US-13 — Chuyển ngôn ngữ hiển thị (Priority: P2)
+
+**As a** khách truy cập, **I want** đọc portfolio bằng tiếng Việt hoặc tiếng Anh tùy nhu cầu, **so that** tôi hiểu đúng nội dung mà không phải tự dịch.
+
+**Why this priority**: Mở rộng tập khách sang cả nhà tuyển dụng trong nước và quốc tế; không phải điều kiện để sản phẩm chạy nhưng ảnh hưởng trực tiếp BO-04.
+
+**Independent Test**: Mở trang bằng trình duyệt đặt tiếng Việt và bằng trình duyệt đặt tiếng Anh, xác nhận ngôn ngữ ban đầu đúng; chuyển ngôn ngữ trong khi một bảng nội dung đang mở; tải lại trang và xác nhận lựa chọn được giữ.
+
+**Acceptance Scenarios**:
+
+1. **Given** khách mở trang lần đầu, **When** trình duyệt đặt tiếng Việt, **Then** hệ thống hiển thị nội dung tiếng Việt; nếu không xác định được ngôn ngữ trình duyệt thì hiển thị tiếng Anh.
+2. **Given** một bảng nội dung đang mở, **When** khách chuyển ngôn ngữ, **Then** nội dung trong bảng đổi sang ngôn ngữ mới, bảng vẫn mở và vị trí nhân vật không thay đổi.
+3. **Given** khách đã chọn một ngôn ngữ, **When** khách tải lại trang, **Then** hệ thống giữ nguyên ngôn ngữ đã chọn.
+4. **Given** một mục nội dung chưa có bản dịch ở ngôn ngữ đang chọn, **When** khách mở mục đó, **Then** hệ thống hiển thị nội dung ở ngôn ngữ còn lại kèm chỉ dấu, không để chỗ trống.
+
+---
+
 ### Edge Cases
 
 | ID | Tình huống | Kỳ vọng |
 |----|-----------|---------|
-| EC-01 | Thiết bị hoặc trình duyệt không hiển thị được đồ họa 3D | Chuyển sang chế độ dự phòng (mục 3.9), không hiện màn hình trắng hay lỗi kỹ thuật |
-| EC-02 | Kết nối chậm, tài nguyên tải lâu | Hiển thị tiến trình tải; nếu vượt ngưỡng chờ thì đề nghị chuyển sang chế độ dự phòng |
+| EC-01 | Thiết bị hoặc trình duyệt không hiển thị được đồ họa 3D | Chuyển sang chế độ 2D đầy đủ nội dung (mục 3.15), không hiện màn hình trắng hay lỗi kỹ thuật |
+| EC-02 | Kết nối chậm, tài nguyên tải lâu | Hiển thị tiến trình tải; nếu vượt ngưỡng chờ thì đề nghị chuyển sang chế độ 2D |
 | EC-03 | Tải tài nguyên thất bại giữa chừng | Thông báo dễ hiểu kèm hành động thử lại |
 | EC-04 | Thiết bị đáp ứng thấp, hiển thị giật | Tự hạ mức chi tiết hiển thị thay vì giữ nguyên và giật |
 | EC-05 | Khách giữ phím di chuyển rồi mở bảng nội dung | Nhân vật dừng lại, không tiếp tục trôi khi bảng đóng |
@@ -257,7 +276,11 @@ Trải nghiệm tham chiếu (worawork.vercel.app) có các đặc trưng: màn 
 | EC-12 | Liên kết ngoài của dự án hỏng hoặc bị gỡ | Hệ thống không tự kiểm tra được; cần cơ chế để chủ portfolio rà soát định kỳ (OQ) |
 | EC-13 | Khách dùng bố cục bàn phím khác (không phải QWERTY) | Điều khiển vẫn dùng được; phím mũi tên luôn là phương án thay thế |
 | EC-14 | Khách chỉ dùng bàn phím hoặc trình đọc màn hình | Truy cập được toàn bộ nội dung văn bản qua lối vào trực tiếp (FR-050) |
-| EC-15 | Khách tải lại trang giữa phiên | Quay về màn hình khởi động; không yêu cầu khôi phục vị trí nhân vật |
+| EC-15 | Khách tải lại trang giữa phiên | Quay về màn hình khởi động; không yêu cầu khôi phục vị trí nhân vật, nhưng giữ nguyên ngôn ngữ và chế độ hiển thị đã chọn |
+| EC-16 | Khách chuyển ngôn ngữ khi một bảng nội dung đang mở | Bảng vẫn mở, chỉ nội dung đổi ngôn ngữ; không đóng bảng, không dịch chuyển nhân vật |
+| EC-17 | Một mục nội dung chưa có bản dịch ở ngôn ngữ đang chọn | Hiển thị bản ngôn ngữ còn lại kèm chỉ dấu (FR-070) |
+| EC-18 | Khách mở liên kết gắn ngôn ngữ này trong khi trình duyệt đặt ngôn ngữ khác | Ưu tiên ngôn ngữ chỉ định trong liên kết |
+| EC-19 | Khách chuyển qua lại giữa chế độ 3D và 2D nhiều lần trong một phiên | Không tải lại toàn bộ tài nguyên mỗi lần chuyển; giữ nguyên khu vực nội dung đang xem |
 
 ---
 
@@ -304,15 +327,15 @@ Trải nghiệm tham chiếu (worawork.vercel.app) có các đặc trưng: màn 
 - **FR-028**: Liên kết ngoài MUST mở ở cửa sổ hoặc tab mới và MUST không làm mất trạng thái thế giới 3D ở tab hiện tại.
 - **FR-029**: Hệ thống MUST cung cấp khu vực kinh nghiệm làm việc theo trình tự thời gian; mỗi mục gồm tổ chức, vai trò, khoảng thời gian và mô tả ngắn.
 - **FR-030**: Nội dung dài trong một bảng MUST cuộn được bên trong bảng và MUST không làm vỡ bố cục của thế giới phía sau.
-- **FR-031**: Toàn bộ nội dung hiển thị cho khách truy cập MUST sử dụng [NEEDS CLARIFICATION: ngôn ngữ nội dung chưa chốt — tiếng Anh (hướng tới nhà tuyển dụng và khách hàng quốc tế) hay tiếng Việt (thị trường trong nước)? Chọn cả hai kéo theo yêu cầu đa ngôn ngữ, hiện đang nằm ở Out of Scope OOS-05].
+- **FR-031**: Toàn bộ nội dung hiển thị cho khách truy cập MUST có sẵn ở cả tiếng Việt và tiếng Anh; yêu cầu chi tiết ở mục 3.14.
 
 ### 3.5 Liên hệ và CV
 
 - **FR-032**: Hệ thống MUST cung cấp khu vực liên hệ hiển thị các kênh liên hệ công khai do chủ portfolio cấu hình.
 - **FR-033**: Người dùng MUST tải được CV của chủ portfolio ở định dạng tài liệu phổ biến, mở được mà không cần cài thêm phần mềm.
 - **FR-034**: Hệ thống MUST hiển thị trạng thái sẵn sàng nhận cơ hội của chủ portfolio khi trạng thái này được cấu hình.
-- **FR-035**: Cơ chế để khách chủ động liên hệ MUST là [NEEDS CLARIFICATION: chỉ hiển thị địa chỉ thư điện tử và liên kết mạng xã hội (không phát sinh xử lý dữ liệu cá nhân), hay có form nhập và gửi trực tiếp trên trang (kéo theo dịch vụ nhận thư, chống spam, thông báo kết quả gửi và nghĩa vụ xử lý dữ liệu cá nhân)?].
-- **FR-036**: Hệ thống MUST hiển thị kết quả rõ ràng cho mọi hành động liên hệ mà người dùng khởi tạo (thành công hoặc thất bại kèm cách thay thế).
+- **FR-035**: Cơ chế để khách chủ động liên hệ MUST là hiển thị địa chỉ thư điện tử và các liên kết mạng xã hội công khai của chủ portfolio; hệ thống MUST không cung cấp form nhập và gửi liên hệ trên trang.
+- **FR-036**: Hệ thống MUST cho phép sao chép nhanh địa chỉ thư điện tử và MUST hiển thị xác nhận rõ ràng khi thao tác sao chép thành công.
 
 ### 3.6 Hướng dẫn và trợ giúp
 
@@ -335,7 +358,7 @@ Trải nghiệm tham chiếu (worawork.vercel.app) có các đặc trưng: màn 
 
 ### 3.9 Chế độ dự phòng và khả năng tiếp cận
 
-- **FR-047**: Khi thiết bị không hiển thị được thế giới 3D, hệ thống MUST [NEEDS CLARIFICATION: mức độ dự phòng chưa chốt — cung cấp một phiên bản 2D đầy đủ toàn bộ nội dung portfolio (nhân đôi bề mặt nội dung phải bảo trì), hay chỉ hiển thị thông báo kèm liên kết tải CV và các kênh liên hệ?].
+- **FR-047**: Khi thiết bị không hiển thị được thế giới 3D, hệ thống MUST chuyển sang chế độ 2D cung cấp đầy đủ toàn bộ nội dung portfolio; yêu cầu chi tiết ở mục 3.15.
 - **FR-048**: Người dùng MUST duyệt được toàn bộ nội dung văn bản và liên kết trong một bảng nội dung chỉ bằng bàn phím.
 - **FR-049**: Hình ảnh mang thông tin MUST có mô tả thay thế bằng văn bản.
 - **FR-050**: Hệ thống MUST cung cấp lối vào trực tiếp tới từng khu vực nội dung, không bắt buộc người dùng điều khiển nhân vật đi tới vật thể tương ứng.
@@ -367,7 +390,27 @@ Trải nghiệm tham chiếu (worawork.vercel.app) có các đặc trưng: màn 
 - **FR-064**: Nếu sử dụng công cụ đo lường, hệ thống MUST giới hạn ở dữ liệu tổng hợp và MUST công bố việc sử dụng trên trang.
 - **FR-065**: Dữ liệu khách gửi qua kênh liên hệ MUST chỉ được dùng để phản hồi khách và MUST không chuyển cho bên thứ ba ngoài dịch vụ nhận thư.
 
-### 3.14 Key Entities
+### 3.14 Đa ngôn ngữ (song ngữ Việt – Anh)
+
+- **FR-066**: Hệ thống MUST cung cấp toàn bộ nội dung dành cho khách truy cập ở hai ngôn ngữ: tiếng Việt và tiếng Anh.
+- **FR-067**: Hệ thống MUST cung cấp thao tác chuyển ngôn ngữ, truy cập được cả trong thế giới 3D và trong chế độ 2D.
+- **FR-068**: Hệ thống MUST chọn ngôn ngữ hiển thị ban đầu theo thiết lập ngôn ngữ của trình duyệt và MUST dùng tiếng Anh khi không xác định được.
+- **FR-069**: Hệ thống MUST giữ nguyên lựa chọn ngôn ngữ của khách khi chuyển giữa các khu vực nội dung và khi tải lại trang.
+- **FR-070**: Khi một nội dung chưa có bản dịch ở ngôn ngữ đang chọn, hệ thống MUST hiển thị nội dung ở ngôn ngữ còn lại kèm chỉ dấu, MUST không để chỗ trống.
+- **FR-071**: Mỗi ngôn ngữ MUST có địa chỉ truy cập riêng, để công cụ tìm kiếm thu thập được và để chia sẻ được liên kết đúng ngôn ngữ.
+- **FR-072**: Thao tác chuyển ngôn ngữ MUST không làm mất trạng thái hiện tại của khách (vị trí nhân vật, khu vực nội dung đang mở, chế độ hiển thị).
+
+### 3.15 Chế độ 2D đầy đủ nội dung
+
+- **FR-073**: Hệ thống MUST cung cấp chế độ 2D chứa đầy đủ toàn bộ nội dung portfolio, tương đương nội dung tiếp cận được trong thế giới 3D.
+- **FR-074**: Hệ thống MUST tự chuyển sang chế độ 2D khi thiết bị không đáp ứng điều kiện hiển thị thế giới 3D hoặc khi tải nhóm tài nguyên bắt buộc thất bại.
+- **FR-075**: Người dùng MUST chủ động chuyển được sang chế độ 2D từ trong thế giới 3D, và quay lại thế giới 3D khi thiết bị đáp ứng.
+- **FR-076**: Chế độ 2D MUST sử dụng được hoàn toàn bằng bàn phím và MUST không phụ thuộc vào thao tác điều khiển nhân vật.
+- **FR-077**: Chế độ 2D MUST hiển thị được trên mọi kích thước màn hình được hỗ trợ và MUST không yêu cầu tải nhóm tài nguyên 3D bắt buộc.
+- **FR-078**: Nội dung ở chế độ 2D và nội dung trong thế giới 3D MUST lấy từ cùng một nguồn nội dung, để một lần cập nhật có hiệu lực ở cả hai chế độ.
+- **FR-079**: Hệ thống MUST giữ nguyên lựa chọn chế độ hiển thị của khách trong suốt phiên truy cập.
+
+### 3.16 Key Entities
 
 | Entity | Mô tả | Thuộc tính chính |
 |--------|-------|------------------|
@@ -384,6 +427,8 @@ Trải nghiệm tham chiếu (worawork.vercel.app) có các đặc trưng: màn 
 | Tài liệu CV (CV Document) | Bản CV tải về được | Tệp, phiên bản, ngày cập nhật |
 | Cấu hình trải nghiệm (Experience Settings) | Lựa chọn của người dùng trong phiên | Bật/tắt âm thanh, mức chi tiết hiển thị, loại thiết bị điều khiển |
 | Gói tài nguyên (Asset Bundle) | Tập tài nguyên 3D, hình ảnh, âm thanh | Nhóm bắt buộc / bổ sung, dung lượng |
+| Bản dịch nội dung (Content Translation) | Bản nội dung theo từng ngôn ngữ | Ngôn ngữ, khóa nội dung, trạng thái đã dịch |
+| Chế độ hiển thị (Display Mode) | Chế độ khách đang xem | 3D hoặc 2D, cách chuyển đổi, lý do chuyển tự động |
 
 ---
 
@@ -407,6 +452,9 @@ Trải nghiệm tham chiếu (worawork.vercel.app) có các đặc trưng: màn 
 | SC-012 | Chủ portfolio thêm một dự án mới và xuất bản trong không quá 15 phút, không cần thay đổi thế giới 3D |
 | SC-013 | Liên kết chia sẻ hiển thị đúng tiêu đề, mô tả và ảnh xem trước trên tối thiểu 3 nền tảng chia sẻ phổ biến |
 | SC-014 | Trên điện thoại, khách di chuyển được nhân vật và mở được ít nhất một khu vực nội dung mà không phải phóng to thủ công |
+| SC-015 | 100% khu vực nội dung có sẵn ở cả tiếng Việt và tiếng Anh; mọi mục chưa có bản dịch đều hiển thị chỉ dấu, không có mục nào để trống |
+| SC-016 | Khách chuyển ngôn ngữ và thấy nội dung ở ngôn ngữ mới trong vòng 1 giây, không mất trạng thái đang xem |
+| SC-017 | Ở chế độ 2D, khách xem được 100% nội dung portfolio và tìm được thông tin liên hệ trong vòng 60 giây |
 
 ---
 
@@ -424,7 +472,9 @@ Trải nghiệm tham chiếu (worawork.vercel.app) có các đặc trưng: màn 
 | AS-08 | Thế giới là một không gian duy nhất, không chia nhiều màn hay nhiều tầng | Phải bổ sung cơ chế chuyển cảnh và tải tài nguyên theo màn |
 | AS-09 | Trải nghiệm dành cho một người tại một thời điểm, không có yếu tố nhiều người cùng lúc | Kéo theo hạ tầng đồng bộ trạng thái thời gian thực |
 | AS-10 | Các ngưỡng định lượng (thời gian tải tối đa, nhịp hiển thị mục tiêu, dung lượng tài nguyên bắt buộc, cấu hình thiết bị mục tiêu) là tham số cấu hình, **chưa chốt giá trị** | Cần chốt trước khi thiết kế kỹ thuật và trước khi viết test case hiệu năng |
-| AS-11 | Không có yêu cầu tuân thủ pháp lý đặc thù ngoài nguyên tắc chung về dữ liệu cá nhân đối với dữ liệu khách chủ động gửi | Nếu có nghĩa vụ cụ thể, phần 3.13 phải viết lại theo yêu cầu được xác nhận |
+| AS-11 | Không có yêu cầu tuân thủ pháp lý đặc thù ngoài nguyên tắc chung về dữ liệu cá nhân | Nếu có nghĩa vụ cụ thể, phần 3.13 phải viết lại theo yêu cầu được xác nhận |
+| AS-12 | Bản dịch tiếng Việt và tiếng Anh do chủ portfolio cung cấp; hệ thống không tự dịch nội dung | Phải bổ sung cơ chế dịch tự động và quy trình kiểm duyệt bản dịch |
+| AS-13 | Chế độ 2D dùng chung nguồn nội dung với thế giới 3D, không phải một trang riêng biệt bảo trì tách rời | Chi phí bảo trì nhân đôi và rủi ro hai chế độ lệch nội dung |
 
 > **Lưu ý**: Toàn bộ giả định trên **chưa được xác nhận**. Cần chủ portfolio xác nhận trước khi chuyển sang giai đoạn thiết kế.
 
@@ -439,7 +489,8 @@ Trải nghiệm tham chiếu (worawork.vercel.app) có các đặc trưng: màn 
 | DEP-03 | Nội dung portfolio thực tế: hồ sơ, danh sách dự án, hình ảnh dự án, kinh nghiệm, kỹ năng, CV | Nội bộ | Điều kiện để phát hành; thiếu thì chỉ dựng được khung |
 | DEP-04 | Hạ tầng lưu trữ và phân phối nội dung tĩnh, đáp ứng tài nguyên dung lượng lớn | Bên thứ ba | Ảnh hưởng trực tiếp SC-001 |
 | DEP-05 | Tên miền và chứng chỉ bảo mật | Bên thứ ba | Điều kiện phát hành |
-| DEP-06 | Kênh nhận liên hệ (hộp thư hoặc dịch vụ nhận form) | Bên thứ ba | Phạm vi phụ thuộc kết quả OQ-01 |
+| DEP-06 | Hộp thư điện tử công khai và các tài khoản mạng xã hội của chủ portfolio | Nội bộ | Chốt OQ-01: không dùng dịch vụ nhận form |
+| DEP-08 | Bản dịch tiếng Việt và tiếng Anh của toàn bộ nội dung portfolio | Nội bộ | Điều kiện để phát hành; xem AS-12, mục 3.14 |
 | DEP-07 | Công cụ đo lường hành vi truy cập | Bên thứ ba | Điều kiện để đo SC-003, SC-004, SC-008, SC-009, SC-010 |
 
 ---
@@ -454,11 +505,13 @@ Các nội dung sau **không** thuộc phạm vi phiên bản đầu tiên:
 | OOS-02 | Tài khoản, đăng nhập, bình luận, sổ lưu bút | Trái với AS-02 |
 | OOS-03 | Blog hoặc hệ quản trị nội dung đầy đủ | Ngoài phạm vi; nội dung phiên bản đầu là tập cố định |
 | OOS-04 | Thương mại điện tử, thanh toán, đặt lịch | Không thuộc mục tiêu |
-| OOS-05 | Đa ngôn ngữ và chuyển đổi ngôn ngữ | Phiên bản đầu dùng một ngôn ngữ duy nhất (xem FR-031) |
+| ~~OOS-05~~ | ~~Đa ngôn ngữ và chuyển đổi ngôn ngữ~~ | **Retire 2026-09-08** — chốt OQ-03: song ngữ Việt–Anh thuộc phạm vi phiên bản đầu, xem mục 3.14 |
 | OOS-06 | Thực tế ảo (VR) và thực tế tăng cường (AR) | Ngoài phạm vi |
 | OOS-07 | Trình chỉnh sửa thế giới 3D trực tuyến cho chủ portfolio | Chi phí lớn, không phục vụ mục tiêu; chủ portfolio chỉ cần sửa nội dung |
 | OOS-08 | Mini-game có tính điểm, thành tích, bảng xếp hạng | Ngoài phạm vi phiên bản đầu; có thể xem xét ở giai đoạn sau |
 | OOS-09 | Khôi phục vị trí nhân vật của phiên trước | Xem FR-006 |
+| OOS-10 | Form nhập và gửi liên hệ trực tiếp trên trang | Chốt OQ-01 ngày 2026-09-08: chỉ hiển thị thư điện tử và liên kết mạng xã hội |
+| OOS-11 | Ngôn ngữ thứ ba ngoài tiếng Việt và tiếng Anh | Ngoài phạm vi phiên bản đầu |
 
 ---
 
@@ -466,7 +519,7 @@ Các nội dung sau **không** thuộc phạm vi phiên bản đầu tiên:
 
 Danh sách câu hỏi cần chủ portfolio trả lời được tách ra file riêng: `specs/001-3d-world-portfolio/open-questions.md`.
 
-Phiên bản 0.1 còn **3 câu hỏi chặn** (OQ-01, OQ-02, OQ-03), tương ứng 3 marker `[NEEDS CLARIFICATION]` trong spec tại FR-031, FR-035 và FR-047. Cần chốt trước khi chuyển sang `speckit-plan`.
+Toàn bộ câu hỏi chặn của phiên bản 0.1 đã được chủ portfolio chốt ngày 2026-09-08 (OQ-01, OQ-02, OQ-03). Spec **không còn câu hỏi chặn** và không còn marker `[NEEDS CLARIFICATION]`. Các lựa chọn triển khai và giá trị ngưỡng còn lại được theo dõi ở nhóm non-blocking (OQ-04 … OQ-18).
 
 ---
 
@@ -475,3 +528,4 @@ Phiên bản 0.1 còn **3 câu hỏi chặn** (OQ-01, OQ-02, OQ-03), tương ứ
 | Phiên bản | Ngày | Thay đổi |
 |-----------|------|----------|
 | 0.1 | 2026-09-08 | Bản đầu tiên: 12 User Story, 15 edge case, FR-001…FR-065, SC-001…SC-014, AS-01…AS-11, DEP-01…DEP-07, OOS-01…OOS-09. Còn 3 câu hỏi chặn |
+| 0.2 | 2026-09-08 | Chốt OQ-01, OQ-02, OQ-03: (a) liên hệ chỉ qua thư điện tử và liên kết mạng xã hội — cập nhật FR-035, FR-036, DEP-06, thêm OOS-10; (b) chế độ 2D đầy đủ nội dung — cập nhật FR-047, thêm mục 3.15 (FR-073…FR-079), cập nhật US-10, EC-01, EC-02, thêm EC-19, SC-017, AS-13; (c) nội dung song ngữ Việt–Anh — cập nhật FR-031, thêm mục 3.14 (FR-066…FR-072), US-13, EC-16…EC-18, SC-015, SC-016, AS-12, DEP-08; retire OOS-05, thêm OOS-11. Key Entities chuyển thành mục 3.16, bổ sung 2 entity. Mã FR cũ giữ nguyên để bảo toàn traceability |
