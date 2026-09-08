@@ -1,6 +1,6 @@
 # Open Questions: Website portfolio developer dạng thế giới 3D tương tác
 
-**Feature**: `001-3d-world-portfolio` · **Spec version**: 0.2 · **Cập nhật**: 2026-09-08
+**Feature**: `001-3d-world-portfolio` · **Spec version**: 0.3 · **Cập nhật**: 2026-09-08
 
 > **Trạng thái: không còn câu hỏi chặn.** Spec đủ điều kiện chuyển sang `speckit-plan`.
 
@@ -31,6 +31,9 @@
 | OQ-16 | Ai dịch nội dung và quy trình cập nhật bản dịch khi thêm dự án mới (bắt buộc đủ 2 ngôn ngữ mới được xuất bản, hay cho phép xuất bản thiếu và hiển thị chỉ dấu)? | AS-12, FR-060, FR-070, DEP-08 |
 | OQ-17 | Chế độ 2D dùng bố cục nào (một trang cuộn hay nhiều trang) và có bắt buộc khớp phong cách hình ảnh với thế giới 3D không? | FR-073, FR-077 |
 | OQ-18 | Địa chỉ thư điện tử công khai có cần biện pháp hạn chế thu thập tự động không? | FR-035, FR-063 |
+| OQ-19 | Khu vực dự án dùng **một** vật thể tương tác chung, hay **mỗi dự án một** model riêng trong thế giới? | FR-016, FR-025, FR-059, BO-05, SC-012, AST-08 |
+| OQ-20 | Chiến lược mức chi tiết (LOD): dựng nhiều biến thể cho mỗi model, hay làm low-poly một mức duy nhất đủ nhẹ? | FR-053, FR-054, AST-13, AST-14 |
 
 > OQ-04 không chặn thiết kế kiến trúc nhưng **chặn việc viết test case hiệu năng** cho SC-001 và SC-005.
 > OQ-16 không chặn thiết kế nhưng **chặn việc chốt quy tắc xuất bản nội dung** ở FR-060.
+> OQ-19 không chặn kiến trúc nhưng **chặn việc chốt khối lượng dựng model** ở `assets-3d.md`; khuyến nghị chọn một vật thể chung để giữ được BO-05.

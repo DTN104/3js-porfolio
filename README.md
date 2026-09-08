@@ -9,7 +9,7 @@ Repo theo quy trình **Spec Kit**.
 
 | Feature | Giai đoạn | Ghi chú |
 |---------|-----------|---------|
-| `001-3d-world-portfolio` | Spec v0.2 (Draft) | Không còn câu hỏi chặn — sẵn sàng cho `speckit-plan` |
+| `001-3d-world-portfolio` | Spec v0.3 (Draft) | BO + AS đã xác nhận, không còn câu hỏi chặn — sẵn sàng cho `speckit-plan` |
 
 ## Cấu trúc
 
@@ -19,6 +19,7 @@ specs/001-3d-world-portfolio/
   spec.md                                   # đặc tả tính năng
   open-questions.md                         # câu hỏi cần chốt (tách riêng khỏi spec)
   checklists/requirements.md                # checklist chất lượng spec
+  assets-3d.md                              # danh mục tài nguyên 3D & media cần dựng
 ```
 
 ## Bước tiếp theo
