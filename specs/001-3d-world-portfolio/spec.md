@@ -3,7 +3,7 @@
 **Feature Branch**: `001-3d-world-portfolio`
 **Created**: 2026-09-08
 **Status**: Draft
-**Version**: 0.2 (2026-09-08) — chốt 3 câu hỏi chặn: liên hệ chỉ qua email/social link, chế độ 2D đầy đủ nội dung, nội dung song ngữ Việt–Anh
+**Version**: 0.3 (2026-09-08) — chủ portfolio xác nhận toàn bộ mục tiêu BO-01…BO-05 và giả định AS-01…AS-13
 **Input**: User description: "Dựng website portfolio cá nhân của developer dưới dạng thế giới 3D isometric tương tác — khách truy cập điều khiển nhân vật đi lại trong một không gian 3D, tương tác với các vật thể để xem giới thiệu bản thân, kỹ năng, dự án, kinh nghiệm và thông tin liên hệ. Tham chiếu: worawork.vercel.app"
 
 ---
@@ -21,6 +21,8 @@ Thay khuôn mẫu trang cuộn bằng một **thế giới 3D nhỏ, tương tá
 Trải nghiệm tham chiếu (worawork.vercel.app) có các đặc trưng: màn hình khởi động với một hành động bắt đầu, thế giới isometric phong cách hoạt hình, nhân vật điều khiển bằng bàn phím (di chuyển, giữ phím để chạy), tương tác vật thể bằng phím hoặc chuột, phóng to/thu nhỏ góc nhìn, nhạc nền bật/tắt được, và bảng hướng dẫn điều khiển gọi ra bất kỳ lúc nào.
 
 ### 1.3 Mục tiêu
+
+> Đã được chủ portfolio xác nhận ngày 2026-09-08.
 
 | ID | Mục tiêu |
 |----|----------|
@@ -476,7 +478,7 @@ Trải nghiệm tham chiếu (worawork.vercel.app) có các đặc trưng: màn 
 | AS-12 | Bản dịch tiếng Việt và tiếng Anh do chủ portfolio cung cấp; hệ thống không tự dịch nội dung | Phải bổ sung cơ chế dịch tự động và quy trình kiểm duyệt bản dịch |
 | AS-13 | Chế độ 2D dùng chung nguồn nội dung với thế giới 3D, không phải một trang riêng biệt bảo trì tách rời | Chi phí bảo trì nhân đôi và rủi ro hai chế độ lệch nội dung |
 
-> **Lưu ý**: Toàn bộ giả định trên **chưa được xác nhận**. Cần chủ portfolio xác nhận trước khi chuyển sang giai đoạn thiết kế.
+> **Lưu ý**: Toàn bộ giả định trên **đã được chủ portfolio xác nhận ngày 2026-09-08**. Mọi thay đổi sau thời điểm này phải ghi vào Change Log.
 
 ---
 
@@ -528,4 +530,5 @@ Toàn bộ câu hỏi chặn của phiên bản 0.1 đã được chủ portfoli
 | Phiên bản | Ngày | Thay đổi |
 |-----------|------|----------|
 | 0.1 | 2026-09-08 | Bản đầu tiên: 12 User Story, 15 edge case, FR-001…FR-065, SC-001…SC-014, AS-01…AS-11, DEP-01…DEP-07, OOS-01…OOS-09. Còn 3 câu hỏi chặn |
+| 0.3 | 2026-09-08 | Chủ portfolio xác nhận toàn bộ mục tiêu kinh doanh BO-01…BO-05 và toàn bộ giả định AS-01…AS-13. Không thay đổi nội dung requirement |
 | 0.2 | 2026-09-08 | Chốt OQ-01, OQ-02, OQ-03: (a) liên hệ chỉ qua thư điện tử và liên kết mạng xã hội — cập nhật FR-035, FR-036, DEP-06, thêm OOS-10; (b) chế độ 2D đầy đủ nội dung — cập nhật FR-047, thêm mục 3.15 (FR-073…FR-079), cập nhật US-10, EC-01, EC-02, thêm EC-19, SC-017, AS-13; (c) nội dung song ngữ Việt–Anh — cập nhật FR-031, thêm mục 3.14 (FR-066…FR-072), US-13, EC-16…EC-18, SC-015, SC-016, AS-12, DEP-08; retire OOS-05, thêm OOS-11. Key Entities chuyển thành mục 3.16, bổ sung 2 entity. Mã FR cũ giữ nguyên để bảo toàn traceability |

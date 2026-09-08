@@ -2,7 +2,7 @@
 
 **Purpose**: Validate specification completeness and quality before proceeding to planning
 **Created**: 2026-09-08
-**Cập nhật**: 2026-09-08 (spec v0.2)
+**Cập nhật**: 2026-09-08 (spec v0.3)
 **Feature**: [spec.md](../spec.md)
 
 ## Content Quality
@@ -33,5 +33,5 @@
 ## Notes
 
 - Spec **đủ điều kiện** chuyển sang `speckit-clarify` hoặc `speckit-plan`.
-- Toàn bộ giả định ở mục 5 (AS-01…AS-13) **chưa được chủ portfolio xác nhận**; cần xác nhận song song, không chặn bước kế tiếp.
+- Toàn bộ giả định ở mục 5 (AS-01…AS-13) và mục tiêu BO-01…BO-05 **đã được chủ portfolio xác nhận ngày 2026-09-08**.
 - OQ-04 (ngưỡng hiệu năng) chặn việc viết test case cho SC-001 và SC-005; OQ-16 (quy trình dịch) chặn việc chốt quy tắc xuất bản ở FR-060.
