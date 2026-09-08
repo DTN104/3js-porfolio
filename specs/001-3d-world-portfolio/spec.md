@@ -292,7 +292,7 @@ Trải nghiệm tham chiếu (worawork.vercel.app) có các đặc trưng: màn 
 - **FR-002**: Hệ thống MUST hiển thị trạng thái tiến trình tải tài nguyên và chỉ cho phép bắt đầu khi nhóm tài nguyên bắt buộc đã sẵn sàng.
 - **FR-003**: Hệ thống MUST phân biệt nhóm tài nguyên bắt buộc cho lần hiển thị đầu tiên và nhóm tài nguyên tải bổ sung sau khi vào thế giới.
 - **FR-004**: Hệ thống MUST hiển thị thông báo lỗi dễ hiểu kèm hành động thử lại khi tải tài nguyên thất bại.
-- **FR-005**: Hệ thống MUST kiểm tra khả năng hiển thị 3D của thiết bị trước khi vào thế giới và chuyển sang chế độ dự phòng (mục 3.9) khi không đáp ứng.
+- **FR-005**: Hệ thống MUST kiểm tra khả năng hiển thị 3D của thiết bị trước khi vào thế giới và chuyển sang chế độ 2D (mục 3.15) khi không đáp ứng.
 - **FR-006**: Hệ thống MUST hiển thị vị trí xuất phát cố định của nhân vật ở mỗi phiên mới; hệ thống KHÔNG bắt buộc khôi phục vị trí của phiên trước.
 
 ### 3.2 Điều khiển nhân vật và camera
@@ -356,7 +356,7 @@ Trải nghiệm tham chiếu (worawork.vercel.app) có các đặc trưng: màn 
 - **FR-045**: Hệ thống MUST hiển thị đầy đủ nội dung portfolio trên mọi kích thước màn hình được hỗ trợ, không cắt bớt nội dung theo kích thước.
 - **FR-046**: Hệ thống MUST tự điều chỉnh bố cục khi kích thước cửa sổ hoặc hướng màn hình thay đổi, không cần tải lại trang và không mất trạng thái hiện tại.
 
-### 3.9 Chế độ dự phòng và khả năng tiếp cận
+### 3.9 Khả năng tiếp cận và lối vào nội dung
 
 - **FR-047**: Khi thiết bị không hiển thị được thế giới 3D, hệ thống MUST chuyển sang chế độ 2D cung cấp đầy đủ toàn bộ nội dung portfolio; yêu cầu chi tiết ở mục 3.15.
 - **FR-048**: Người dùng MUST duyệt được toàn bộ nội dung văn bản và liên kết trong một bảng nội dung chỉ bằng bàn phím.
