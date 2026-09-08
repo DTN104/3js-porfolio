@@ -20,6 +20,7 @@ specs/001-3d-world-portfolio/
   open-questions.md                         # câu hỏi cần chốt (tách riêng khỏi spec)
   checklists/requirements.md                # checklist chất lượng spec
   assets-3d.md                              # danh mục tài nguyên 3D & media cần dựng
+  asset-prompts.md                          # prompt dựng từng model 3D
 ```
 
 ## Bước tiếp theo

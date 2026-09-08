@@ -9,6 +9,7 @@
 - Cột "Truy vết" chỉ tới requirement trong `spec.md` làm phát sinh tài nguyên đó. Tài nguyên không truy vết được về requirement nào thì không thuộc phạm vi phiên bản đầu.
 - Cột "Bắt buộc" = thiếu thì không đáp ứng được requirement đã chốt.
 - Danh mục này **không** quyết định nguồn tài nguyên (tự dựng / mua pack / thuê ngoài) — xem OQ-07.
+- Prompt dựng cho từng model nằm ở file riêng: `asset-prompts.md`.
 
 ## 2. Nhóm 1 — Bắt buộc: thiếu là thế giới không vận hành được
 
