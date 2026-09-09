@@ -204,8 +204,8 @@ export function Hotspot({ zone, active, onOpen }) {
             <cylinderGeometry args={[0.1, 0.1, 1.2, 8]} />
             <meshStandardMaterial color="#7a5a3c" />
           </mesh>
-          <mesh position={[0, 1.35, 0]} castShadow>
-            <capsuleGeometry args={[0.32, 0.5, 4, 12]} rotation={[0, 0, Math.PI / 2]} />
+          <mesh position={[0, 1.35, 0]} rotation={[0, 0, Math.PI / 2]} castShadow>
+            <capsuleGeometry args={[0.32, 0.5, 4, 12]} />
             <meshStandardMaterial color={zone.color} />
           </mesh>
           <mesh position={[0.34, 1.5, 0]}>
