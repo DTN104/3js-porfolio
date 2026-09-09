@@ -5,3 +5,7 @@ dist/
 
 *.bak
 _to_delete/
+
+.idea/
+node_modules/
+dist/
