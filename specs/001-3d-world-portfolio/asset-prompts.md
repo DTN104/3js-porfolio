@@ -1,6 +1,6 @@
 # Prompt dựng model 3D & tài nguyên: 001-3d-world-portfolio
 
-**Feature**: `001-3d-world-portfolio` · **Version**: 1.0 · **Ngày**: 2026-09-11
+**Feature**: `001-3d-world-portfolio` · **Version**: 1.1 · **Ngày**: 2026-09-11
 **Nguồn**: `assets-3d.md` v0.2, `spec.md` v0.3, chủ đề OQ-06, bảng màu từ file Figma `Portfolio 3D — Đảo trôi`
 **Dùng cho**: công cụ text-to-3D (Meshy, Tripo, Rodin, Hyper3D…), công cụ sinh skybox, công cụ sinh nhạc, hoặc làm brief đặt hàng cho 3D artist
 
@@ -26,8 +26,8 @@
 
 | Mã | Tài nguyên | Số prompt | Công cụ phù hợp | Mục |
 |----|-----------|:---------:|-----------------|-----|
-| AST-01 | Nhân vật điều khiển được | 1 | Text-to-3D → auto-rig | [4.1](#41-ast-01--nhân-vật-điều-khiển-được) |
-| AST-02 | Hoạt ảnh đứng yên / đi / chạy | 3 mô tả | **Không** dùng text-to-3D — thư viện chuyển động | [4.2](#42-ast-02--bộ-hoạt-ảnh-nhân-vật) |
+| AST-01 | Nhân vật điều khiển được | 1 | Text-to-3D **có auto-rig** (Tripo) | [4.1](#41-ast-01--nhân-vật-điều-khiển-được) |
+| AST-02 | Hoạt ảnh đứng yên / đi / chạy | 3 mô tả | **Không sinh được** — thư viện chuyển động | [4.2](#42-ast-02--bộ-hoạt-ảnh-nhân-vật) |
 | AST-03 | Mảnh đảo lơ lửng | 1 gốc + 5 biến thể | Text-to-3D | [4.3](#43-ast-03--mảnh-đảo-lơ-lửng) |
 | AST-04 | Mép đảo | 1 | Text-to-3D | [4.4](#44-ast-04--mép-đảo) |
 | AST-05 | Hình học va chạm | — | Sinh từ hình học, không có prompt | [4.5](#45-ast-05--hình-học-va-chạm) |
@@ -47,6 +47,33 @@
 | AST-19 | Ảnh xem trước khi chia sẻ | 1 | Key art trong Figma, hoặc sinh ảnh 2D | [4.19](#419-ast-19--ảnh-xem-trước-khi-chia-sẻ) |
 | AST-20 | Thiết kế UI 2D | — | **Đã có** — file Figma trang 03 & 04 | [4.20](#420-ast-20--thiết-kế-ui-2d) |
 | AST-21 | Lớp mây nền | 1 | Text-to-3D | [4.21](#421-ast-21--lớp-mây-nền) |
+
+### 2.1 Chọn công cụ nào — khảo sát 11/09/2026
+
+**Nhóm ra file 3D thật (.glb / .fbx)**
+
+| Tool | Điểm mạnh | Free | Trả phí | Bản quyền asset |
+|------|-----------|------|---------|-----------------|
+| **Meshy 6** | Quad topology + **Low Poly Mode** — khớp nhất với phong cách của dự án này. GLB/FBX/OBJ kèm PBR | 100 credit/tháng | Pro **$20/tháng** (1.000 credit) | **Free = CC BY 4.0, buộc ghi công Meshy trên trang.** Trả phí mới sở hữu riêng |
+| **Tripo v3.1** | **Auto-rig** (người, thú 4 chân, nhân vật cách điệu, cả máy móc); quad remesh 1 click; xuất FBX/GLB/OBJ kèm xương, dùng được với Blender/Unity/Unreal/Mixamo | 200 credit/tháng | Pro **$20/tháng** (3.000 credit ≈ 200 model) | **Free = Public Models, CẤM thương mại.** Pro mới có Private + Commercial |
+| **Rodin Gen-2.5** | Chi tiết mức điêu khắc, 10M+ poly, tinh chỉnh từng bộ phận | Xem trước được, tải phải trả tiền | Creator $30/th · Business $120/th | Gồm trong cả hai tier |
+| **Tencent Hunyuan 3D** | **20 lượt sinh miễn phí mỗi ngày**; tối ưu topology cả tam giác lẫn tứ giác | 20 lượt/ngày | — | Thông cáo không nêu điều khoản asset — **phải đọc service agreement trước khi dùng thương mại** |
+
+**Nhóm mã nguồn mở (tự chạy, cần GPU NVIDIA)**
+
+| Tool | Ghi chú |
+|------|---------|
+| **TRELLIS.2** (Microsoft) | Giấy phép **MIT** — không vướng gì về thương mại. Chỉ nhận **ảnh** đầu vào, không nhận text |
+| **Hunyuan3D 2.1** (open weights) | PBR tốt, có cả code training. Giấy phép **loại trừ EU / UK / Hàn Quốc** — Việt Nam không thuộc danh sách loại trừ |
+
+**Đã ngừng hoạt động — đừng tốn công tìm**
+
+- **Luma Genie** — đã gỡ khỏi trang Luma, công ty chuyển hẳn sang video
+- **CSM Cube** — đóng cửa 05/01/2026
+
+> **Cảnh báo bản quyền.** Portfolio là trang công khai của chủ portfolio, nên tính là sử dụng công khai/thương mại. **Không dùng free tier của Meshy hay Tripo cho asset lên trang thật**: Meshy free buộc ghi công Meshy ngay trên trang, Tripo free cấm hẳn thương mại.
+
+> **Khuyến nghị cho dự án này.** Chỉ có 5 model phải sinh riêng (AST-06…AST-10). Mua **Meshy Pro một tháng ($20)** là đủ — Low Poly Mode + quad topology khớp đúng phong cách đã chốt, 1.000 credit thừa sức sinh đi sinh lại nhiều lượt; xong thì hủy. Nhân vật và hoạt ảnh cứ theo OQ-07 đã chốt là lấy pack CC0 Quaternius; chỉ cân nhắc Tripo Pro nếu muốn nhân vật riêng, vì nó auto-rig luôn.
 
 ---
 
@@ -154,6 +181,8 @@ geometry, humanoid proportions suitable for automatic rigging, exactly 1.6 meter
 3. Có cổ, khuỷu, gối đủ khối để auto-rig nhận diện xương
 4. Cao đúng 1,6 m, chân chạm Y=0
 
+> **Công cụ khuyến nghị** — **Tripo Pro**, vì sinh model xong auto-rig luôn trong cùng một chỗ, đỡ một bước xuất/nhập. Nếu dùng Meshy thì phải đưa model qua Mixamo hoặc Tripo để rig.
+>
 > **Giả định** — áo màu cam nhấn `#E08B45` để nhân vật luôn nổi trên nền cỏ xanh và trời xanh, ở mọi mức thu phóng (FR-011). Chưa xác nhận với chủ portfolio.
 > **Câu hỏi mở** — nhân vật có cần giống chủ portfolio không, hay là nhân vật ẩn danh?
 
@@ -163,7 +192,10 @@ geometry, humanoid proportions suitable for automatic rigging, exactly 1.6 meter
 
 **Bắt buộc** · Truy vết: FR-009 · Số lượng: 3 clip · **Không sinh bằng text-to-3D**
 
-Text-to-3D hiện không sinh được hoạt ảnh. Ba clip lấy từ thư viện chuyển động có sẵn (Mixamo, Quaternius Universal Animation Library — CC0) rồi retarget lên bộ xương của AST-01.
+Phân biệt hai thứ hay bị gộp:
+
+- **Rig (bộ xương + skin weight)** — *sinh được rồi*. Tripo v3.1 có auto-rig cho người, thú 4 chân, nhân vật cách điệu và cả vật thể máy móc, xuất FBX/GLB/OBJ kèm xương. Mixamo cũng auto-rig miễn phí cho nhân vật hình người.
+- **Hoạt ảnh (clip chuyển động)** — *vẫn chưa công cụ nào sinh được*. Ba clip phải lấy từ thư viện chuyển động có sẵn (Mixamo, Quaternius Universal Animation Library — CC0) rồi retarget lên bộ xương của AST-01.
 
 | Clip | Tên chuẩn trong thư viện | Yêu cầu |
 |------|--------------------------|---------|
@@ -631,7 +663,7 @@ far below and between the islands.
 
 | Mã | Vì sao | Cách nên làm |
 |----|--------|--------------|
-| AST-02 | Text-to-3D không sinh được hoạt ảnh, và chất lượng auto-rig phụ thuộc mạnh vào tư thế của model gốc | Sinh AST-01 bằng prompt ở 4.1 → auto-rig → lấy 3 clip từ thư viện chuyển động CC0 → retarget |
+| AST-02 | Không công cụ nào sinh được **clip chuyển động**. Riêng **rig thì sinh được** (Tripo v3.1, Mixamo), nhưng chất lượng phụ thuộc mạnh vào tư thế của model gốc | Sinh AST-01 bằng prompt ở 4.1 → auto-rig bằng Tripo hoặc Mixamo → lấy 3 clip từ thư viện chuyển động CC0 → retarget |
 | AST-05 | Là hình học va chạm, không có hình dạng thị giác để mô tả | Sinh từ AST-03, AST-12 và các vật thể đặc bằng công cụ |
 | AST-11 | Là hiệu ứng shader/sprite 2D vẽ trên canvas | Viết bằng code, theo thiết kế ở Figma trang 03 |
 | AST-14 | Là ảnh panorama 360°, không phải model | Công cụ sinh skybox |
@@ -715,4 +747,5 @@ Xếp theo mức chặn. Chưa chốt nhóm đầu thì không nên bắt đầu
 |---------|------|----------|
 | 0.1 | 2026-09-09 | Bản đầu, 10 prompt, chủ đề chưa chốt |
 | 0.2 | 2026-09-11 | Cập nhật theo OQ-06 (đảo trôi) và OQ-07 (pack CC0 + sinh riêng 5 vật thể); 12 mục |
-| **1.0** | **2026-09-11** | **Phủ toàn bộ AST-01…AST-21.** Thêm khối NEGATIVE, bảng SCALE, bảng PALETTE lấy từ Figma. Thêm prompt/đặc tả cho AST-02, AST-05, AST-11, AST-15, AST-16, AST-17, AST-18, AST-19, AST-20. Tách AST-03 thành 5 biến thể theo từng đảo. Sửa bảng màu trong khối STYLE cho khớp token. Ghi nhận 2 câu hỏi mở mới phát sinh từ prototype (chỉ dẫn hướng cầu, tốc độ di chuyển vs hoạt ảnh) và 1 đề xuất thay đổi chiều dài cầu |
+| **1.1** | **2026-09-11** | Thêm mục **2.1 — chọn công cụ nào**: so sánh Meshy 6 / Tripo v3.1 / Rodin Gen-2.5 / Hunyuan 3D + hai lựa chọn mã nguồn mở, kèm giá và **điều khoản bản quyền theo từng tier**. Sửa AST-01 và AST-02: **auto-rig giờ sinh được** (Tripo v3.1, Mixamo), chỉ clip chuyển động là chưa. Gỡ **Luma Genie** (đã ngừng) và ghi nhận **CSM Cube** đóng cửa 05/01/2026. Thêm cảnh báo: không dùng free tier Meshy/Tripo cho trang công khai |
+| 1.0 | 2026-09-11 | **Phủ toàn bộ AST-01…AST-21.** Thêm khối NEGATIVE, bảng SCALE, bảng PALETTE lấy từ Figma. Thêm prompt/đặc tả cho AST-02, AST-05, AST-11, AST-15, AST-16, AST-17, AST-18, AST-19, AST-20. Tách AST-03 thành 5 biến thể theo từng đảo. Sửa bảng màu trong khối STYLE cho khớp token. Ghi nhận 2 câu hỏi mở mới phát sinh từ prototype (chỉ dẫn hướng cầu, tốc độ di chuyển vs hoạt ảnh) và 1 đề xuất thay đổi chiều dài cầu |
