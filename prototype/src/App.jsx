@@ -1,13 +1,13 @@
 import { useEffect, useRef, useState, useCallback } from 'react'
 import { Canvas } from '@react-three/fiber'
-import { Ground, Avatar, Hotspot, CameraRig } from './World'
+import { Sky, Clouds, Island, Bridge, Avatar, CameraRig } from './World'
 import { attachInput, freezeInput } from './input'
-import { zones } from './content'
+import { islands, bridges } from './content'
 
 export default function App() {
   const body = useRef()
   const zoom = useRef(1)
-  const [near, setNear] = useState(null)      // FR-019: vật thể gần nhất
+  const [near, setNear] = useState(null)      // FR-019: đảo đang trong tầm tương tác
   const [open, setOpen] = useState(null)      // FR-020: bảng nội dung đang mở
   const [help, setHelp] = useState(false)
   const [hint, setHint] = useState(true)      // FR-022
@@ -22,7 +22,7 @@ export default function App() {
     setOpen(id); setHint(false)
   }, [])
 
-  // FR-020: khoá di chuyển khi bảng đang mở
+  // FR-020 + EC-05: khoá di chuyển khi bảng đang mở
   useEffect(() => { freezeInput(!!open || help) }, [open, help])
 
   useEffect(() => {
@@ -36,21 +36,21 @@ export default function App() {
   // FR-011: phóng to / thu nhỏ trong khoảng giới hạn
   useEffect(() => {
     const onWheel = (e) => {
-      zoom.current = Math.min(1.8, Math.max(0.55, zoom.current + Math.sign(e.deltaY) * 0.08))
+      zoom.current = Math.min(1.9, Math.max(0.55, zoom.current + Math.sign(e.deltaY) * 0.08))
     }
     window.addEventListener('wheel', onWheel, { passive: true })
     return () => window.removeEventListener('wheel', onWheel)
   }, [])
 
-  // FR-016/FR-019: quét vật thể gần nhất
+  // FR-016/FR-019: quét đảo gần nhất
   useEffect(() => {
     const id = setInterval(() => {
       const g = body.current
       if (!g) return
       let best = null, bestD = Infinity
-      for (const z of zones) {
+      for (const z of islands) {
         const d = Math.hypot(g.position.x - z.pos[0], g.position.z - z.pos[1])
-        if (d < z.r && d < bestD) { best = z.id; bestD = d }
+        if (d < z.ir && d < bestD) { best = z.id; bestD = d }
       }
       setNear(prev => (prev === best ? prev : best))
     }, 90)
@@ -62,28 +62,30 @@ export default function App() {
     return () => clearTimeout(t)
   }, [])
 
-  const openedZone = zones.find(z => z.id === open)
-  const nearZone = zones.find(z => z.id === near)
+  const openedZone = islands.find(z => z.id === open)
+  const nearZone = islands.find(z => z.id === near)
 
   return (
     <>
-      <Canvas shadows dpr={[1, 2]} camera={{ fov: 38, position: [13, 13.5, 13] }}>
-        <color attach="background" args={['#cfe3ee']} />
-        <fog attach="fog" args={['#cfe3ee', 40, 78]} />
-        <hemisphereLight args={['#dff0ff', '#6b7a55', 0.85]} />
+      <Canvas shadows dpr={[1, 2]} camera={{ fov: 38, position: [-6, 14, 26] }}>
+        <fog attach="fog" args={['#BCDBEC', 70, 185]} />
+        <hemisphereLight args={['#DCEEF6', '#6B9A4C', 0.95]} />
         <directionalLight
-          position={[12, 18, 8]}
+          position={[26, 34, 16]}
           intensity={1.5}
           castShadow
-          shadow-mapSize={[1024, 1024]}
-          shadow-camera-left={-30}
-          shadow-camera-right={30}
-          shadow-camera-top={30}
-          shadow-camera-bottom={-30}
+          shadow-mapSize={[2048, 2048]}
+          shadow-camera-left={-60}
+          shadow-camera-right={60}
+          shadow-camera-top={60}
+          shadow-camera-bottom={-60}
+          shadow-camera-far={140}
         />
-        <Ground />
-        {zones.map(z => (
-          <Hotspot key={z.id} zone={z} active={near === z.id} onOpen={openZone} />
+        <Sky />
+        <Clouds />
+        {bridges.map(b => <Bridge key={b.id} bridge={b} />)}
+        {islands.map(z => (
+          <Island key={z.id} island={z} active={near === z.id} onOpen={openZone} />
         ))}
         <Avatar bodyRef={body} />
         <CameraRig target={body} zoomRef={zoom} />
@@ -91,10 +93,10 @@ export default function App() {
 
       <button className="iconbtn help" onClick={() => setHelp(true)} aria-label="Bảng hướng dẫn điều khiển">?</button>
 
-      <div className="stamp">prototype · thế giới 3D · dữ liệu và model đều là bản tạm</div>
+      <div className="stamp">prototype · đảo trôi trên mây · model và nội dung đều là bản tạm</div>
 
       {hint && !open && (
-        <div className="hint">Dùng <b>W A S D</b> để đi. Giữ <b>Shift</b> để chạy.</div>
+        <div className="hint">Dùng <b>W A S D</b> để đi. Giữ <b>Shift</b> để chạy. Qua đảo khác bằng <b>cầu dây</b>.</div>
       )}
 
       {/* FR-017: chỉ dấu kèm chỉ dẫn thao tác */}
@@ -137,6 +139,7 @@ export default function App() {
                 <tr><td>Tương tác</td><td><span className="key">E</span> hoặc bấm chuột vào vật thể</td></tr>
                 <tr><td>Đóng bảng</td><td><span className="key">Esc</span></td></tr>
                 <tr><td>Phóng to / thu nhỏ</td><td>con lăn chuột</td></tr>
+                <tr><td>Sang đảo khác</td><td>đi qua cầu dây — không nhảy, không rơi</td></tr>
               </tbody>
             </table>
             <footer>FR-037, FR-038 — bảng này gọi ra được bất kỳ lúc nào.</footer>
