@@ -1,23 +1,25 @@
 # Prompt dựng model 3D: 001-3d-world-portfolio
 
-**Feature**: `001-3d-world-portfolio` · **Version**: 0.1 · **Ngày**: 2026-09-08
-**Nguồn**: dẫn xuất từ `assets-3d.md` v0.1 · **Dùng cho**: công cụ text-to-3D (Meshy, Tripo, Rodin…) hoặc làm brief đặt hàng cho 3D artist
+**Feature**: `001-3d-world-portfolio` · **Version**: 0.2 · **Ngày**: 2026-09-11
+**Nguồn**: dẫn xuất từ `assets-3d.md` v0.2, chủ đề theo OQ-06 · **Dùng cho**: công cụ text-to-3D (Meshy, Tripo, Rodin…) hoặc làm brief đặt hàng cho 3D artist
 
 ## 1. Cách dùng
 
 - Mỗi prompt = **STYLE** + **nội dung riêng của asset** + **TECH**. Ba khối ghép lại thành một prompt hoàn chỉnh.
 - Khối STYLE ở mục 2 là điểm duy nhất cần sửa nếu đổi hướng mỹ thuật — sửa một chỗ, toàn bộ prompt đổi theo, giữ được tính đồng bộ giữa các model.
 - Prompt viết bằng tiếng Anh vì công cụ text-to-3D cho kết quả ổn định hơn nhiều so với tiếng Việt.
-- **Hướng mỹ thuật hiện tại là tạm** — bám theo trải nghiệm tham chiếu, chờ chốt **OQ-06**.
+- **Hướng mỹ thuật đã chốt (OQ-06): đảo trôi trên mây.** Khối STYLE bên dưới không còn là bản tạm.
+- **Nguồn asset đã chốt (OQ-07)**: chỉ 5 vật thể tương tác (AST-06…AST-10) cần sinh riêng bằng các prompt này; nhân vật và prop trang trí lấy từ pack CC0; đảo, cầu, mây dựng bằng hình khối đơn giản.
 
-## 2. Khối STYLE dùng chung (tạm — chờ OQ-06)
+## 2. Khối STYLE dùng chung
 
 ```
 STYLE: stylized low-poly, soft rounded shapes with no sharp edges, cozy cartoon village
 aesthetic, chunky exaggerated proportions, matte hand-painted flat textures with no
 photoreal detail, warm muted palette of sand beige, terracotta, sage green and cream,
 readable silhouette when viewed small from a high three-quarter isometric angle,
-consistent with a friendly handcrafted miniature-diorama look.
+belonging to a small floating sky-island world seen from above, consistent with a
+friendly handcrafted miniature-diorama look.
 ```
 
 ## 3. Khối TECH dùng chung
@@ -47,29 +49,36 @@ suitable for automatic rigging, 1.6 meters tall.
 
 > Kiểm tra khi nhận model: đúng A-pose, đối xứng, tay tách khỏi thân (không dính), có đủ khối để auto-rig nhận diện được xương.
 
-### AST-03 — Địa hình nền
+### AST-03 — Mảnh đảo lơ lửng
 
 ```
-A small stylized low-poly island terrain for a third-person web experience, about
-60 by 60 meters, gently rolling grass surface with three flat plateaus connected by
-shallow walkable ramps, a shallow stream crossing the middle from one edge to the
-other, sandy shoreline fading outward into rounded rock, no buildings, no trees, no
-props, no characters, terrain surface only.
-+ STYLE + TECH (bỏ giới hạn 5000 triangles, cho phép tới 20000 cho địa hình)
-```
-
-> Đây là asset **khó sinh bằng text-to-3D nhất**. Xem cảnh báo ở mục 5.
-
-### AST-04 — Ranh giới thế giới nhìn thấy được
-
-```
-A set of stylized low-poly world-boundary pieces for a cartoon island: a rounded rocky
-cliff wall segment, a wooden picket fence segment, and a shoreline rock outcrop with
-smooth weathered boulders, designed as separate modular pieces that tile seamlessly
-end to end along a straight run and around a 90 degree corner, each piece 4 meters
-wide and about 1.5 meters tall.
+A small stylized low-poly floating sky island for a third-person web experience,
+about 16 meters across, with a flat gently undulating grass top surface that is fully
+walkable, soft rounded rocky sides, and an underside that tapers downward into a
+blunt irregular rock point with a few smaller rocks drifting just beneath it, clean
+grass-to-rock transition around the rim, no buildings, no trees, no props, no
+characters, island body only.
 + STYLE + TECH
 ```
+
+> Chủ đề đảo trôi thay thế địa hình 60×60 m bằng 4–5 mảnh nhỏ — **đây là thay đổi
+> làm nhẹ khối lượng nhiều nhất**, và cũng khiến asset này chuyển từ nhóm
+> "không nên sinh bằng text-to-3D" sang nhóm sinh được.
+
+### AST-04 — Mép đảo
+
+```
+A set of stylized low-poly island-rim pieces for a floating sky island: a short wooden
+post-and-rope fence segment, a low mossy stone kerb, and a cluster of rounded boulders
+with grass tufts, designed as separate modular pieces that follow a gently curving rim
+and tile seamlessly end to end, each piece about 3 meters wide and no taller than 0.8
+meters so it marks the edge without blocking the view outward.
++ STYLE + TECH
+```
+
+> Thấp dưới 0,8 m là có chủ ý: mép đảo phải **thấy được là ranh giới** (FR-015) nhưng
+> không che mất khoảng không bên dưới — thứ tạo nên cảm giác lơ lửng. Cách xử lý khi
+> nhân vật chạm mép còn treo ở OQ-21.
 
 ### AST-06 — Vật thể tương tác: khu vực **giới thiệu**
 
@@ -129,15 +138,19 @@ and a small pitched roof over it, both resting on a small patch of stone paving,
 + STYLE + TECH
 ```
 
-### AST-12 — Đường đi / lối dẫn hướng
+### AST-12 — Cầu nối giữa các mảnh đảo
 
 ```
-A set of stylized low-poly modular path pieces for a cartoon island: a worn dirt path
-with scattered flat stepping stones pressed into it and short grass tufts along the
-edges, provided in straight, 90 degree corner, T-junction and rounded end-cap
-variants, each piece exactly 4 by 4 meters and tiling seamlessly with the others.
+A stylized low-poly wooden rope bridge for a floating sky island world: horizontal
+timber planks with visible gaps between them, two thick guide ropes at hand height
+supported by simple wooden posts every two meters, slightly sagging in the middle,
+sturdy anchor blocks at both ends that sit flush against an island rim, 9 meters long
+and 2.2 meters wide, walkable surface flat enough for a character to cross.
 + STYLE + TECH
 ```
+
+> Ở chủ đề này cầu là **lối đi duy nhất** giữa các khu vực nội dung, nên nó vừa là
+> đường vừa là chỉ dẫn — ảnh hưởng trực tiếp SC-002 và SC-003.
 
 ### AST-13 — Prop trang trí (chia 5 prompt)
 
@@ -203,12 +216,26 @@ seamless 360 degree equirectangular projection.
 
 > Đây là ảnh panorama/HDRI, không phải model — dùng công cụ sinh skybox (ví dụ Blockade Labs Skybox AI) chứ không dùng text-to-3D. Khối TECH ở mục 3 **không áp dụng**.
 
+### AST-21 — Lớp mây nền bên dưới các đảo
+
+```
+A set of stylized low-poly cartoon cloud shapes for a floating sky island world: four
+cloud variants built from a few large soft overlapping rounded lobes with flat bottoms,
+ranging from 8 to 20 meters wide and 2 to 4 meters thick, matte off-white surface with
+a faint warm tint on the upper lobes, each as a separate object meant to drift slowly
+far below and between the islands.
++ STYLE + TECH
+```
+
+> Phát sinh từ chủ đề đảo trôi: nếu khoảng dưới các đảo trống trơn thì thế giới trông
+> như bị thủng chứ không như đang bay.
+
 ## 5. Cảnh báo: asset không nên sinh bằng text-to-3D
 
 | Mã | Vì sao | Cách nên làm |
 |----|--------|--------------|
 | AST-01 + AST-02 | Text-to-3D hiện sinh nhân vật **không rig**, và chất lượng rig tự động phụ thuộc mạnh vào tư thế/hình khối. Ba hoạt ảnh đi/chạy/đứng yên thì text-to-3D không tạo được | Sinh model bằng prompt ở trên rồi auto-rig + lấy animation từ thư viện chuyển động có sẵn; hoặc mua nhân vật đã rig kèm animation |
-| AST-03 | Địa hình lớn 60×60m vượt khả năng của text-to-3D — kết quả thường méo tỉ lệ, topology không dùng được để đi lại và làm collision | Dựng tay bằng công cụ 3D, hoặc dùng terrain generator rồi phối prop lên trên |
+| ~~AST-03~~ | ~~Địa hình lớn 60×60m~~ | **Không còn áp dụng** sau khi chốt OQ-06: mảnh đảo 16 m là vật thể đơn, sinh được bình thường |
 | AST-05 | Là hình học va chạm, không có hình dạng thị giác để mô tả | Sinh từ AST-03 và các vật thể đặc bằng công cụ, không có prompt |
 | AST-11 | Là hiệu ứng shader/sprite, không phải model | Làm bằng code |
 

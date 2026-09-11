@@ -1,6 +1,6 @@
 # Open Questions: Website portfolio developer dạng thế giới 3D tương tác
 
-**Feature**: `001-3d-world-portfolio` · **Spec version**: 0.3 · **Cập nhật**: 2026-09-08
+**Feature**: `001-3d-world-portfolio` · **Spec version**: 0.3 · **Cập nhật**: 2026-09-11
 
 > **Trạng thái: không còn câu hỏi chặn.** Spec đủ điều kiện chuyển sang `speckit-plan`.
 
@@ -11,6 +11,10 @@
 | OQ-01 | Khách liên hệ với chủ portfolio bằng cách nào? | **Chỉ hiển thị địa chỉ thư điện tử và liên kết mạng xã hội công khai** — không có form gửi trên trang | 2026-09-08 | FR-035, FR-036; DEP-06; OOS-10 |
 | OQ-02 | Khi thiết bị không hiển thị được thế giới 3D thì cung cấp gì? | **Chế độ 2D đầy đủ toàn bộ nội dung portfolio**, dùng chung nguồn nội dung với thế giới 3D | 2026-09-08 | FR-047; mục 3.15 (FR-073…FR-079); US-10; EC-01, EC-02, EC-19; SC-017; AS-13 |
 | OQ-03 | Ngôn ngữ nội dung của phiên bản đầu? | **Song ngữ tiếng Việt và tiếng Anh** | 2026-09-08 | FR-031; mục 3.14 (FR-066…FR-072); US-13; EC-16…EC-18; SC-015, SC-016; AS-12; DEP-08; retire OOS-05; thêm OOS-11 |
+| OQ-06 | Chủ đề và bối cảnh của thế giới? | **Đảo trôi trên mây** — 4–5 mảnh đảo lơ lửng nối bằng cầu, mỗi mảnh một khu vực nội dung | 2026-09-11 | Toàn bộ mục 2 và 3 của `assets-3d.md`; khối STYLE và các prompt AST-03, AST-04, AST-12 trong `asset-prompts.md`; thêm AST-21; mở OQ-21 |
+| OQ-07 | Nguồn tài nguyên 3D? | **Pack CC0 làm nền + sinh riêng 5 vật thể tương tác** (AST-06…AST-10) | 2026-09-11 | Cột "nguồn" trong `assets-3d.md`; AS-06 |
+
+> **Ghi chú về OQ-06 và OQ-07**: chủ portfolio nêu rõ không có ưu tiên; hai câu này do Claude đề xuất và chốt mặc định để công việc đi tiếp. Đây là **khuyến nghị đã áp dụng**, không phải quyết định do chủ portfolio duyệt — lật lại lúc nào cũng được, chi phí là làm lại phần asset chưa dựng.
 
 ## B. Câu hỏi cần xác nhận (non-blocking) — có thể vừa thiết kế vừa chốt
 
@@ -18,8 +22,6 @@
 |----|---------|-----------|
 | OQ-04 | Giá trị cụ thể của các ngưỡng định lượng: thời gian tải tối đa chấp nhận được, nhịp hiển thị mục tiêu, dung lượng tối đa của nhóm tài nguyên bắt buộc, cấu hình thiết bị mục tiêu | AS-10, FR-052, FR-054, SC-001, SC-005 |
 | OQ-05 | Danh sách khu vực nội dung cuối cùng — ngoài 5 khu vực ở AS-04, có thêm khu vực nào (chứng chỉ, bài viết, sở thích, lời chứng thực) không? | AS-04, FR-016 |
-| OQ-06 | Chủ đề và bối cảnh của thế giới (đảo nhỏ, phòng làm việc, thị trấn…) và phong cách hình ảnh | FR-015, DEP-01 |
-| OQ-07 | Nguồn tài nguyên 3D: tự dựng, mua bộ có sẵn, hay thuê ngoài? | DEP-01, AS-06 |
 | OQ-08 | Số lượng dự án đưa lên và có dự án nào thuộc diện không được công bố (NDA) không? | FR-025, FR-026, DEP-03 |
 | OQ-09 | Có sử dụng công cụ đo lường không, đo những chỉ số nào, công bố ra sao? | FR-064, DEP-07, SC-008…SC-010 |
 | OQ-10 | Cách chủ portfolio cập nhật nội dung: sửa file cấu hình trong mã nguồn hay dùng một công cụ quản trị riêng? | AS-07, FR-059, FR-060, SC-012 |
@@ -33,6 +35,7 @@
 | OQ-18 | Địa chỉ thư điện tử công khai có cần biện pháp hạn chế thu thập tự động không? | FR-035, FR-063 |
 | OQ-19 | Khu vực dự án dùng **một** vật thể tương tác chung, hay **mỗi dự án một** model riêng trong thế giới? | FR-016, FR-025, FR-059, BO-05, SC-012, AST-08 |
 | OQ-20 | Chiến lược mức chi tiết (LOD): dựng nhiều biến thể cho mỗi model, hay làm low-poly một mức duy nhất đủ nhẹ? | FR-053, FR-054, AST-13, AST-14 |
+| OQ-21 | Nhân vật đi tới mép đảo thì xử lý thế nào — rào chắn thấp ở mép, đẩy nhân vật lại, hay cho rơi rồi đưa về vị trí cũ? Chủ đề đảo trôi làm ranh giới thế giới trở thành vực thẳm chứ không còn là bờ nước | FR-012, FR-014, FR-015, AST-04, EC-07 |
 
 > OQ-04 không chặn thiết kế kiến trúc nhưng **chặn việc viết test case hiệu năng** cho SC-001 và SC-005.
 > OQ-16 không chặn thiết kế nhưng **chặn việc chốt quy tắc xuất bản nội dung** ở FR-060.
