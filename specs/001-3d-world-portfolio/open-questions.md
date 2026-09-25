@@ -1,6 +1,6 @@
 # Open Questions: Website portfolio developer dạng thế giới 3D tương tác
 
-**Feature**: `001-3d-world-portfolio` · **Spec version**: 0.3 · **Cập nhật**: 2026-09-24
+**Feature**: `001-3d-world-portfolio` · **Spec version**: 0.3 · **Cập nhật**: 2026-09-25
 
 > **Trạng thái: không còn câu hỏi chặn.** Spec đủ điều kiện chuyển sang `speckit-plan`.
 
@@ -24,7 +24,7 @@
 
 | ID | Câu hỏi | Liên quan |
 |----|---------|-----------|
-| OQ-04 | Giá trị cụ thể của các ngưỡng định lượng: thời gian tải tối đa chấp nhận được, nhịp hiển thị mục tiêu, dung lượng tối đa của nhóm tài nguyên bắt buộc, cấu hình thiết bị mục tiêu | AS-10, FR-052, FR-054, SC-001, SC-005 |
+| OQ-04 | Giá trị cụ thể của các ngưỡng định lượng: thời gian tải tối đa chấp nhận được, nhịp hiển thị mục tiêu, dung lượng tối đa của nhóm tài nguyên bắt buộc, cấu hình thiết bị mục tiêu **Số đo 2026-09-25** (Xiaomi 13 — máy cấu hình cao, chưa đại diện tầm trung; Chrome, khung 785×1450 @2x, Wi‑Fi LAN, Vite dev): **61 fps · 78 draw call · 205k tam giác · tải asset 0,4 s**; toàn bộ .glb + panorama ≈ 2,3 MB. **Khuyến nghị ngưỡng** (chưa duyệt): FPS ≥ 30 trên điện thoại tầm trung, tải nhóm bắt buộc ≤ 3 s trên 4G (2,3 MB ≈ 2 s ở 10 Mbps), ngân sách dung lượng ≤ 5 MB, thiết bị mục tiêu = điện thoại Android/iPhone 3–4 năm tuổi. Chưa đo trên 4G và trên bản build production | AS-10, FR-052, FR-054, SC-001, SC-005 |
 | OQ-05 | Danh sách khu vực nội dung cuối cùng — ngoài 5 khu vực ở AS-04, có thêm khu vực nào (chứng chỉ, bài viết, sở thích, lời chứng thực) không? | AS-04, FR-016 |
 | OQ-08 | Số lượng dự án đưa lên và có dự án nào thuộc diện không được công bố (NDA) không? | FR-025, FR-026, DEP-03 |
 | OQ-09 | Có sử dụng công cụ đo lường không, đo những chỉ số nào, công bố ra sao? | FR-064, DEP-07, SC-008…SC-010 |

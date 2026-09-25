@@ -23,7 +23,7 @@ export default function App() {
   const [hint, setHint] = useState(true)      // FR-022
 
   const isTouch = useMemo(() => isTouchDevice(), [])
-  const showStats = useMemo(() => !location.search.includes('nostats'), [])
+  const showStats = useMemo(() => /[?&]stats\b/.test(location.search), [])   // góc đo hiệu năng: thêm ?stats vào địa chỉ
   usePinchZoom(zoom)                          // FR-011 trên màn cảm ứng: véo hai ngón
 
   const openRef = useRef(null)
