@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { setStick } from './input'
+import { rotateCamera } from './camera'
 
 // Điều khiển cảm ứng cho điện thoại / máy tính bảng (Figma trang 03 — "điều khiển cảm ứng"):
 // cần ảo bên trái (kéo để đi, đẩy gần hết biên để chạy), nút tương tác bên phải, véo hai ngón để zoom (FR-011).
@@ -134,4 +135,14 @@ export function Stats() {
     return () => cancelAnimationFrame(raf)
   }, [])
   return <div className="stats" ref={ref} aria-live="off" />
+}
+
+// Nút xoay góc nhìn ↶ ↷ (bước 90°) — dùng chung desktop và cảm ứng; phím tắt Q / R.
+export function CameraButtons() {
+  return (
+    <div className="touch-ui camrot" role="group" aria-label="Xoay góc nhìn">
+      <button onClick={() => rotateCamera(-1)} aria-label="Xoay góc nhìn sang trái (Q)" title="Xoay trái (Q)">↶</button>
+      <button onClick={() => rotateCamera(+1)} aria-label="Xoay góc nhìn sang phải (R)" title="Xoay phải (R)">↷</button>
+    </div>
+  )
 }

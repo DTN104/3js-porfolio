@@ -1,6 +1,8 @@
 // Trạng thái bàn phím ở mức module — đọc trong useFrame, không gây re-render.
 // FR-013: nhiều phím cùng lúc; nhả hết khi cửa sổ mất tiêu điểm.
 
+import { rotateCamera } from './camera'
+
 const held = new Set()
 let frozen = false
 // Cần điều khiển cảm ứng (Touch.jsx): vector analog trong [-1, 1] — x: phải(+)/trái(−), y: tiến(+)/lùi(−)
@@ -45,6 +47,8 @@ export function attachInput({ onInteract, onEscape, onHelp }) {
     if (e.code === 'Escape') { onEscape && onEscape(); return }
     if (e.key === '?') { onHelp && onHelp(); return }
     if (e.code === 'KeyE') { onInteract && onInteract(); return }
+    if (e.code === 'KeyQ') { rotateCamera(-1); return }      // xoay góc nhìn
+    if (e.code === 'KeyR') { rotateCamera(+1); return }
     if (e.code === 'ShiftLeft' || e.code === 'ShiftRight') { held.add('shift'); return }
     const m = MOVE[e.code]
     if (m) { held.add(m); e.preventDefault() }

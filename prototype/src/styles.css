@@ -17,7 +17,7 @@ canvas{display:block; touch-action:none}
 }
 .iconbtn:hover{color:var(--ink)}
 .stamp{
-  position:fixed; top:18px; right:16px; z-index:5;
+  position:fixed; top:58px; right:16px; z-index:5;
   font-size:11px; letter-spacing:.03em; color:#4a5a6a; opacity:.8;
 }
 .hint, .prompt{
@@ -133,3 +133,21 @@ canvas{display:block; touch-action:none}
 .chip{ font-size:11.5px; border:1px solid var(--line); border-radius:999px; padding:3px 10px; background:#fff; color:var(--ink) }
 .chip b{ color:#7b8795; font-weight:600; margin-right:5px }
 .drawer footer{ padding:10px 22px; border-top:1px solid var(--line); font-size:12px; color:#7b8795 }
+
+/* ---------- nút xoay góc nhìn ---------- */
+.camrot{
+  position:fixed; top:14px; right:14px; z-index:6; display:flex; gap:4px;
+  padding:3px; border-radius:999px; background:var(--panel); border:1px solid var(--line);
+  box-shadow:0 2px 8px rgba(20,30,40,.16);
+}
+.camrot button{
+  width:34px; height:30px; border:0; border-radius:999px; background:transparent; color:var(--ink-2);
+  font:600 17px/1 ui-sans-serif,system-ui; cursor:pointer;
+}
+.camrot button:hover{ background:#eef2f6; color:var(--ink) }
+.camrot button:active{ background:#e2e8ef }
+@media (pointer:coarse){
+  .camrot{ padding:4px }
+  .camrot button{ width:44px; height:38px; font-size:20px }
+  .stats{ right:120px }
+}

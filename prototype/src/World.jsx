@@ -8,9 +8,8 @@ import { islands, bridges, obstacles, surfaceAt, SPAWN } from './content'
 const WALK = 4.6
 const RUN = 9.2
 
-// Camera cố định góc 45°, nên hướng đi quy chiếu theo camera (FR-010).
-const FWD = new THREE.Vector3(-1, 0, -1).normalize()
-const RGT = new THREE.Vector3(1, 0, -1).normalize()
+// Camera nhìn xuống 45°, xoay được theo bước 90° (camera.js); hướng đi quy chiếu theo camera hiện tại (FR-010).
+import { cam, camHoriz, camFwd, camRight } from './camera'
 
 // Ngẫu nhiên tất định — cùng một hạt giống luôn cho cùng một bố cục cây cối.
 function rng(seed) {
@@ -348,6 +347,7 @@ export function Avatar({ bodyRef }) {
 
     // bàn phím + cần cảm ứng gộp trong input.move(); độ dài vector ≤ 1, cần đẩy nhẹ thì đi chậm
     const mv = input.move()
+    const FWD = camFwd(), RGT = camRight()
     let mx = FWD.x * mv.y + RGT.x * mv.x, mz = FWD.z * mv.y + RGT.z * mv.x
 
     const len = Math.hypot(mx, mz)
@@ -441,6 +441,9 @@ export function CameraRig({ target, zoomRef, focusRef }) {
     const t = target.current
     if (!t) return
     const step = Math.min(dt, 0.05)
+    // xoay góc nhìn mượt về góc đích (nút ↶ ↷ / phím Q R)
+    cam.yaw = THREE.MathUtils.damp(cam.yaw, cam.yawTarget, 7, step)
+    const H = camHoriz(), RGT = camRight()
     const f = focusRef && focusRef.current
     let px, py, pz, rate
     if (f) {
@@ -449,8 +452,8 @@ export function CameraRig({ target, zoomRef, focusRef }) {
       const aspect = size.width / size.height
       const tanH = Math.tan(camera.fov * Math.PI / 360)
       const D = Math.max(8, (f.or * 2.8) / (0.55 * 2 * tanH * Math.min(aspect, 1.2)))
-      const k = D / 1.687                                  // hướng camera (1, 0.92, 1) có độ dài 1.687
-      px = f.x + k; py = f.y + k * 0.92; pz = f.z + k
+      const k = D / 1.687                                  // hướng camera (ngang √2·k, cao 0.92·k) có độ dài 1.687·k
+      px = f.x + H.x * k * 1.4142; py = f.y + k * 0.92; pz = f.z + H.z * k * 1.4142
       // 'side': bảng che 28% bên phải -> dịch điểm nhìn sang phải để vật thể vào giữa phần trống
       // 'sheet': tấm trượt che 58% dưới -> dịch điểm nhìn xuống để vật thể nằm giữa phần trên
       const dx = f.mode === 'side' ? 0.14 * 2 * D * tanH * aspect : 0
@@ -459,7 +462,7 @@ export function CameraRig({ target, zoomRef, focusRef }) {
       rate = 3.2                                   // bay tới chậm, có cảm giác "điện ảnh"
     } else {
       const z = zoomRef.current
-      px = t.position.x + 14 * z; py = t.position.y + 14 * z; pz = t.position.z + 14 * z
+      px = t.position.x + H.x * 19.8 * z; py = t.position.y + 14 * z; pz = t.position.z + H.z * 19.8 * z
       aim.current.set(t.position.x, t.position.y + 0.9, t.position.z)
       rate = 6
     }

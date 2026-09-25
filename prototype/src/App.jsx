@@ -3,7 +3,7 @@ import { Canvas } from '@react-three/fiber'
 import { Sky, Clouds, Island, Scenery, Bridge, Avatar, CameraRig } from './World'
 import { attachInput, freezeInput } from './input'
 import { islands, bridges } from './content'
-import { Joystick, InteractButton, Stats, usePinchZoom, isTouchDevice } from './Touch'
+import { Joystick, InteractButton, Stats, usePinchZoom, isTouchDevice, CameraButtons } from './Touch'
 
 // Nhãn + biểu tượng theo loại vật thể (AST-06…10) cho đầu bảng nội dung
 const KIND = {
@@ -125,6 +125,7 @@ export default function App() {
 
       <div className="stamp">prototype · đảo trôi trên mây · model và nội dung đều là bản tạm</div>
       {showStats && <Stats />}
+      {!help && <CameraButtons />}
       {isTouch && !open && !help && (
         <>
           <Joystick />
@@ -180,6 +181,7 @@ export default function App() {
                 <tr><td>Tương tác</td><td><span className="key">E</span> hoặc bấm chuột vào vật thể</td></tr>
                 <tr><td>Đóng bảng</td><td><span className="key">Esc</span></td></tr>
                 <tr><td>Phóng to / thu nhỏ</td><td>con lăn chuột</td></tr>
+                <tr><td>Xoay góc nhìn</td><td><span className="key">Q</span><span className="key">R</span> hoặc nút ↶ ↷ góc trên phải — mỗi lần 90°, hướng đi đổi theo</td></tr>
                 <tr><td>Sang đảo khác</td><td>đi qua cầu dây — không nhảy, không rơi</td></tr>
                 <tr><td>Màn cảm ứng</td><td>cần bên trái để đi (đẩy mạnh = chạy) · ✋ để tương tác · véo hai ngón để phóng to / thu nhỏ</td></tr>
               </tbody>
