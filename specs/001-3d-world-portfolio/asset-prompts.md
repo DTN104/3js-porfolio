@@ -1,10 +1,12 @@
 # Prompt dựng model 3D & tài nguyên: 001-3d-world-portfolio
 
-**Feature**: `001-3d-world-portfolio` · **Version**: 1.1 · **Ngày**: 2026-09-11
+**Feature**: `001-3d-world-portfolio` · **Version**: 1.3 · **Ngày**: 2026-09-24
 **Nguồn**: `assets-3d.md` v0.2, `spec.md` v0.3, chủ đề OQ-06, bảng màu từ file Figma `Portfolio 3D — Đảo trôi`
 **Dùng cho**: công cụ text-to-3D (Meshy, Tripo, Rodin, Hyper3D…), công cụ sinh skybox, công cụ sinh nhạc, hoặc làm brief đặt hàng cho 3D artist
 
-> **Bản này phủ toàn bộ AST-01…AST-21.** Bản v0.2 chỉ có 12 mục và không có prompt cho hoạt ảnh, va chạm, chỉ dấu, material, nhạc, ảnh chia sẻ. Bản cũ lưu tại `_asset-prompts-v0.2.bak`.
+> **Nguồn thực tế (OQ-07, sửa 2026-09-24): toàn bộ model 3D dựng bằng Blender qua MCP**, không dùng pack CC0 và không dùng Meshy/Tripo. Các prompt text-to-3D bên dưới giữ lại làm **brief mô tả hình khối và tiêu chí nghiệm thu** cho script Blender; phần so sánh công cụ ở mục 2.1 chỉ còn giá trị tham khảo.
+
+> **Bản này phủ toàn bộ AST-01…AST-21.** Bản v0.2 chỉ có 12 mục và không có prompt cho hoạt ảnh, va chạm, chỉ dấu, material, nhạc, ảnh chia sẻ. Bản v0.2 không còn lưu (file `_asset-prompts-v0.2.bak` đã bị xoá nhầm ngày 2026-09-24 khi dọn file .bak); nội dung khác biệt đã ghi ở change log mục 9.
 
 ---
 
@@ -26,8 +28,8 @@
 
 | Mã | Tài nguyên | Số prompt | Công cụ phù hợp | Mục |
 |----|-----------|:---------:|-----------------|-----|
-| AST-01 | Nhân vật điều khiển được | 1 | Text-to-3D **có auto-rig** (Tripo) | [4.1](#41-ast-01--nhân-vật-điều-khiển-được) |
-| AST-02 | Hoạt ảnh đứng yên / đi / chạy | 3 mô tả | **Không sinh được** — thư viện chuyển động | [4.2](#42-ast-02--bộ-hoạt-ảnh-nhân-vật) |
+| AST-01 | Nhân vật điều khiển được | 1 | Blender — rig thủ công (OQ-07) | [4.1](#41-ast-01--nhân-vật-điều-khiển-được) |
+| AST-02 | Hoạt ảnh đứng yên / đi / chạy | 3 mô tả | Blender — keyframe thủ công (OQ-07) | [4.2](#42-ast-02--bộ-hoạt-ảnh-nhân-vật) |
 | AST-03 | Mảnh đảo lơ lửng | 1 gốc + 5 biến thể | Text-to-3D | [4.3](#43-ast-03--mảnh-đảo-lơ-lửng) |
 | AST-04 | Mép đảo | 1 | Text-to-3D | [4.4](#44-ast-04--mép-đảo) |
 | AST-05 | Hình học va chạm | — | Sinh từ hình học, không có prompt | [4.5](#45-ast-05--hình-học-va-chạm) |
@@ -38,7 +40,7 @@
 | AST-10 | Vật thể — liên hệ & CV | 1 | Text-to-3D | [4.10](#410-ast-10--vật-thể-tương-tác-khu-vực-liên-hệ--cv) |
 | AST-11 | Chỉ dấu vùng tương tác | — | Shader/sprite, viết bằng code | [4.11](#411-ast-11--chỉ-dấu-vùng-tương-tác) |
 | AST-12 | Cầu dây | 1 | Text-to-3D | [4.12](#412-ast-12--cầu-dây-nối-đảo) |
-| AST-13 | Prop trang trí | 5 | Text-to-3D hoặc pack CC0 | [4.13](#413-ast-13--prop-trang-trí) |
+| AST-13 | Prop trang trí | 5 | Blender (OQ-07) | [4.13](#413-ast-13--prop-trang-trí) |
 | AST-14 | Bầu trời / HDRI | 1 | Sinh skybox (Blockade Labs…) | [4.14](#414-ast-14--bầu-trời--hdri) |
 | AST-15 | Texture / material | 1 bộ quy ước | Không phải prompt — quy ước kỹ thuật | [4.15](#415-ast-15--texture--material) |
 | AST-16 | Ảnh minh họa dự án | 1 (ảnh tạm) | Chủ portfolio cung cấp (DEP-03) | [4.16](#416-ast-16--ảnh-minh-họa-dự-án) |
@@ -73,7 +75,9 @@
 
 > **Cảnh báo bản quyền.** Portfolio là trang công khai của chủ portfolio, nên tính là sử dụng công khai/thương mại. **Không dùng free tier của Meshy hay Tripo cho asset lên trang thật**: Meshy free buộc ghi công Meshy ngay trên trang, Tripo free cấm hẳn thương mại.
 
-> **Khuyến nghị cho dự án này.** Chỉ có 5 model phải sinh riêng (AST-06…AST-10). Mua **Meshy Pro một tháng ($20)** là đủ — Low Poly Mode + quad topology khớp đúng phong cách đã chốt, 1.000 credit thừa sức sinh đi sinh lại nhiều lượt; xong thì hủy. Nhân vật và hoạt ảnh cứ theo OQ-07 đã chốt là lấy pack CC0 Quaternius; chỉ cân nhắc Tripo Pro nếu muốn nhân vật riêng, vì nó auto-rig luôn.
+> **Đã thay đổi (2026-09-24, OQ-07):** không mua Meshy Pro, không tải pack — toàn bộ dựng bằng Blender. Đoạn dưới giữ lại để tham khảo nếu sau này đổi hướng.
+>
+> **Khuyến nghị cũ.** Chỉ có 5 model phải sinh riêng (AST-06…AST-10). Mua **Meshy Pro một tháng ($20)** là đủ — Low Poly Mode + quad topology khớp đúng phong cách đã chốt, 1.000 credit thừa sức sinh đi sinh lại nhiều lượt; xong thì hủy. Nhân vật và hoạt ảnh cứ theo OQ-07 đã chốt là lấy pack CC0 Quaternius; chỉ cân nhắc Tripo Pro nếu muốn nhân vật riêng, vì nó auto-rig luôn.
 
 ---
 
@@ -95,11 +99,15 @@ uncluttered.
 
 ### 3.2 TECH
 
+> Kích thước texture tách 3 mức theo **OQ-24** (2026-09-24); gốc toạ độ của đảo đặt tại mặt cỏ theo **OQ-22** (2026-09-24, xem `OQ-22-minh-hoa.png`).
+
 ```
 TECH: game-ready single mesh, clean quad-dominant topology, under 5000 triangles,
-non-overlapping UV unwrap, one 1024x1024 base color texture, PBR metallic-roughness
-workflow, Y-up orientation, centered at origin with the base resting on the ground
-plane at Y=0, real-world scale in meters, no baked shadows or lighting information in
+non-overlapping UV unwrap, one base color texture (1024x1024 for islands and the
+character, 512x512 for interactive objects, 256x256 for flat-colour props and rim
+pieces), PBR metallic-roughness workflow, Y-up orientation, centered at origin with the
+walkable/contact surface at Y=0 (base of the object for props, character and
+interactive objects; grass surface for floating islands), real-world scale in meters, no baked shadows or lighting information in
 the texture, no background, no ground plane included, exportable to glTF/GLB.
 ```
 
@@ -152,6 +160,15 @@ Lấy từ collection `Tokens` trong file Figma. Đưa bảng này cho 3D artist
 | Mây bóng | `#DCE6EE` | AST-21 |
 | Cam nhấn | `#E08B45` | Nhân vật, AST-10, điểm nhấn duy nhất |
 | Xanh tiêu điểm | `#3E7BA8` | AST-11 chỉ dấu tương tác |
+| Terracotta (mái, tường) | `#A2563F` | AST-06, AST-07 |
+| Cream (tường trát) | `#EDE4D4` | AST-06, AST-08 |
+| Kính (cửa sổ) | `#B9DAEC` | AST-06 |
+| Cờ đỏ | `#C2334D` | AST-07, AST-10 |
+| Cork (bảng ghim) | `#C9A66B` | AST-07 |
+| Kim loại | `#8794A1` | AST-07, AST-10 |
+| Đèn ấm | `#FFE9B8` | AST-06, AST-09 |
+
+> **Bổ sung 2026-09-24 (OQ-30)**: 7 màu cuối chỉ dùng cho vật thể tương tác AST-06…AST-10; không dùng cho prop, đảo, cầu. Màu da/tóc/kính nhân vật vẫn chờ OQ-28.
 
 > **Quy tắc**: cam `#E08B45` là màu nhấn **duy nhất** trong thế giới. Vật nào mang màu này thì mắt người xem hiểu là "tương tác được hoặc quan trọng". Đừng dùng nó cho prop trang trí.
 
@@ -161,7 +178,7 @@ Lấy từ collection `Tokens` trong file Figma. Đưa bảng này cho 3D artist
 
 ### 4.1 AST-01 — Nhân vật điều khiển được
 
-**Bắt buộc** · Truy vết: FR-007, FR-009 · Số lượng: 1 · Nguồn đã chốt (OQ-07): pack CC0 (Quaternius) — prompt dưới đây dùng khi muốn nhân vật riêng
+**Bắt buộc** · Truy vết: FR-007, FR-009 · Số lượng: 1 · Nguồn đã chốt (OQ-07, sửa 2026-09-24): dựng bằng Blender, rig thủ công — prompt dưới đây là brief hình khối
 
 ```
 A stylized low-poly cartoon character for a third-person web experience: a young adult
@@ -309,7 +326,7 @@ meters wide, 5 meters deep and 5 meters tall, exterior only with no interior geo
 
 **Ràng buộc nghiệm thu**
 1. Mặt biển hiệu **phẳng và trống** — tên và chức danh áp lên bằng texture, đổi được mà không dựng lại model
-2. Có cửa trước rõ ràng hướng ra phía đường đi, để khách hiểu đây là vật tương tác được
+2. Có cửa trước rõ ràng hướng về phía camera (+Z) — theo OQ-31, không quay theo cầu — để khách hiểu đây là vật tương tác được
 3. Không có nội thất — camera không bao giờ vào trong
 
 ---
@@ -447,7 +464,7 @@ surface flat and even enough for a character to cross without stepping over anyt
 
 ### 4.13 AST-13 — Prop trang trí
 
-Truy vết: FR-015 · Số lượng: 15–30 model dùng lặp · **Nguồn đã chốt (OQ-07): pack CC0** (Quaternius Stylized Nature MegaKit, Kenney Nature Kit). Prompt dưới đây dùng khi pack không đủ hoặc lệch tông.
+Truy vết: FR-015 · Số lượng: 15–30 model dùng lặp · **Nguồn đã chốt (OQ-07, sửa 2026-09-24): dựng bằng Blender** (`assets-3d/props/build_props.py`, 16 prop, atlas chung). Prompt dưới đây là brief hình khối.
 
 **AST-13a — Cây và bụi**
 
@@ -538,7 +555,7 @@ birds, seamless 360 degree equirectangular projection.
 | Hạng mục | Quy ước |
 |----------|---------|
 | Số material mỗi model | Tối đa **2** |
-| Kích thước texture | 1024×1024 cho vật thể tương tác; 512×512 cho prop trang trí |
+| Kích thước texture | 1024×1024 đảo và nhân vật; 512×512 vật thể tương tác; 256×256 prop trang trí và mép đảo (OQ-24) |
 | Loại map | Chỉ base color. **Không** dùng normal, roughness, AO map riêng — phong cách phẳng không cần |
 | Nén | KTX2 / Basis Universal |
 | Atlas | Gom toàn bộ prop AST-13 vào **một atlas chung** để giảm số draw call |
@@ -684,7 +701,7 @@ Mọi model 3D đều phải qua đủ các mục sau trước khi đưa vào d�
 |---|----------|-----------|
 | 1 | Đúng khối STYLE | Đặt cạnh 3 model đã duyệt, chụp cùng một góc isometric — không được lệch tông |
 | 2 | Đúng khối TECH | Đếm tam giác, kiểm UV chồng lấn, kiểm hướng trục, kiểm gốc toạ độ |
-| 3 | Đáy nằm đúng Y=0 | Không lơ lửng, không chìm |
+| 3 | Gốc toạ độ đúng quy ước (OQ-22) | Prop, nhân vật, vật thể tương tác: đáy tại Y=0. Đảo AST-03: **mặt cỏ tại Y=0**, khối đá ở Y âm. Không lơ lửng, không chìm khi đặt tại y=0 trong prototype |
 | 4 | Không có bóng/AO nướng sẵn vào texture | Cần hạ mức chi tiết linh hoạt (FR-053) |
 | 5 | Đúng bảng màu mục 3.5 | So mã màu, không chấp nhận màu tự pha |
 | 6 | Model modular ghép liền mạch | AST-04, AST-09, AST-12, AST-13c — ghép 5 đoạn liên tiếp, không hở khe |
@@ -747,5 +764,7 @@ Xếp theo mức chặn. Chưa chốt nhóm đầu thì không nên bắt đầu
 |---------|------|----------|
 | 0.1 | 2026-09-09 | Bản đầu, 10 prompt, chủ đề chưa chốt |
 | 0.2 | 2026-09-11 | Cập nhật theo OQ-06 (đảo trôi) và OQ-07 (pack CC0 + sinh riêng 5 vật thể); 12 mục |
-| **1.1** | **2026-09-11** | Thêm mục **2.1 — chọn công cụ nào**: so sánh Meshy 6 / Tripo v3.1 / Rodin Gen-2.5 / Hunyuan 3D + hai lựa chọn mã nguồn mở, kèm giá và **điều khoản bản quyền theo từng tier**. Sửa AST-01 và AST-02: **auto-rig giờ sinh được** (Tripo v3.1, Mixamo), chỉ clip chuyển động là chưa. Gỡ **Luma Genie** (đã ngừng) và ghi nhận **CSM Cube** đóng cửa 05/01/2026. Thêm cảnh báo: không dùng free tier Meshy/Tripo cho trang công khai |
+| **1.3** | **2026-09-24** | **Mây đổi sang bản mềm** (chủ portfolio chỉnh bằng GPT/Codex, scene `assets-3d/sky/AST14-sky-soft-clouds.blend`): 4 biến thể AST-21 subdivision cấp 1 + shade smooth (1.600–4.000 tam giác), material một màu `#F6F9FB`; panorama AST-14 render lại từ scene này. Tam giác toàn cảnh tăng 92k → 205k vì mây mịn.  Dựng xong bằng Blender: **AST-21** mây 4 biến thể (`assets-3d/clouds/build_clouds.py`, 392–980 tam giác, đáy phẳng, khối đặc); **AST-14** panorama 4096×2048 render từ Blender với mây AST-21 và quầng nắng 30° (`assets-3d/sky/build_sky.py`); **AST-06…10** nâng từ blockout lên bản chi tiết (ngói, dầm chéo, cửa ván, cánh chớp, hộp hoa, đèn hiên; đe có sừng, dụng cụ, xô; rui, diềm bạt, chậu cây; đế, chóp, viền sỏi, lồng đèn; cửa hòm, tem, bản lề cờ) 492–1432 tam giác. Bake 512 thêm bước lấp texel trống cho chi tiết mảnh. Prototype: prop và mép gom InstancedMesh (draw call 280 → 79), rải theo bầu dục không đè nhau |
+| 1.2 | 2026-09-24 | Áp 5 quyết định OQ-07 (sửa: dựng toàn bộ bằng Blender), OQ-22 (gốc đảo tại mặt cỏ), OQ-24 (3 mức texture), OQ-30 (7 màu vật thể tương tác vào 3.5), OQ-31 (mặt trước hướng camera). Sửa bảng tra nhanh AST-01/02/13, khối TECH, bảng material AST-15, nghiệm thu #3, AST-06 #2 |
+| 1.1 | 2026-09-11 | Thêm mục **2.1 — chọn công cụ nào**: so sánh Meshy 6 / Tripo v3.1 / Rodin Gen-2.5 / Hunyuan 3D + hai lựa chọn mã nguồn mở, kèm giá và **điều khoản bản quyền theo từng tier**. Sửa AST-01 và AST-02: **auto-rig giờ sinh được** (Tripo v3.1, Mixamo), chỉ clip chuyển động là chưa. Gỡ **Luma Genie** (đã ngừng) và ghi nhận **CSM Cube** đóng cửa 05/01/2026. Thêm cảnh báo: không dùng free tier Meshy/Tripo cho trang công khai |
 | 1.0 | 2026-09-11 | **Phủ toàn bộ AST-01…AST-21.** Thêm khối NEGATIVE, bảng SCALE, bảng PALETTE lấy từ Figma. Thêm prompt/đặc tả cho AST-02, AST-05, AST-11, AST-15, AST-16, AST-17, AST-18, AST-19, AST-20. Tách AST-03 thành 5 biến thể theo từng đảo. Sửa bảng màu trong khối STYLE cho khớp token. Ghi nhận 2 câu hỏi mở mới phát sinh từ prototype (chỉ dẫn hướng cầu, tốc độ di chuyển vs hoạt ảnh) và 1 đề xuất thay đổi chiều dài cầu |

@@ -5,7 +5,7 @@
 }
 *{box-sizing:border-box}
 html,body,#root{height:100%;margin:0}
-body{overflow:hidden; background:#cfe3ee; color:var(--ink)}
+body{overflow:hidden; background:#cfe3ee; color:var(--ink); -webkit-user-select:none; user-select:none; -webkit-touch-callout:none; overscroll-behavior:none}
 canvas{display:block; touch-action:none}
 
 .iconbtn{
@@ -58,3 +58,78 @@ canvas{display:block; touch-action:none}
 .panel table td:first-child{color:var(--ink); width:42%}
 
 @media (max-width:640px){ .stamp{display:none} .panel{padding:18px} }
+
+/* ---------- đo hiệu năng (OQ-04) ---------- */
+.stats{
+  position:fixed; top:58px; left:14px; z-index:5; pointer-events:none;
+  font:11px/1.4 ui-monospace,monospace; color:#1d2c3a; background:rgba(251,252,253,.82);
+  border:1px solid var(--line); border-radius:6px; padding:3px 7px; white-space:nowrap;
+}
+
+/* ---------- điều khiển cảm ứng ---------- */
+.touch-ui{ touch-action:none; -webkit-user-select:none; user-select:none; -webkit-tap-highlight-color:transparent }
+.joystick{
+  position:fixed; z-index:6; left:calc(22px + env(safe-area-inset-left)); bottom:calc(26px + env(safe-area-inset-bottom));
+  width:132px; height:132px; border-radius:50%;
+  background:rgba(251,252,253,.28); border:1.5px solid rgba(251,252,253,.7);
+  box-shadow:0 4px 18px rgba(20,30,40,.18); backdrop-filter:blur(2px);
+}
+.joystick.active{ background:rgba(251,252,253,.38) }
+.joystick .knob{
+  position:absolute; left:50%; top:50%; width:58px; height:58px; margin:-29px 0 0 -29px; border-radius:50%;
+  background:var(--panel); border:1px solid var(--line); box-shadow:0 3px 10px rgba(20,30,40,.25);
+  transition:transform .08s linear;
+}
+.joystick.active .knob{ transition:none }
+.interact{
+  position:fixed; z-index:6; right:calc(24px + env(safe-area-inset-right)); bottom:calc(34px + env(safe-area-inset-bottom));
+  width:72px; height:72px; border-radius:50%; border:1.5px solid rgba(251,252,253,.8);
+  background:rgba(251,252,253,.45); font-size:28px; line-height:1; color:var(--ink);
+  box-shadow:0 4px 18px rgba(20,30,40,.18); backdrop-filter:blur(2px); cursor:pointer;
+}
+.interact.ready{ background:#E08B45; border-color:#E08B45; box-shadow:0 0 0 6px rgba(224,139,69,.28), 0 4px 18px rgba(20,30,40,.25) }
+@media (pointer:coarse){
+  .prompt{ bottom:calc(178px + env(safe-area-inset-bottom)); max-width:calc(100% - 32px); font-size:13px }
+  .hint{ top:52px; max-width:calc(100% - 32px); text-align:center }
+  .stats{ top:8px; left:58px; right:10px; font-size:10px; overflow:hidden; text-overflow:ellipsis }
+}
+
+/* ---------- bảng nội dung: ngăn kéo bên phải (desktop) / tấm trượt dưới (cảm ứng) ---------- */
+.scrim{ position:fixed; inset:0; z-index:10; background:linear-gradient(90deg, rgba(16,26,36,0) 45%, rgba(16,26,36,.30) 100%) }
+.scrim.sheet-mode{ background:linear-gradient(180deg, rgba(16,26,36,0) 35%, rgba(16,26,36,.32) 100%) }
+.drawer{
+  position:fixed; top:14px; right:14px; bottom:14px; width:min(420px, calc(100% - 28px));
+  display:flex; flex-direction:column; overflow:hidden;
+  background:var(--panel); border-radius:18px; box-shadow:0 24px 60px -18px rgba(10,20,30,.55), 0 0 0 1px rgba(255,255,255,.5) inset;
+  animation:drawerIn .34s cubic-bezier(.2,.8,.2,1);
+}
+.sheet-mode .drawer{
+  top:auto; left:0; right:0; bottom:0; width:100%; height:min(58vh, 520px);
+  border-radius:20px 20px 0 0; padding-bottom:env(safe-area-inset-bottom);
+  animation:sheetIn .34s cubic-bezier(.2,.8,.2,1);
+}
+@keyframes drawerIn{ from{ transform:translateX(28px); opacity:0 } }
+@keyframes sheetIn{ from{ transform:translateY(44px); opacity:0 } }
+.dhead{ position:relative; padding:18px 22px 16px; color:#fff }
+.drawer.house .dhead{ background:linear-gradient(135deg,#A2563F,#8a4632) }
+.drawer.workshop .dhead{ background:linear-gradient(135deg,#7A5636,#5e4028) }
+.drawer.gallery .dhead{ background:repeating-linear-gradient(135deg,#E08B45 0 14px,#d47f3a 14px 28px) }
+.drawer.monument .dhead{ background:linear-gradient(135deg,#6E6255,#544a40) }
+.drawer.mailbox .dhead{ background:linear-gradient(135deg,#C2334D,#a3283f) }
+.grip{ display:block; width:38px; height:4px; border-radius:2px; background:rgba(255,255,255,.55); margin:-6px auto 12px }
+.kindtag{ display:flex; align-items:center; gap:6px; font-size:11px; letter-spacing:.08em; text-transform:uppercase; opacity:.9 }
+.dhead h2{ margin:6px 0 0; font-size:24px; letter-spacing:-.01em; line-height:1.15 }
+.dots{ display:flex; gap:5px; margin-top:12px }
+.dots i{ width:20px; height:4px; border-radius:2px; background:rgba(255,255,255,.32) }
+.dots i.on{ background:#fff }
+.dhead .close{
+  position:absolute; top:14px; right:14px; width:32px; height:32px; border-radius:50%; border:0;
+  background:rgba(255,255,255,.22); color:#fff; font-size:15px; cursor:pointer;
+}
+.dhead .close:hover{ background:rgba(255,255,255,.34) }
+.dbody{ flex:1; overflow:auto; padding:18px 22px 6px }
+.dbody p{ margin:0 0 10px; font-size:14px; line-height:1.65; color:var(--ink-2) }
+.chips{ display:flex; flex-wrap:wrap; gap:6px; margin:12px 0 10px }
+.chip{ font-size:11.5px; border:1px solid var(--line); border-radius:999px; padding:3px 10px; background:#fff; color:var(--ink) }
+.chip b{ color:#7b8795; font-weight:600; margin-right:5px }
+.drawer footer{ padding:10px 22px; border-top:1px solid var(--line); font-size:12px; color:#7b8795 }

@@ -1,15 +1,22 @@
 // Chủ đề thế giới: Đảo trôi trên mây (OQ-06 đã chốt).
 // Toạ độ [x, z] tính bằng mét. y = cao độ mặt cỏ của đảo.
-// AST-03: đường kính đảo 14–18 m → r = 7…9. AST-12: cầu dây ≈ 9 m là lối đi duy nhất.
+// AST-03: đường kính đảo 15–19 m → r = 7,5…9,5. AST-12: cầu dây 10,2–10,9 m là lối đi duy nhất.
+// or = bán kính vật cản của vật thể tương tác, theo kích thước spec AST-06…10 (nhà 6 m -> 3,3; khu trưng bày 5,5 m -> 3,1).
 
 export const EDGE_MARGIN = 0.9   // OQ-21 — phương án đề xuất: chặn mềm ở mép, không cho rơi
 export const BRIDGE_HALF = 1.25  // nửa chiều rộng mặt cầu
+// AST-12: mặt ván võng theo parabol. PHẢI khớp SAG trong specs/.../assets-3d/bridges/build_bridge.py,
+// nếu không nhân vật lơ lửng trên ván (hoặc chìm) ở giữa cầu.
+export const BRIDGE_SAG = 0.4
+export function bridgeY(b, t) {
+  return b.fromY + (b.toY - b.fromY) * t - BRIDGE_SAG * 4 * t * (1 - t)
+}
 
 export const islands = [
   {
-    id: 'gioi-thieu', label: 'Giới thiệu', hint: 'Căn nhà',
+    id: 'gioi-thieu', model: '/models/islands/AST03a_Island01_Intro.glb', label: 'Giới thiệu', hint: 'Căn nhà',
     pos: [-24, 12], r: 9, y: 0,
-    kind: 'house', ir: 4.2, or: 1.9,
+    kind: 'house', ir: 4.2, or: 3.3,
     grass: '#8CBE68', rock: '#9E8E7C',
     title: 'Giới thiệu',
     body: [
@@ -19,9 +26,9 @@ export const islands = [
     meta: [['Vật thể', 'AST-06'], ['Đảo', 'AST-03'], ['Requirement', 'FR-016, FR-023']]
   },
   {
-    id: 'ky-nang', label: 'Kỹ năng', hint: 'Xưởng làm việc',
+    id: 'ky-nang', model: '/models/islands/AST03b_Island02_Skills.glb', label: 'Kỹ năng', hint: 'Xưởng làm việc',
     pos: [-8, -6], r: 8, y: 2.2,
-    kind: 'workshop', ir: 4.0, or: 1.9,
+    kind: 'workshop', ir: 4.0, or: 2.0,
     grass: '#8CBE68', rock: '#9E8E7C',
     title: 'Kỹ năng',
     body: [
@@ -31,9 +38,9 @@ export const islands = [
     meta: [['Vật thể', 'AST-07'], ['Đảo', 'AST-03'], ['Requirement', 'FR-024']]
   },
   {
-    id: 'du-an', label: 'Dự án', hint: 'Khu trưng bày',
+    id: 'du-an', model: '/models/islands/AST03c_Island03_Projects.glb', label: 'Dự án', hint: 'Khu trưng bày',
     pos: [10, 10], r: 9.5, y: 0.8,
-    kind: 'gallery', ir: 4.6, or: 2.4,
+    kind: 'gallery', ir: 4.6, or: 3.1,
     grass: '#8CBE68', rock: '#9E8E7C',
     title: 'Dự án',
     body: [
@@ -43,9 +50,9 @@ export const islands = [
     meta: [['Vật thể', 'AST-08'], ['Câu hỏi', 'OQ-19'], ['Requirement', 'FR-025, FR-059']]
   },
   {
-    id: 'kinh-nghiem', label: 'Kinh nghiệm', hint: 'Cột mốc',
+    id: 'kinh-nghiem', model: '/models/islands/AST03d_Island04_Experience.glb', label: 'Kinh nghiệm', hint: 'Cột mốc',
     pos: [27, -8], r: 8, y: 3.0,
-    kind: 'monument', ir: 4.0, or: 1.6,
+    kind: 'monument', ir: 4.0, or: 2.3,
     grass: '#8CBE68', rock: '#9E8E7C',
     title: 'Kinh nghiệm',
     body: [
@@ -55,9 +62,9 @@ export const islands = [
     meta: [['Vật thể', 'AST-09'], ['Đảo', 'AST-03'], ['Requirement', 'FR-026']]
   },
   {
-    id: 'lien-he', label: 'Liên hệ & CV', hint: 'Hòm thư',
+    id: 'lien-he', model: '/models/islands/AST03e_Island05_Contact.glb', label: 'Liên hệ & CV', hint: 'Hòm thư',
     pos: [37, 12], r: 7.5, y: 1.2,
-    kind: 'mailbox', ir: 3.8, or: 1.4,
+    kind: 'mailbox', ir: 3.8, or: 1.5,
     grass: '#8CBE68', rock: '#9E8E7C',
     title: 'Liên hệ & CV',
     body: [
@@ -111,7 +118,7 @@ export function surfaceAt(x, z) {
     const pz = b.from[1] + dz * t
     const off = Math.hypot(x - px, z - pz)
     if (off <= BRIDGE_HALF) {
-      return { ok: true, y: b.fromY + (b.toY - b.fromY) * t, on: 'cau', id: b.id, edge: BRIDGE_HALF - off }
+      return { ok: true, y: bridgeY(b, t), on: 'cau', id: b.id, edge: BRIDGE_HALF - off }
     }
   }
   return { ok: false }

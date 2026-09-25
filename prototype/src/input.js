@@ -3,6 +3,9 @@
 
 const held = new Set()
 let frozen = false
+// Cần điều khiển cảm ứng (Touch.jsx): vector analog trong [-1, 1] — x: phải(+)/trái(−), y: tiến(+)/lùi(−)
+const stick = { x: 0, y: 0 }
+export function setStick(x, y) { stick.x = x; stick.y = y }
 
 const MOVE = {
   KeyW: 'f', ArrowUp: 'f',
@@ -16,9 +19,19 @@ export const input = {
   get back()    { return held.has('b') },
   get left()    { return held.has('l') },
   get right()   { return held.has('r') },
-  get running() { return held.has('shift') },
-  get moving()  { return !frozen && (held.has('f') || held.has('b') || held.has('l') || held.has('r')) },
-  get frozen()  { return frozen }
+  get running() { return held.has('shift') || Math.hypot(stick.x, stick.y) > 0.82 },   // đẩy cần gần biên = chạy
+  get frozen()  { return frozen },
+  // Vector di chuyển tổng hợp bàn phím + cần cảm ứng, kẹp độ dài ≤ 1 (FR-013: đi chéo không nhanh hơn).
+  // y theo hướng "tiến" quy chiếu camera, x theo hướng "phải".
+  move() {
+    if (frozen) return { x: 0, y: 0 }
+    let x = (held.has('r') ? 1 : 0) - (held.has('l') ? 1 : 0) + stick.x
+    let y = (held.has('f') ? 1 : 0) - (held.has('b') ? 1 : 0) + stick.y
+    const L = Math.hypot(x, y)
+    if (L > 1) { x /= L; y /= L }
+    return { x, y }
+  },
+  get moving()  { const m = input.move(); return Math.hypot(m.x, m.y) > 0.001 }
 }
 
 export function freezeInput(v) {
