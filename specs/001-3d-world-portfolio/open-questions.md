@@ -1,6 +1,6 @@
 # Open Questions: Website portfolio developer dạng thế giới 3D tương tác
 
-**Feature**: `001-3d-world-portfolio` · **Spec version**: 0.3 · **Cập nhật**: 2026-09-25
+**Feature**: `001-3d-world-portfolio` · **Spec version**: 0.4 · **Cập nhật**: 2026-09-25 (đồng bộ với prototype — xem spec mục 3.17)
 
 > **Trạng thái: không còn câu hỏi chặn.** Spec đủ điều kiện chuyển sang `speckit-plan`.
 
@@ -32,23 +32,27 @@
 | OQ-11 | Cơ chế rà soát liên kết ngoài của dự án bị hỏng (thủ công định kỳ hay tự động cảnh báo) | EC-12, FR-027 |
 | OQ-12 | Có nhạc nền không, và trạng thái mặc định là bật hay tắt? | FR-040, FR-041, DEP-02 |
 | OQ-13 | Danh sách trình duyệt và phiên bản tối thiểu được hỗ trợ chính thức | FR-005, EC-01 |
-| OQ-14 | Ảnh xem trước khi chia sẻ: ảnh tĩnh thiết kế riêng hay ảnh chụp thế giới 3D? Có cần ảnh riêng cho từng ngôn ngữ không? | FR-056, FR-071, SC-013 |
+| OQ-14 | Ảnh xem trước khi chia sẻ: ảnh tĩnh thiết kế riêng hay ảnh chụp thế giới 3D? Có cần ảnh riêng cho từng ngôn ngữ không? **Prototype 25/09**: đang dùng ảnh chụp thế giới (góc rộng, xoay 90°) + dải tên/vai trò tiếng Việt, một ảnh cho cả hai ngôn ngữ (`public/og.jpg`) | FR-056, FR-071, SC-013 |
 | OQ-15 | Trạng thái "sẵn sàng nhận cơ hội" cập nhật theo tần suất nào và ai chịu trách nhiệm cập nhật? | FR-034 |
 | OQ-16 | Ai dịch nội dung và quy trình cập nhật bản dịch khi thêm dự án mới (bắt buộc đủ 2 ngôn ngữ mới được xuất bản, hay cho phép xuất bản thiếu và hiển thị chỉ dấu)? | AS-12, FR-060, FR-070, DEP-08 |
-| OQ-17 | Chế độ 2D dùng bố cục nào (một trang cuộn hay nhiều trang) và có bắt buộc khớp phong cách hình ảnh với thế giới 3D không? | FR-073, FR-077 |
+| OQ-17 | Chế độ 2D dùng bố cục nào (một trang cuộn hay nhiều trang) và có bắt buộc khớp phong cách hình ảnh với thế giới 3D không? **Prototype 25/09**: một trang cuộn, 5 section đúng thứ tự đảo, màu đầu mục theo loại vật thể (`Page2D.jsx`) — chủ portfolio đã xem, chưa chốt chính thức | FR-073, FR-077 |
 | OQ-18 | Địa chỉ thư điện tử công khai có cần biện pháp hạn chế thu thập tự động không? | FR-035, FR-063 |
 | OQ-19 | Khu vực dự án dùng **một** vật thể tương tác chung, hay **mỗi dự án một** model riêng trong thế giới? | FR-016, FR-025, FR-059, BO-05, SC-012, AST-08 |
 | OQ-20 | Chiến lược mức chi tiết (LOD): dựng nhiều biến thể cho mỗi model, hay làm low-poly một mức duy nhất đủ nhẹ? | FR-053, FR-054, AST-13, AST-14 |
-| OQ-21 | Nhân vật đi tới mép đảo thì xử lý thế nào — rào chắn thấp ở mép, đẩy nhân vật lại, hay cho rơi rồi đưa về vị trí cũ? Chủ đề đảo trôi làm ranh giới thế giới trở thành vực thẳm chứ không còn là bờ nước | FR-012, FR-014, FR-015, AST-04, EC-07 |
+| OQ-21 | Nhân vật đi tới mép đảo thì xử lý thế nào — rào chắn thấp ở mép, đẩy nhân vật lại, hay cho rơi rồi đưa về vị trí cũ? Chủ đề đảo trôi làm ranh giới thế giới trở thành vực thẳm chứ không còn là bờ nước. **Prototype**: chặn mềm cách mép 0,9 m (`EDGE_MARGIN`), không rơi | FR-012, FR-014, FR-015, AST-04, EC-07 |
 | OQ-23 | **Nghiệm thu màu so ở đâu** — trên texture hay trên màn hình khi chạy? Mục 6 #5 chỉ ghi *"so mã màu, không chấp nhận màu tự pha"*. Bộ AST-03 có texture đúng chính xác 4 mã PALETTE nhưng lên prototype chân đá đọc ra nâu ô-liu, do `hemisphereLight` đang lấy ground color `#6B9A4C` hắt xanh lên mọi mặt hướng xuống | `asset-prompts.md` mục 3.5, mục 6 #5; AST-03, AST-15 |
 | OQ-25 | **Phân biệt 5 đảo bằng gì?** Mục 4.3 muốn mỗi đảo một dáng riêng để khách nhận ra vị trí, nhưng 4/5 đặc điểm mô tả (raised shoulder, flat plateau, two terraces, rounded knoll) đều nằm ở độ nổi mặt trên — mà ràng buộc nghiệm thu #1 khoá độ nổi ở 0,25 m, tức 1,4% đường kính, mắt không thấy. Bản dựng hiện tại chuyển việc phân biệt xuống **khối đá dưới đáy** (không ai đi lên nên không dính trần); cần xác nhận hướng này hoặc nới trần cho vùng ngoài lối đi | `asset-prompts.md` mục 4.3, mục 6 #1 và #8; AST-03, FR-015 |
 | OQ-26 | **Viền mép đảo do model hay do code vẽ?** Model AST-03 đã bake sẵn một vành cỏ đậm `#6B9A4C` ở rìa mặt trên; prototype lại vẽ thêm một `ringGeometry` cùng màu cho AST-04. Hai thứ đang làm cùng một việc — giữ cái nào | AST-03, AST-04; FR-015; OQ-21 |
 | OQ-27 | **Viền mép đi theo cung tròn hay theo viền bầu dục của đảo?** Nghiệm thu #1 của AST-04 ghi *"ghép nối tiếp nhau không hở khe trên cung tròn bán kính 7,5–9,5 m"*, nhưng không đảo nào tròn — AST-03a là 18,00 × 16,14 m, bán kính cong thực chạy từ 7,2 m ở đầu trục dài tới 10,0 m ở đầu trục ngắn. Xếp theo bán kính cố định thì chỗ trục ngắn mảnh mép lòi hẳn ra khỏi mặt cỏ. Bản dựng hiện tại đi theo viền bầu dục và chia đều lại bước để khép kín (bước thực 3,02 m thay vì đúng 3,00 m) | `asset-prompts.md` mục 4.4 nghiệm thu #1; AST-03, AST-04; FR-015 |
 | OQ-28 | **Màu nhân vật ngoài PALETTE và danh tính nhân vật.** Bản dựng AST-01 dùng áo `#E08B45` đúng quy tắc mục 3.5, quần `#6E6255`, giày `#7A5636` — nhưng **da `#E9C9A8`, tóc `#3B3230`, kính `#2B2B2B` không có trong bảng màu**, đang lấy theo prototype cũ. Cần bổ sung vào mục 3.5 nếu duyệt. Kèm câu hỏi đã nêu inline ở 4.1: nhân vật có cần giống chủ portfolio không, hay ẩn danh — quyết định này đổi cả kiểu tóc/kính/trang phục | `asset-prompts.md` mục 3.5, 4.1; AST-01; FR-007 |
 | OQ-29 | **Tốc độ di chuyển vs tốc độ clip.** Prototype đi 4,6 m/s, chạy 9,2 m/s; clip Walk/Run dựng theo 4.2 phải phát nhanh ×1,7 / ×1,6 mới không trượt chân rõ. Mục 4.2 đã ghi "Đề xuất thay đổi" nhưng chưa có OQ để chốt: hạ tốc độ prototype, hay chấp nhận phát nhanh clip | `asset-prompts.md` mục 4.2; AST-02; FR-009, FR-013 |
+| OQ-32 | **Chữ cho máy tìm kiếm (FR-057) có cần prerender không?** Bản 2D là HTML thuần nhưng do React render phía client — Google chạy JS nên đọc được, nhiều bot khác (LinkedIn, Zalo, Facebook) chỉ đọc thẻ `<meta>` tĩnh trong `index.html`. Hai hướng: (a) chấp nhận mức hiện tại — thẻ meta tĩnh đủ cho thẻ chia sẻ, chữ portfolio chỉ Google đọc; (b) thêm bước prerender bản 2D thành HTML tĩnh khi build (thêm một plugin Vite, phải chạy lại mỗi lần đổi nội dung). Khuyến nghị (a) cho phiên bản đầu, xem lại khi có số liệu truy cập | FR-057, FR-056, SC-013 |
+| OQ-33 | **Bốn FR "MUST" mà prototype chưa làm và chưa thấy cần — giữ mức MUST hay hạ cho phiên bản đầu?** FR-003 (tách nhóm tài nguyên bắt buộc / bổ sung — tổng hiện chỉ ≈ 2,3 MB), FR-014 (đưa nhân vật về vị trí hợp lệ — `surfaceAt` đã không cho rời mặt đi được), FR-053 (tự hạ chi tiết khi máy yếu — cần thiết bị mục tiêu ở OQ-04 mới biết có cần không), FR-055 (dừng vòng lặp khi tab ẩn — trình duyệt đã tự tiết chế). Đề xuất: hạ FR-003, FR-014, FR-053 xuống SHOULD và gắn điều kiện "khi vượt ngưỡng OQ-04"; FR-055 giữ MUST nhưng chấp nhận cơ chế của trình duyệt | FR-003, FR-014, FR-053, FR-055, OQ-04, OQ-20 |
 
 > OQ-04 không chặn thiết kế kiến trúc nhưng **chặn việc viết test case hiệu năng** cho SC-001 và SC-005.
 > OQ-16 không chặn thiết kế nhưng **chặn việc chốt quy tắc xuất bản nội dung** ở FR-060.
 > OQ-19 không chặn kiến trúc nhưng **chặn việc chốt khối lượng dựng model** ở `assets-3d.md`; khuyến nghị chọn một vật thể chung để giữ được BO-05.
+
+> **Nguồn của OQ-32, OQ-33**: đợt đồng bộ spec với prototype ngày 2026-09-25 (spec mục 3.17) — là câu hỏi "giữ hay hạ mức yêu cầu", không phải đổi phạm vi.
 
 > **Nguồn của OQ-22…OQ-31**: phát hiện trong lúc dựng thật bộ 5 đảo AST-03, bộ prop AST-13, bộ mép AST-04, 4 cầu AST-12, nhân vật AST-01/02 và blockout 5 vật thể AST-06…10 bằng Blender, rồi nối `.glb` vào prototype (2026-09-12). Đây là các chỗ **tài liệu tự mâu thuẫn hoặc chưa đủ rõ để nghiệm thu**, không phải đề xuất đổi phạm vi. Không cái nào chặn việc dựng tiếp asset; OQ-24, OQ-30, OQ-31 đã chốt ngày 2026-09-13 (chuyển lên mục A). OQ-22 chốt cùng ngày (phương án mặt cỏ tại Y=0).

@@ -3,7 +3,8 @@
 **Feature Branch**: `001-3d-world-portfolio`
 **Created**: 2026-09-08
 **Status**: Draft
-**Version**: 0.3 (2026-09-08) — chủ portfolio xác nhận toàn bộ mục tiêu BO-01…BO-05 và giả định AS-01…AS-13
+**Version**: 0.4 (2026-09-25) — đồng bộ với prototype: trạng thái đáp ứng từng FR/EC/SC ở mục 3.17 và các cột "Prototype 25/09"; bổ sung FR-080, FR-081
+**Prototype**: `prototype/` (Vite + React Three Fiber) — toàn bộ asset 3D dựng bằng Blender qua MCP (OQ-07); nội dung đang là MOCK trong `prototype/src/content.js`
 **Input**: User description: "Dựng website portfolio cá nhân của developer dưới dạng thế giới 3D isometric tương tác — khách truy cập điều khiển nhân vật đi lại trong một không gian 3D, tương tác với các vật thể để xem giới thiệu bản thân, kỹ năng, dự án, kinh nghiệm và thông tin liên hệ. Tham chiếu: worawork.vercel.app"
 
 ---
@@ -262,27 +263,27 @@ Trải nghiệm tham chiếu (worawork.vercel.app) có các đặc trưng: màn 
 
 ### Edge Cases
 
-| ID | Tình huống | Kỳ vọng |
-|----|-----------|---------|
-| EC-01 | Thiết bị hoặc trình duyệt không hiển thị được đồ họa 3D | Chuyển sang chế độ 2D đầy đủ nội dung (mục 3.15), không hiện màn hình trắng hay lỗi kỹ thuật |
-| EC-02 | Kết nối chậm, tài nguyên tải lâu | Hiển thị tiến trình tải; nếu vượt ngưỡng chờ thì đề nghị chuyển sang chế độ 2D |
-| EC-03 | Tải tài nguyên thất bại giữa chừng | Thông báo dễ hiểu kèm hành động thử lại |
-| EC-04 | Thiết bị đáp ứng thấp, hiển thị giật | Tự hạ mức chi tiết hiển thị thay vì giữ nguyên và giật |
-| EC-05 | Khách giữ phím di chuyển rồi mở bảng nội dung | Nhân vật dừng lại, không tiếp tục trôi khi bảng đóng |
-| EC-06 | Khách nhấn nhiều phím cùng lúc hoặc chuyển tab khi đang giữ phím | Không kẹt trạng thái phím; nhân vật dừng khi tab mất tiêu điểm |
-| EC-07 | Nhân vật bị kẹt trong hình học của vật thể | Có cơ chế đưa nhân vật về vị trí hợp lệ gần nhất |
-| EC-08 | Trình duyệt chặn tự phát âm thanh | Không phát âm thanh cho tới khi khách chủ động bật; không hiện lỗi |
-| EC-09 | Tab bị ẩn hoặc thiết bị khóa màn hình | Dừng vòng lặp hiển thị và tạm dừng âm thanh; khôi phục khi quay lại |
-| EC-10 | Khách xoay màn hình hoặc thay đổi kích thước cửa sổ giữa phiên | Bố cục tự điều chỉnh, không mất trạng thái |
-| EC-11 | Một khu vực nội dung không có dữ liệu | Trạng thái rỗng có thông báo hoặc ẩn khu vực; không hiển thị lỗi |
-| EC-12 | Liên kết ngoài của dự án hỏng hoặc bị gỡ | Hệ thống không tự kiểm tra được; cần cơ chế để chủ portfolio rà soát định kỳ (OQ) |
-| EC-13 | Khách dùng bố cục bàn phím khác (không phải QWERTY) | Điều khiển vẫn dùng được; phím mũi tên luôn là phương án thay thế |
-| EC-14 | Khách chỉ dùng bàn phím hoặc trình đọc màn hình | Truy cập được toàn bộ nội dung văn bản qua lối vào trực tiếp (FR-050) |
-| EC-15 | Khách tải lại trang giữa phiên | Quay về màn hình khởi động; không yêu cầu khôi phục vị trí nhân vật, nhưng giữ nguyên ngôn ngữ và chế độ hiển thị đã chọn |
-| EC-16 | Khách chuyển ngôn ngữ khi một bảng nội dung đang mở | Bảng vẫn mở, chỉ nội dung đổi ngôn ngữ; không đóng bảng, không dịch chuyển nhân vật |
-| EC-17 | Một mục nội dung chưa có bản dịch ở ngôn ngữ đang chọn | Hiển thị bản ngôn ngữ còn lại kèm chỉ dấu (FR-070) |
-| EC-18 | Khách mở liên kết gắn ngôn ngữ này trong khi trình duyệt đặt ngôn ngữ khác | Ưu tiên ngôn ngữ chỉ định trong liên kết |
-| EC-19 | Khách chuyển qua lại giữa chế độ 3D và 2D nhiều lần trong một phiên | Không tải lại toàn bộ tài nguyên mỗi lần chuyển; giữ nguyên khu vực nội dung đang xem |
+| ID | Tình huống | Kỳ vọng | Prototype 25/09 |
+|----|-----------|---------|-----------------|
+| EC-01 | Thiết bị hoặc trình duyệt không hiển thị được đồ họa 3D | Chuyển sang chế độ 2D đầy đủ nội dung (mục 3.15), không hiện màn hình trắng hay lỗi kỹ thuật | Có |
+| EC-02 | Kết nối chậm, tài nguyên tải lâu | Hiển thị tiến trình tải; nếu vượt ngưỡng chờ thì đề nghị chuyển sang chế độ 2D | Một phần — có tiến trình tải; chưa có ngưỡng chờ nên chưa đề nghị 2D (OQ-04) |
+| EC-03 | Tải tài nguyên thất bại giữa chừng | Thông báo dễ hiểu kèm hành động thử lại | Một phần — xem FR-004 |
+| EC-04 | Thiết bị đáp ứng thấp, hiển thị giật | Tự hạ mức chi tiết hiển thị thay vì giữ nguyên và giật | Chưa — xem FR-053 |
+| EC-05 | Khách giữ phím di chuyển rồi mở bảng nội dung | Nhân vật dừng lại, không tiếp tục trôi khi bảng đóng | Có — xoá phím đang giữ khi khoá điều khiển |
+| EC-06 | Khách nhấn nhiều phím cùng lúc hoặc chuyển tab khi đang giữ phím | Không kẹt trạng thái phím; nhân vật dừng khi tab mất tiêu điểm | Có — `blur` / `visibilitychange` xoá phím đang giữ |
+| EC-07 | Nhân vật bị kẹt trong hình học của vật thể | Có cơ chế đưa nhân vật về vị trí hợp lệ gần nhất | Chưa cần — nhân vật không rời được mặt đi (xem FR-014, OQ-33) |
+| EC-08 | Trình duyệt chặn tự phát âm thanh | Không phát âm thanh cho tới khi khách chủ động bật; không hiện lỗi | Chờ OQ-12 — chưa có âm thanh |
+| EC-09 | Tab bị ẩn hoặc thiết bị khóa màn hình | Dừng vòng lặp hiển thị và tạm dừng âm thanh; khôi phục khi quay lại | Một phần — xem FR-055 |
+| EC-10 | Khách xoay màn hình hoặc thay đổi kích thước cửa sổ giữa phiên | Bố cục tự điều chỉnh, không mất trạng thái | Có |
+| EC-11 | Một khu vực nội dung không có dữ liệu | Trạng thái rỗng có thông báo hoặc ẩn khu vực; không hiển thị lỗi | Một phần — xem FR-061 |
+| EC-12 | Liên kết ngoài của dự án hỏng hoặc bị gỡ | Hệ thống không tự kiểm tra được; cần cơ chế để chủ portfolio rà soát định kỳ (OQ) | Vận hành — OQ-11 |
+| EC-13 | Khách dùng bố cục bàn phím khác (không phải QWERTY) | Điều khiển vẫn dùng được; phím mũi tên luôn là phương án thay thế | Có — phím mũi tên song song WASD |
+| EC-14 | Khách chỉ dùng bàn phím hoặc trình đọc màn hình | Truy cập được toàn bộ nội dung văn bản qua lối vào trực tiếp (FR-050) | Một phần — xem FR-048, FR-050 |
+| EC-15 | Khách tải lại trang giữa phiên | Quay về màn hình khởi động; không yêu cầu khôi phục vị trí nhân vật, nhưng giữ nguyên ngôn ngữ và chế độ hiển thị đã chọn | Có — tải lại về màn hình khởi động; giữ ngôn ngữ và chế độ (`localStorage`) |
+| EC-16 | Khách chuyển ngôn ngữ khi một bảng nội dung đang mở | Bảng vẫn mở, chỉ nội dung đổi ngôn ngữ; không đóng bảng, không dịch chuyển nhân vật | Có — test tự động |
+| EC-17 | Một mục nội dung chưa có bản dịch ở ngôn ngữ đang chọn | Hiển thị bản ngôn ngữ còn lại kèm chỉ dấu (FR-070) | Có — chỉ dấu `[VI]` / `[EN]` |
+| EC-18 | Khách mở liên kết gắn ngôn ngữ này trong khi trình duyệt đặt ngôn ngữ khác | Ưu tiên ngôn ngữ chỉ định trong liên kết | Có — `?lang=` ưu tiên hơn ngôn ngữ trình duyệt |
+| EC-19 | Khách chuyển qua lại giữa chế độ 3D và 2D nhiều lần trong một phiên | Không tải lại toàn bộ tài nguyên mỗi lần chuyển; giữ nguyên khu vực nội dung đang xem | Có — chuyển chế độ không tải lại trang; `#khu-vực` giữ khu vực đang xem |
 
 ---
 
@@ -307,6 +308,7 @@ Trải nghiệm tham chiếu (worawork.vercel.app) có các đặc trưng: màn 
 - **FR-012**: Hệ thống MUST chặn nhân vật đi xuyên vật thể đặc và đi ra ngoài ranh giới thế giới.
 - **FR-013**: Hệ thống MUST xử lý được nhiều phím hướng nhấn đồng thời để tạo chuyển động chéo, và MUST đưa nhân vật về trạng thái đứng yên khi cửa sổ mất tiêu điểm.
 - **FR-014**: Hệ thống MUST có cơ chế đưa nhân vật về vị trí hợp lệ gần nhất khi phát hiện nhân vật ở vị trí không hợp lệ.
+- **FR-080** *(bổ sung 0.4 — chủ portfolio chọn phương án ngày 2026-09-25)*: Người dùng MUST xoay được góc nhìn quanh nhân vật theo bước 90° sang trái hoặc phải (nút trên màn hình và phím tắt); hướng "tiến" của điều khiển di chuyển MUST luôn là hướng camera đang nhìn.
 
 ### 3.3 Thế giới 3D và vật thể tương tác
 
@@ -318,6 +320,7 @@ Trải nghiệm tham chiếu (worawork.vercel.app) có các đặc trưng: màn 
 - **FR-020**: Hệ thống MUST vô hiệu hóa điều khiển di chuyển khi một bảng nội dung đang mở và khôi phục ngay khi bảng đóng.
 - **FR-021**: Người dùng MUST đóng được bảng nội dung bằng ít nhất hai cách: nút đóng và phím thoát.
 - **FR-022**: Hệ thống MUST hiển thị một gợi ý ngắn ở đầu phiên cho biết người dùng đang điều khiển nhân vật.
+- **FR-081** *(bổ sung 0.4 — đề xuất từ prototype, **chờ chủ portfolio xác nhận**)*: Khi bảng nội dung mở, camera MUST chuyển sang nhìn cận vật thể tương ứng và trở về bám theo nhân vật khi bảng đóng; bảng hiển thị dạng ngăn kéo bên cạnh trên màn hình rộng và tấm trượt từ mép dưới trên thiết bị cảm ứng, thế giới phía sau vẫn nhìn thấy được.
 
 ### 3.4 Nội dung portfolio
 
@@ -432,31 +435,142 @@ Trải nghiệm tham chiếu (worawork.vercel.app) có các đặc trưng: màn 
 | Bản dịch nội dung (Content Translation) | Bản nội dung theo từng ngôn ngữ | Ngôn ngữ, khóa nội dung, trạng thái đã dịch |
 | Chế độ hiển thị (Display Mode) | Chế độ khách đang xem | 3D hoặc 2D, cách chuyển đổi, lý do chuyển tự động |
 
+### 3.17 Trạng thái đáp ứng trong prototype *(đồng bộ 2026-09-25)*
+
+Mục này chỉ ghi nhận hiện trạng, **không thay đổi lời của FR**. Bằng chứng = file trong `prototype/src/`, hook QA (`window.__open`, `__start`, `__avatar`, `__render`, `__fps`, `__loadMs`) và bộ test Playwright `shot-final.mjs`. Cờ QA trên địa chỉ: `?nostart` (bỏ màn hình khởi động), `?stats` (góc đo hiệu năng), `?mode=`, `?lang=`.
+
+| Trạng thái | Nghĩa | Số FR (trên 81) |
+|-----------|-------|--------|
+| Có | Prototype đáp ứng, có test hoặc ảnh chụp; "(mock)" = cơ chế đủ, dữ liệu là giữ chỗ | 60 |
+| Một phần | Có nhưng còn thiếu điều kiện nêu ở ghi chú | 6 |
+| Chờ nội dung | Code sẵn, thiếu dữ liệu thật của chủ portfolio (DEP-03, DEP-06, DEP-08) | 3 |
+| Chờ OQ | Phụ thuộc câu hỏi chưa chốt (OQ-04, OQ-09, OQ-12) | 7 |
+| Chưa | Chưa làm | 4 |
+| Vận hành | Yêu cầu về quy trình, không kiểm chứng bằng prototype | 1 |
+
+| FR | Trạng thái | Bằng chứng / ghi chú |
+|----|-----------|----------------------|
+| **3.1 Khởi động và tải tài nguyên** | | |
+| FR-001 | Có | `Start.jsx` — màn hình khởi động, nút "Bắt đầu khám phá" (Enter / Space cũng được) |
+| FR-002 | Có | `loading.js` gom mọi loader qua `DefaultLoadingManager` → thanh tiến trình; nút chỉ bật khi tải xong |
+| FR-003 | Chưa | Tải toàn bộ một lượt (≈ 2,3 MB). Đề xuất: chỉ tách nhóm khi ngân sách OQ-04 bị vượt (xem OQ-33) |
+| FR-004 | Một phần | Lỗi tải → thông báo + nút Thử lại (tải lại trang); lỗi làm 3D hỏng → `Guard` rơi về 2D (FR-074). Chưa có test tự động cho nhánh lỗi |
+| FR-005 | Có | `main.jsx` kiểm tra WebGL trước khi mount 3D; không có → 2D |
+| FR-006 | Có | `SPAWN` cố định trên đảo 1 (`content.js`) |
+| **3.2 Điều khiển nhân vật và camera** | | |
+| FR-007 | Có | `input.js` — WASD và phím mũi tên |
+| FR-008 | Có | Giữ Shift; cảm ứng: đẩy cần ảo quá 82 % biên |
+| FR-009 | Có | AST-02 Idle / Walk / Run, chuyển mượt (`World.jsx` Avatar) |
+| FR-010 | Có | `CameraRig` bám theo nhân vật, làm mượt |
+| FR-011 | Có | Con lăn chuột / véo hai ngón; giới hạn 0,55–1,9 |
+| FR-012 | Có | `surfaceAt()` + `obstacles` — đảo, cầu, vật thể; mép đảo chặn mềm `EDGE_MARGIN` (phương án tạm cho OQ-21) |
+| FR-013 | Có | Chéo = cộng vector; `blur` / `visibilitychange` xoá phím đang giữ |
+| FR-014 | Chưa | Chưa cần: `surfaceAt` không cho nhân vật rời mặt đi được nên không phát sinh vị trí không hợp lệ (OQ-33) |
+| FR-080 | Có | `camera.js` — nút ↶ ↷ góc trên phải, phím Q / R; hướng đi lấy theo camera mỗi khung |
+| **3.3 Thế giới 3D và vật thể tương tác** | | |
+| FR-015 | Có | 5 đảo + 4 cầu dây trên nền mây; ranh giới = mép đảo (AST-03, 04, 12, 14, 21) |
+| FR-016 | Có | Mỗi đảo một vật thể AST-06…10 |
+| FR-017 | Có | Vòng sáng quanh vật thể + thanh nhắc "E / ✋ — mở …" |
+| FR-018 | Có | Phím E, bấm chuột vào vật thể, nút ✋, chạm vật thể |
+| FR-019 | Có | Quét đảo gần nhất mỗi 90 ms (`App.jsx`) |
+| FR-020 | Có | `freezeInput()` khi bảng / hướng dẫn mở, hoặc chưa bấm Bắt đầu |
+| FR-021 | Có | Nút ✕, phím Esc, bấm / chạm ra ngoài bảng |
+| FR-022 | Có | Gợi ý hiện 9 s sau khi vào thế giới, theo loại thiết bị |
+| FR-081 | Có | Camera bay tới vật thể khi mở bảng; ngăn kéo phải (desktop) / tấm trượt dưới (cảm ứng) |
+| **3.4 Nội dung portfolio** | | |
+| FR-023 | Có (mock) | `ZoneContent.jsx` Intro — tên + vai trò (trong bảng 3D), mô tả, bảng facts; 2D thêm hero |
+| FR-024 | Có (mock) | Skills — nhóm → chip |
+| FR-025 | Có | Thứ tự = thứ tự mảng `zones['du-an'].projects` |
+| FR-026 | Chờ nội dung | Có tên / mô tả / vai trò / công nghệ; `image` đang null → hiện năm thay ảnh |
+| FR-027 | Có | `url` (bản chạy) + `source` (mã nguồn); null thì không hiện |
+| FR-028 | Có | `target="_blank" rel="noreferrer"` |
+| FR-029 | Có (mock) | Timeline — tổ chức, vai trò, khoảng thời gian, mô tả |
+| FR-030 | Có | `.dbody` cuộn trong bảng, thế giới phía sau giữ nguyên |
+| FR-031 | Có (mock) | Mọi chuỗi là `T(vi, en)`; xem 3.14 |
+| **3.5 Liên hệ và CV** | | |
+| FR-032 | Có (mock) | Email + `socials[]` |
+| FR-033 | Chờ nội dung | Nút tải `/cv.pdf` có; file chưa có |
+| FR-034 | Có | `profile.available` → nhãn ở hero 2D và khu liên hệ (2D lẫn bảng 3D) |
+| FR-035 | Có | Không có form |
+| FR-036 | Có | Nút Sao chép → "Đã sao chép ✓" trong 1,8 s |
+| **3.6 Hướng dẫn và trợ giúp** | | |
+| FR-037 | Có | Nút ? và phím ? |
+| FR-038 | Có | 9 hàng: di chuyển, chạy, tương tác, đóng, phóng to / thu nhỏ, xoay, sang đảo, ngôn ngữ, bản 2D |
+| FR-039 | Có | Thiết bị cảm ứng → bảng riêng chỉ mô tả thao tác chạm |
+| **3.7 Âm thanh** | | |
+| FR-040…043 | Chờ OQ-12 | Chưa có âm thanh. Nếu chốt "không nhạc nền" → chuyển 4 FR này sang Out of Scope |
+| **3.8 Thiết bị cảm ứng và hiển thị đáp ứng** | | |
+| FR-044 | Có | `Touch.jsx` — cần ảo trái, nút ✋ phải, chạm vật thể |
+| FR-045 | Có | Bảng / tấm trượt và trang 2D co theo màn; test iPhone 13 (giả lập) + Xiaomi 13 (thật) |
+| FR-046 | Có | Tự co theo cửa sổ; xoay màn hình mới test tay, chưa test tự động |
+| **3.9 Khả năng tiếp cận và lối vào nội dung** | | |
+| FR-047 | Có | `Page2D.jsx` |
+| FR-048 | Một phần | Liên kết / nút trong bảng đều tab được; chưa bẫy tiêu điểm (focus trap), chưa test bằng bàn phím |
+| FR-049 | Chờ nội dung | Chưa có ảnh nên ảnh giữ chỗ mang `alt=""`; khi có ảnh mang thông tin cần thêm trường `alt` vào `content.js` |
+| FR-050 | Có | 2D: neo `#khu-vực`; 3D: `#khu-vực` mở đúng bảng sau khi Bắt đầu |
+| FR-051 | Có | `prefers-reduced-motion` → mặc định 2D |
+| **3.10 Hiệu năng** | | |
+| FR-052 | Chờ OQ-04 | Số đo tham chiếu: 61 fps trên Xiaomi 13; thiết bị mục tiêu chưa chốt |
+| FR-053 | Chưa | Không tự hạ chi tiết; `dpr` cố định [1, 2] (OQ-33) |
+| FR-054 | Chờ OQ-04 | Nhóm bắt buộc ≈ 2,3 MB (đo 24/09) |
+| FR-055 | Một phần | Trình duyệt tự tiết chế `requestAnimationFrame` khi tab ẩn; chưa dừng chủ động (OQ-33) |
+| **3.11 Tìm kiếm và chia sẻ** | | |
+| FR-056 | Có (mock) | `index.html` og / twitter + `public/og.jpg` 1200×630; `og:url` và canonical chờ tên miền (DEP-05) |
+| FR-057 | Một phần | 2D là HTML thuần nhưng render phía client — bot phải chạy JS; chưa prerender (OQ-32) |
+| FR-058 | Có | `#gioi-thieu … #lien-he`; hash cập nhật khi mở / đóng bảng |
+| **3.12 Quản trị nội dung** | | |
+| FR-059 | Có | Sửa `content.js`, không đụng model hay bố cục |
+| FR-060 | Chưa | Không có bước kiểm tra trước khi xuất bản — chờ OQ-10, OQ-16 |
+| FR-061 | Một phần | Thiếu dữ liệu → không hiện, không lỗi; chưa có thông báo "trống" |
+| FR-062 | Có | Thứ tự mảng trong `content.js` |
+| **3.13 Quyền riêng tư và đo lường** | | |
+| FR-063 | Có | Không đăng nhập; chỉ lưu `localStorage` (ngôn ngữ, chế độ) |
+| FR-064 | Chờ OQ-09 | Chưa dùng công cụ đo |
+| FR-065 | Vận hành | Không có kênh gửi dữ liệu trên trang (OQ-01) |
+| **3.14 Đa ngôn ngữ** | | |
+| FR-066 | Có (mock) | `i18n.jsx` — chuỗi `{ vi, en }` |
+| FR-067 | Có | Nút VI / EN ở 3D (góc trên trái), 2D (thanh điều hướng), màn hình khởi động |
+| FR-068 | Có | `?lang` → lựa chọn đã lưu → ngôn ngữ trình duyệt; không xác định được → EN |
+| FR-069 | Có | `localStorage.lang` |
+| FR-070 | Có | Thiếu bản dịch → hiện ngôn ngữ kia + `[VI]` / `[EN]` |
+| FR-071 | Một phần | `?lang=vi` / `?lang=en` là địa chỉ riêng; `hreflang` / canonical chờ tên miền |
+| FR-072 | Có | Đổi ngôn ngữ chỉ `replaceState`; giữ nhân vật, bảng đang mở, chế độ — có test tự động |
+| **3.15 Chế độ 2D** | | |
+| FR-073 | Có (mock) | `Page2D.jsx` — 5 section đúng thứ tự 5 đảo |
+| FR-074 | Có | Không WebGL → 2D; 3D lỗi khi chạy (kể cả nạp model hỏng) → `Guard` → 2D |
+| FR-075 | Có | Nút "2D" trong 3D; "Vào thế giới 3D" trong 2D (chỉ hiện khi thiết bị chạy được 3D) |
+| FR-076 | Có | Trang HTML thuần, không phụ thuộc nhân vật |
+| FR-077 | Có | Ở 2D không tải .glb / .jpg (Canvas không mount); JS bundle vẫn chứa mã 3D (≈ 335 kB gzip) |
+| FR-078 | Có | Cùng `content.js` + cùng `ZoneContent.jsx` |
+| FR-079 | Có | `localStorage.mode`; `?mode=2d` hoặc `?mode=3d` để mở thẳng |
+
+> **Còn lại để phát hành** (không tính OQ): nội dung thật (DEP-03, DEP-06, DEP-08), deploy (DEP-04, DEP-05), và 4 mục "Chưa" ở trên — FR-003, FR-014, FR-053, FR-060 — xem OQ-33 về việc giữ hay hạ mức bắt buộc của FR-003 / FR-014 / FR-053 / FR-055 cho phiên bản đầu.
+
 ---
 
 ## 4. Success Criteria *(mandatory)*
 
 ### Measurable Outcomes
 
-| ID | Tiêu chí |
-|----|----------|
-| SC-001 | Trên máy tính để bàn với kết nối băng thông thông thường, khách vào được thế giới và điều khiển được nhân vật trong vòng 10 giây kể từ khi mở đường dẫn |
-| SC-002 | 90% khách mới, không đọc bảng hướng dẫn, tự di chuyển được nhân vật trong 15 giây đầu sau khi vào thế giới |
-| SC-003 | 80% khách mới mở được ít nhất một khu vực nội dung trong 60 giây đầu của phiên |
-| SC-004 | 80% khách tìm được thông tin liên hệ hoặc bản CV trong vòng 2 phút kể từ khi vào thế giới |
-| SC-005 | Trải nghiệm giữ nhịp hiển thị mượt trong ít nhất 95% thời lượng phiên trên cấu hình thiết bị mục tiêu đã xác định |
-| SC-006 | 100% nội dung portfolio tiếp cận được mà không bắt buộc phải điều khiển nhân vật đi tới vật thể |
-| SC-007 | Trên thiết bị không hiển thị được thế giới 3D, khách nhận được lối truy cập nội dung thay thế trong vòng 3 giây kể từ khi mở trang |
-| SC-008 | Thời lượng phiên trung bình đạt tối thiểu 90 giây |
-| SC-009 | Tỷ lệ khách rời trang mà không mở bất kỳ khu vực nội dung nào không vượt quá 30% |
-| SC-010 | Tỷ lệ khách thực hiện hành động liên hệ hoặc tải CV đạt tối thiểu 5% tổng lượt truy cập |
-| SC-011 | Không ghi nhận trường hợp người dùng không thoát được bảng nội dung hoặc mất quyền điều khiển nhân vật trong toàn bộ bộ kịch bản kiểm thử |
-| SC-012 | Chủ portfolio thêm một dự án mới và xuất bản trong không quá 15 phút, không cần thay đổi thế giới 3D |
-| SC-013 | Liên kết chia sẻ hiển thị đúng tiêu đề, mô tả và ảnh xem trước trên tối thiểu 3 nền tảng chia sẻ phổ biến |
-| SC-014 | Trên điện thoại, khách di chuyển được nhân vật và mở được ít nhất một khu vực nội dung mà không phải phóng to thủ công |
-| SC-015 | 100% khu vực nội dung có sẵn ở cả tiếng Việt và tiếng Anh; mọi mục chưa có bản dịch đều hiển thị chỉ dấu, không có mục nào để trống |
-| SC-016 | Khách chuyển ngôn ngữ và thấy nội dung ở ngôn ngữ mới trong vòng 1 giây, không mất trạng thái đang xem |
-| SC-017 | Ở chế độ 2D, khách xem được 100% nội dung portfolio và tìm được thông tin liên hệ trong vòng 60 giây |
+| ID | Tiêu chí | Trạng thái 25/09 |
+|----|----------|------------------|
+| SC-001 | Trên máy tính để bàn với kết nối băng thông thông thường, khách vào được thế giới và điều khiển được nhân vật trong vòng 10 giây kể từ khi mở đường dẫn | Đo một phần: tải asset 0,4 s trên Wi‑Fi LAN (Xiaomi 13); chưa đo 4G, chưa đo bản deploy |
+| SC-002 | 90% khách mới, không đọc bảng hướng dẫn, tự di chuyển được nhân vật trong 15 giây đầu sau khi vào thế giới | Cần người dùng thật + công cụ đo (OQ-09) |
+| SC-003 | 80% khách mới mở được ít nhất một khu vực nội dung trong 60 giây đầu của phiên | Cần công cụ đo (OQ-09) |
+| SC-004 | 80% khách tìm được thông tin liên hệ hoặc bản CV trong vòng 2 phút kể từ khi vào thế giới | Cần công cụ đo (OQ-09) |
+| SC-005 | Trải nghiệm giữ nhịp hiển thị mượt trong ít nhất 95% thời lượng phiên trên cấu hình thiết bị mục tiêu đã xác định | 61 fps trên Xiaomi 13 (máy cấu hình cao); thiết bị mục tiêu chưa chốt (OQ-04) |
+| SC-006 | 100% nội dung portfolio tiếp cận được mà không bắt buộc phải điều khiển nhân vật đi tới vật thể | Đạt — chế độ 2D + liên kết `#khu-vực` |
+| SC-007 | Trên thiết bị không hiển thị được thế giới 3D, khách nhận được lối truy cập nội dung thay thế trong vòng 3 giây kể từ khi mở trang | Đạt (cục bộ) — không WebGL thì hiện 2D ngay khi tải trang |
+| SC-008 | Thời lượng phiên trung bình đạt tối thiểu 90 giây | Cần công cụ đo (OQ-09) |
+| SC-009 | Tỷ lệ khách rời trang mà không mở bất kỳ khu vực nội dung nào không vượt quá 30% | Cần công cụ đo (OQ-09) |
+| SC-010 | Tỷ lệ khách thực hiện hành động liên hệ hoặc tải CV đạt tối thiểu 5% tổng lượt truy cập | Cần công cụ đo (OQ-09) |
+| SC-011 | Không ghi nhận trường hợp người dùng không thoát được bảng nội dung hoặc mất quyền điều khiển nhân vật trong toàn bộ bộ kịch bản kiểm thử | Đạt trên bộ test tự động (`shot-final.mjs`): mở/đóng bảng, Esc, đổi ngôn ngữ, chuyển chế độ — không kẹt |
+| SC-012 | Chủ portfolio thêm một dự án mới và xuất bản trong không quá 15 phút, không cần thay đổi thế giới 3D | Chưa đo; cơ chế = sửa `content.js` (OQ-10) |
+| SC-013 | Liên kết chia sẻ hiển thị đúng tiêu đề, mô tả và ảnh xem trước trên tối thiểu 3 nền tảng chia sẻ phổ biến | Chưa — cần deploy rồi thử trên nền tảng chia sẻ |
+| SC-014 | Trên điện thoại, khách di chuyển được nhân vật và mở được ít nhất một khu vực nội dung mà không phải phóng to thủ công | Đạt — chủ portfolio test trên Xiaomi 13 ngày 25/09 |
+| SC-015 | 100% khu vực nội dung có sẵn ở cả tiếng Việt và tiếng Anh; mọi mục chưa có bản dịch đều hiển thị chỉ dấu, không có mục nào để trống | Đạt với nội dung mock; nội dung thật chờ DEP-08 |
+| SC-016 | Khách chuyển ngôn ngữ và thấy nội dung ở ngôn ngữ mới trong vòng 1 giây, không mất trạng thái đang xem | Đạt — đổi tức thì, giữ vị trí và bảng đang mở |
+| SC-017 | Ở chế độ 2D, khách xem được 100% nội dung portfolio và tìm được thông tin liên hệ trong vòng 60 giây | Đạt với nội dung mock |
 
 ---
 
@@ -479,21 +593,23 @@ Trải nghiệm tham chiếu (worawork.vercel.app) có các đặc trưng: màn 
 | AS-13 | Chế độ 2D dùng chung nguồn nội dung với thế giới 3D, không phải một trang riêng biệt bảo trì tách rời | Chi phí bảo trì nhân đôi và rủi ro hai chế độ lệch nội dung |
 
 > **Lưu ý**: Toàn bộ giả định trên **đã được chủ portfolio xác nhận ngày 2026-09-08**. Mọi thay đổi sau thời điểm này phải ghi vào Change Log.
+>
+> **Đối chiếu với prototype (2026-09-25)**: AS-06 — asset 3D không còn do bên thứ ba cung cấp mà dựng bằng Blender qua MCP (OQ-07), rủi ro bản quyền chỉ còn ở ảnh dự án, ảnh đại diện và CV; AS-07 và AS-13 đã hiện thực (`content.js` + `ZoneContent.jsx` dùng chung cho 3D và 2D); AS-10 vẫn chưa chốt giá trị (OQ-04, đã có số đo tham chiếu); AS-12 — bản dịch hiện là mock, bản thật chờ DEP-08.
 
 ---
 
 ## 6. Dependencies
 
-| ID | Phụ thuộc | Loại | Ghi chú |
-|----|-----------|------|---------|
-| DEP-01 | Bộ tài nguyên 3D: mô hình thế giới, vật thể, nhân vật và hoạt ảnh | Nội bộ / bên thứ ba | Điều kiện bắt buộc để dựng thế giới; cần xác nhận nguồn và quyền sử dụng |
-| DEP-02 | Nhạc nền và hiệu ứng âm thanh có quyền sử dụng hợp lệ | Bên thứ ba | Phục vụ mục 3.7 |
-| DEP-03 | Nội dung portfolio thực tế: hồ sơ, danh sách dự án, hình ảnh dự án, kinh nghiệm, kỹ năng, CV | Nội bộ | Điều kiện để phát hành; thiếu thì chỉ dựng được khung |
-| DEP-04 | Hạ tầng lưu trữ và phân phối nội dung tĩnh, đáp ứng tài nguyên dung lượng lớn | Bên thứ ba | Ảnh hưởng trực tiếp SC-001 |
-| DEP-05 | Tên miền và chứng chỉ bảo mật | Bên thứ ba | Điều kiện phát hành |
-| DEP-06 | Hộp thư điện tử công khai và các tài khoản mạng xã hội của chủ portfolio | Nội bộ | Chốt OQ-01: không dùng dịch vụ nhận form |
-| DEP-08 | Bản dịch tiếng Việt và tiếng Anh của toàn bộ nội dung portfolio | Nội bộ | Điều kiện để phát hành; xem AS-12, mục 3.14 |
-| DEP-07 | Công cụ đo lường hành vi truy cập | Bên thứ ba | Điều kiện để đo SC-003, SC-004, SC-008, SC-009, SC-010 |
+| ID | Phụ thuộc | Loại | Ghi chú | Trạng thái 25/09 |
+|----|-----------|------|---------|------------------|
+| DEP-01 | Bộ tài nguyên 3D: mô hình thế giới, vật thể, nhân vật và hoạt ảnh | Nội bộ / bên thứ ba | Điều kiện bắt buộc để dựng thế giới; cần xác nhận nguồn và quyền sử dụng | Xong — dựng bằng Blender qua MCP, script trong `specs/001-3d-world-portfolio/assets-3d/` |
+| DEP-02 | Nhạc nền và hiệu ứng âm thanh có quyền sử dụng hợp lệ | Bên thứ ba | Phục vụ mục 3.7 | Chờ OQ-12 |
+| DEP-03 | Nội dung portfolio thực tế: hồ sơ, danh sách dự án, hình ảnh dự án, kinh nghiệm, kỹ năng, CV | Nội bộ | Điều kiện để phát hành; thiếu thì chỉ dựng được khung | Chưa — đang MOCK |
+| DEP-04 | Hạ tầng lưu trữ và phân phối nội dung tĩnh, đáp ứng tài nguyên dung lượng lớn | Bên thứ ba | Ảnh hưởng trực tiếp SC-001 | Dự kiến Vercel Hobby (chưa import) |
+| DEP-05 | Tên miền và chứng chỉ bảo mật | Bên thứ ba | Điều kiện phát hành | Chưa — tạm dùng tên miền mặc định của Vercel (đã có HTTPS) |
+| DEP-06 | Hộp thư điện tử công khai và các tài khoản mạng xã hội của chủ portfolio | Nội bộ | Chốt OQ-01: không dùng dịch vụ nhận form | Chưa — email và liên kết thật |
+| DEP-08 | Bản dịch tiếng Việt và tiếng Anh của toàn bộ nội dung portfolio | Nội bộ | Điều kiện để phát hành; xem AS-12, mục 3.14 | Chưa — bản dịch thật |
+| DEP-07 | Công cụ đo lường hành vi truy cập | Bên thứ ba | Điều kiện để đo SC-003, SC-004, SC-008, SC-009, SC-010 | Chờ OQ-09 |
 
 ---
 
@@ -521,7 +637,7 @@ Các nội dung sau **không** thuộc phạm vi phiên bản đầu tiên:
 
 Danh sách câu hỏi cần chủ portfolio trả lời được tách ra file riêng: `specs/001-3d-world-portfolio/open-questions.md`.
 
-Toàn bộ câu hỏi chặn của phiên bản 0.1 đã được chủ portfolio chốt ngày 2026-09-08 (OQ-01, OQ-02, OQ-03). Spec **không còn câu hỏi chặn** và không còn marker `[NEEDS CLARIFICATION]`. Các lựa chọn triển khai và giá trị ngưỡng còn lại được theo dõi ở nhóm non-blocking (OQ-04 … OQ-18).
+Toàn bộ câu hỏi chặn của phiên bản 0.1 đã được chủ portfolio chốt ngày 2026-09-08 (OQ-01, OQ-02, OQ-03). Spec **không còn câu hỏi chặn** và không còn marker `[NEEDS CLARIFICATION]`. Đến 2026-09-25 đã chốt 10 câu (mục A của file trên); 23 câu non-blocking còn lại (OQ-04…OQ-21, OQ-23, OQ-25…OQ-29, OQ-32, OQ-33) theo dõi ở mục B — trong đó OQ-04 đã có số đo tham chiếu, OQ-32 và OQ-33 phát sinh từ đợt đồng bộ spec với prototype.
 
 ---
 
@@ -531,4 +647,5 @@ Toàn bộ câu hỏi chặn của phiên bản 0.1 đã được chủ portfoli
 |-----------|------|----------|
 | 0.1 | 2026-09-08 | Bản đầu tiên: 12 User Story, 15 edge case, FR-001…FR-065, SC-001…SC-014, AS-01…AS-11, DEP-01…DEP-07, OOS-01…OOS-09. Còn 3 câu hỏi chặn |
 | 0.3 | 2026-09-08 | Chủ portfolio xác nhận toàn bộ mục tiêu kinh doanh BO-01…BO-05 và toàn bộ giả định AS-01…AS-13. Không thay đổi nội dung requirement |
+| 0.4 | 2026-09-25 | Đồng bộ với prototype (không đổi phạm vi): thêm mục 3.17 — trạng thái đáp ứng của từng FR kèm bằng chứng; thêm cột "Prototype 25/09" cho Edge Cases, "Trạng thái 25/09" cho Success Criteria và Dependencies; ghi chú đối chiếu Assumptions. Bổ sung **FR-080** (xoay góc nhìn 90° — chủ portfolio chọn 25/09) và **FR-081** (camera nhìn cận + bảng dạng ngăn kéo/tấm trượt — chờ xác nhận). Mở OQ-32, OQ-33. Không sửa lời của FR-001…FR-079 |
 | 0.2 | 2026-09-08 | Chốt OQ-01, OQ-02, OQ-03: (a) liên hệ chỉ qua thư điện tử và liên kết mạng xã hội — cập nhật FR-035, FR-036, DEP-06, thêm OOS-10; (b) chế độ 2D đầy đủ nội dung — cập nhật FR-047, thêm mục 3.15 (FR-073…FR-079), cập nhật US-10, EC-01, EC-02, thêm EC-19, SC-017, AS-13; (c) nội dung song ngữ Việt–Anh — cập nhật FR-031, thêm mục 3.14 (FR-066…FR-072), US-13, EC-16…EC-18, SC-015, SC-016, AS-12, DEP-08; retire OOS-05, thêm OOS-11. Key Entities chuyển thành mục 3.16, bổ sung 2 entity. Mã FR cũ giữ nguyên để bảo toàn traceability |

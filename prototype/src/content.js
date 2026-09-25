@@ -148,19 +148,20 @@ export const zones = {
     ]
   },
   'du-an': {
+    // FR-026/027: image = '/img/xxx.jpg' (chưa có thì hiện năm); url = bản chạy thử, source = mã nguồn — null thì không hiển thị
     projects: [
       { title: T('Cổng thông báo quyền cổ đông tự động', 'Automated corporate-action notifications'), year: '2025', role: T('BA chính', 'Lead BA'),
         summary: T('Hệ thống gửi email + cổng web thông báo corporate action cho khách hàng tổ chức, thay quy trình thủ công.',
                    'Email + web portal notifying institutional clients of corporate actions, replacing a manual process.'),
-        tags: ['BRD', 'BPMN', 'Email automation'], image: null, url: null },
+        tags: ['BRD', 'BPMN', 'Email automation'], image: null, url: null, source: null },
       { title: T('Trợ lý AI sinh báo cáo phân tích cổ phiếu', 'AI assistant for equity research reports'), year: '2025', role: 'BA · Prompt design',
         summary: T('Pipeline lấy dữ liệu tài chính, sinh báo cáo theo mẫu và đánh giá chất lượng đầu ra.',
                    'Pipeline that pulls financial data, generates templated reports and scores output quality.'),
-        tags: ['AI', 'BigQuery', T('Đánh giá chất lượng', 'Quality evaluation')], image: null, url: null },
+        tags: ['AI', 'BigQuery', T('Đánh giá chất lượng', 'Quality evaluation')], image: null, url: null, source: null },
       { title: T('Giao dịch thoả thuận trên ứng dụng di động', 'Negotiated trading on the mobile app'), year: '2024', role: 'BA',
         summary: T('Bổ sung luồng đặt lệnh thoả thuận cho app: yêu cầu, quy tắc nghiệp vụ, thiết kế cùng UX, test case.',
                    'Added a negotiated-order flow to the app: requirements, business rules, design with UX, test cases.'),
-        tags: ['Mobile', 'User Story', 'UAT'], image: null, url: null }
+        tags: ['Mobile', 'User Story', 'UAT'], image: null, url: null, source: null }
     ]
   },
   'kinh-nghiem': {

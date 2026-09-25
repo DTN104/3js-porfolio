@@ -90,6 +90,11 @@ export const UI = {
   startHintKeys:{ vi: 'W A S D đi · Shift chạy · E tương tác · Q R xoay góc nhìn', en: 'W A S D walk · Shift run · E interact · Q R rotate view' },
   startHintTouch:{ vi: 'Cần bên trái để đi · ✋ tương tác · véo hai ngón để zoom', en: 'Left stick to walk · ✋ interact · pinch to zoom' },
   stamp:        { vi: 'prototype · đảo trôi trên mây · model và nội dung đều là bản tạm', en: 'prototype · islands above the clouds · models and content are placeholders' },
+  demo:         { vi: 'Xem bản chạy', en: 'Live demo' },
+  source:       { vi: 'Mã nguồn', en: 'Source code' },
+  copy:         { vi: 'Sao chép', en: 'Copy' },
+  copied:       { vi: 'Đã sao chép ✓', en: 'Copied ✓' },
+  copyEmail:    { vi: 'Sao chép địa chỉ email', en: 'Copy email address' },
   help: {
     move:     [{ vi: 'Di chuyển', en: 'Move' },            { vi: 'hoặc phím mũi tên', en: 'or the arrow keys' }],
     run:      [{ vi: 'Chạy', en: 'Run' },                  { vi: 'giữ', en: 'hold' }],
@@ -101,6 +106,17 @@ export const UI = {
     lang:     [{ vi: 'Ngôn ngữ', en: 'Language' },         { vi: 'nút VI / EN góc trên trái — giữ nguyên vị trí và bảng đang mở', en: 'VI / EN buttons top-left — keeps your position and open panel' }],
     mode2d:   [{ vi: 'Bản 2D', en: '2D version' },         { vi: 'nút 2D góc trên trái — cùng nội dung, không cần WebGL; thêm ?mode=2d vào địa chỉ để mở thẳng', en: '2D button top-left — same content, no WebGL needed; add ?mode=2d to the address to open it directly' }],
     touch:    [{ vi: 'Màn cảm ứng', en: 'Touch screen' },  { vi: 'cần bên trái để đi (đẩy mạnh = chạy) · ✋ để tương tác · véo hai ngón để phóng to / thu nhỏ', en: 'left stick to walk (push further = run) · ✋ to interact · pinch to zoom' }]
+  },
+  helpTouch: {
+    move:     [{ vi: 'Di chuyển', en: 'Move' },            { vi: 'kéo cần ảo bên trái', en: 'drag the left stick' }],
+    run:      [{ vi: 'Chạy', en: 'Run' },                  { vi: 'đẩy cần gần hết biên', en: 'push the stick near the edge' }],
+    interact: [{ vi: 'Tương tác', en: 'Interact' },        { vi: 'chạm nút ✋ khi nó sáng, hoặc chạm thẳng vào vật thể', en: 'tap ✋ when it lights up, or tap the object' }],
+    closeP:   [{ vi: 'Đóng bảng', en: 'Close panel' },     { vi: 'chạm ✕ hoặc chạm ra ngoài bảng', en: 'tap ✕ or tap outside the panel' }],
+    zoom:     [{ vi: 'Phóng to / thu nhỏ', en: 'Zoom' },   { vi: 'véo hai ngón trên cảnh', en: 'pinch with two fingers' }],
+    rotate:   [{ vi: 'Xoay góc nhìn', en: 'Rotate view' }, { vi: 'nút ↶ ↷ góc trên phải — mỗi lần 90°, hướng đi đổi theo', en: '↶ ↷ buttons top-right — 90° per step, walking direction follows' }],
+    cross:    [{ vi: 'Sang đảo khác', en: 'Other islands' }, { vi: 'đi qua cầu dây — không nhảy, không rơi', en: 'walk across the rope bridges — no jumping, no falling' }],
+    lang:     [{ vi: 'Ngôn ngữ', en: 'Language' },         { vi: 'nút VI / EN góc trên trái', en: 'VI / EN buttons top-left' }],
+    mode2d:   [{ vi: 'Bản 2D', en: '2D version' },         { vi: 'nút 2D góc trên trái — cùng nội dung, cuộn đọc như trang thường', en: '2D button top-left — same content as a normal scrolling page' }]
   },
   kinds: {
     house:    { vi: 'Căn nhà', en: 'Cottage' },

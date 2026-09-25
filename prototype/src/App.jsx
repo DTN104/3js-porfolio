@@ -182,7 +182,7 @@ export default function App({ onSwitch2D }) {
               <button className="close" onClick={closeZone} aria-label={t(UI.close)}>✕</button>
             </header>
             <div className="dbody">
-              <ZoneBody island={openedZone} />
+              <ZoneBody island={openedZone} context="drawer" />
             </div>
             <footer>{t(isTouch ? UI.closeTouch : UI.closeKeys)}</footer>
           </section>
@@ -196,18 +196,34 @@ export default function App({ onSwitch2D }) {
               <h2>{t(UI.controls)}</h2>
               <button onClick={() => setHelp(false)} aria-label={t(UI.close)}>✕</button>
             </header>
+            {/* FR-039: bộ thao tác theo loại thiết bị — cảm ứng thì không mô tả phím */}
             <table>
               <tbody>
-                <tr><td>{t(UI.help.move[0])}</td><td><span className="key">W</span><span className="key">A</span><span className="key">S</span><span className="key">D</span> {t(UI.help.move[1])}</td></tr>
-                <tr><td>{t(UI.help.run[0])}</td><td>{t(UI.help.run[1])} <span className="key">Shift</span></td></tr>
-                <tr><td>{t(UI.help.interact[0])}</td><td><span className="key">E</span> {t(UI.help.interact[1])}</td></tr>
-                <tr><td>{t(UI.help.closeP[0])}</td><td><span className="key">Esc</span></td></tr>
-                <tr><td>{t(UI.help.zoom[0])}</td><td>{t(UI.help.zoom[1])}</td></tr>
-                <tr><td>{t(UI.help.rotate[0])}</td><td><span className="key">Q</span><span className="key">R</span> {t(UI.help.rotate[1])}</td></tr>
-                <tr><td>{t(UI.help.cross[0])}</td><td>{t(UI.help.cross[1])}</td></tr>
-                <tr><td>{t(UI.help.lang[0])}</td><td>{t(UI.help.lang[1])}</td></tr>
-                <tr><td>{t(UI.help.mode2d[0])}</td><td>{t(UI.help.mode2d[1])}</td></tr>
-                <tr><td>{t(UI.help.touch[0])}</td><td>{t(UI.help.touch[1])}</td></tr>
+                {isTouch ? (
+                  <>
+                    <tr><td>{t(UI.helpTouch.move[0])}</td><td>{t(UI.helpTouch.move[1])}</td></tr>
+                    <tr><td>{t(UI.helpTouch.run[0])}</td><td>{t(UI.helpTouch.run[1])}</td></tr>
+                    <tr><td>{t(UI.helpTouch.interact[0])}</td><td>{t(UI.helpTouch.interact[1])}</td></tr>
+                    <tr><td>{t(UI.helpTouch.closeP[0])}</td><td>{t(UI.helpTouch.closeP[1])}</td></tr>
+                    <tr><td>{t(UI.helpTouch.zoom[0])}</td><td>{t(UI.helpTouch.zoom[1])}</td></tr>
+                    <tr><td>{t(UI.helpTouch.rotate[0])}</td><td>{t(UI.helpTouch.rotate[1])}</td></tr>
+                    <tr><td>{t(UI.helpTouch.cross[0])}</td><td>{t(UI.helpTouch.cross[1])}</td></tr>
+                    <tr><td>{t(UI.helpTouch.lang[0])}</td><td>{t(UI.helpTouch.lang[1])}</td></tr>
+                    <tr><td>{t(UI.helpTouch.mode2d[0])}</td><td>{t(UI.helpTouch.mode2d[1])}</td></tr>
+                  </>
+                ) : (
+                  <>
+                    <tr><td>{t(UI.help.move[0])}</td><td><span className="key">W</span><span className="key">A</span><span className="key">S</span><span className="key">D</span> {t(UI.help.move[1])}</td></tr>
+                    <tr><td>{t(UI.help.run[0])}</td><td>{t(UI.help.run[1])} <span className="key">Shift</span></td></tr>
+                    <tr><td>{t(UI.help.interact[0])}</td><td><span className="key">E</span> {t(UI.help.interact[1])}</td></tr>
+                    <tr><td>{t(UI.help.closeP[0])}</td><td><span className="key">Esc</span></td></tr>
+                    <tr><td>{t(UI.help.zoom[0])}</td><td>{t(UI.help.zoom[1])}</td></tr>
+                    <tr><td>{t(UI.help.rotate[0])}</td><td><span className="key">Q</span><span className="key">R</span> {t(UI.help.rotate[1])}</td></tr>
+                    <tr><td>{t(UI.help.cross[0])}</td><td>{t(UI.help.cross[1])}</td></tr>
+                    <tr><td>{t(UI.help.lang[0])}</td><td>{t(UI.help.lang[1])}</td></tr>
+                    <tr><td>{t(UI.help.mode2d[0])}</td><td>{t(UI.help.mode2d[1])}</td></tr>
+                  </>
+                )}
               </tbody>
             </table>
             <footer>FR-037, FR-038</footer>

@@ -275,6 +275,12 @@ canvas{display:block; touch-action:none}
 .timeline h3{ margin:0; font-size:15.5px }
 .timeline ul{ margin:8px 0 0; padding-left:18px; font-size:14px; line-height:1.6; color:var(--ink-2) }
 .fine{ font-size:12.5px; color:#7b8795; margin-top:12px }
+.who{ margin:0 0 12px; display:flex; flex-wrap:wrap; align-items:baseline; gap:4px 10px }
+.who b{ font-size:17px } .who span{ font-size:13.5px; color:var(--ink-2); font-weight:600 }
+.project .links{ display:flex; gap:12px; margin:10px 0 0; font-size:13px; font-weight:600 }
+.project .links a{ color:var(--accent) }
+.btn.copy.done{ background:#e4f4e7; border-color:#bfe3c6; color:#2c6e3b }
+.dbody .badge{ margin-bottom:10px }
 .p2d-foot{ display:flex; flex-wrap:wrap; justify-content:space-between; gap:8px; max-width:1040px; margin:0 auto; padding:20px clamp(16px,4vw,40px) 36px; border-top:1px solid var(--line); font-size:12.5px; color:#7b8795 }
 @media (max-width:640px){
   .hero{ flex-direction:column; align-items:flex-start; gap:18px }
