@@ -128,12 +128,66 @@ canvas{display:block; touch-action:none}
   background:rgba(255,255,255,.22); color:#fff; font-size:15px; cursor:pointer;
 }
 .dhead .close:hover{ background:rgba(255,255,255,.34) }
-.dbody{ flex:1; overflow:auto; padding:18px 22px 6px }
+.dbody{ flex:1; overflow:auto; padding:18px 22px 10px; -webkit-user-select:text; user-select:text }
 .dbody p{ margin:0 0 10px; font-size:14px; line-height:1.65; color:var(--ink-2) }
-.chips{ display:flex; flex-wrap:wrap; gap:6px; margin:12px 0 10px }
-.chip{ font-size:11.5px; border:1px solid var(--line); border-radius:999px; padding:3px 10px; background:#fff; color:var(--ink) }
-.chip b{ color:#7b8795; font-weight:600; margin-right:5px }
+/* nội dung dùng chung ZoneContent.jsx — trong ngăn kéo hẹp thì xếp một cột, chữ nhỏ hơn bản 2D */
+.dbody .lead{ font-size:14.5px; line-height:1.65 }
+.dbody .facts{ grid-template-columns:repeat(2, 1fr); gap:8px; margin-top:12px }
+.dbody .facts div{ padding:10px 12px } .dbody .facts dd{ font-size:14px }
+.dbody .grid-2, .dbody .grid-3{ grid-template-columns:1fr; gap:10px }
+.dbody .card{ padding:14px 16px; box-shadow:none }
+.dbody .project .thumb{ aspect-ratio:21/9; font-size:18px }
+.dbody .timeline li{ grid-template-columns:1fr; gap:2px; padding-bottom:16px }
+.dbody .timeline .when{ padding-top:0 }
+.dbody .contact-row{ margin-top:12px }
 .drawer footer{ padding:10px 22px; border-top:1px solid var(--line); font-size:12px; color:#7b8795 }
+
+/* ---------- đổi ngôn ngữ VI / EN (FR-067) ---------- */
+.langsw{ display:inline-flex; gap:2px; padding:3px; border-radius:999px; background:var(--panel); border:1px solid var(--line) }
+.langsw button{
+  border:0; border-radius:999px; background:transparent; color:var(--ink-2); padding:0 9px; height:24px;
+  font:700 11px/1 ui-sans-serif,system-ui; letter-spacing:.06em; cursor:pointer;
+}
+.langsw button.on{ background:var(--accent); color:#fff }
+.langsw button:not(.on):hover{ background:#eef2f6; color:var(--ink) }
+.langsw.topbar{ position:fixed; top:17px; left:114px; z-index:11; box-shadow:0 2px 8px rgba(20,30,40,.16) }
+.langsw.topbar button{ height:28px }
+.p2d-nav .langsw{ margin-left:auto; flex:none }
+.p2d-nav ul{ margin-right:0 }
+
+/* ---------- màn hình khởi động (FR-001…004) ---------- */
+.start{
+  position:fixed; inset:0; z-index:20; display:grid; place-items:center; padding:20px; overflow:hidden;
+  background:linear-gradient(180deg,#6FA8CF 0%, #A9CFE6 45%, #DCEEF6 100%);
+  transition:opacity .45s ease; -webkit-user-select:none; user-select:none;
+}
+.start.leave{ opacity:0; pointer-events:none }
+.start .cloud{ position:absolute; border-radius:999px; background:#F6F9FB; opacity:.9; filter:blur(1px);
+  box-shadow:60px 18px 0 -8px #F6F9FB, -70px 22px 0 -14px #F6F9FB, 20px 34px 0 -4px #F6F9FB }
+.start .c1{ width:180px; height:70px; left:8%; top:14%; animation:drift 38s linear infinite }
+.start .c2{ width:130px; height:54px; right:10%; top:26%; opacity:.75; animation:drift 52s linear infinite reverse }
+.start .c3{ width:220px; height:80px; left:22%; bottom:12%; opacity:.6; animation:drift 64s linear infinite }
+@keyframes drift{ from{ transform:translateX(-40px) } to{ transform:translateX(40px) } }
+.start-lang{ position:absolute; top:16px; right:16px }
+.start-card{
+  position:relative; width:min(480px, 100%); text-align:center; padding:34px 30px 26px;
+  background:rgba(251,252,253,.94); border-radius:22px; box-shadow:0 30px 70px -24px rgba(10,20,30,.5), 0 0 0 1px rgba(255,255,255,.6) inset;
+  animation:sheetIn .5s cubic-bezier(.2,.8,.2,1);
+}
+.start-kicker{ display:inline-block; font-size:11.5px; letter-spacing:.1em; text-transform:uppercase; font-weight:700; color:#E08B45 }
+.start-card h1{ margin:10px 0 0; font-size:clamp(28px, 6vw, 38px); letter-spacing:-.02em; line-height:1.1 }
+.start-role{ margin:8px 0 0; font-size:15.5px; font-weight:600; color:var(--ink-2) }
+.start-tag{ margin:10px auto 0; font-size:14px; line-height:1.6; color:var(--ink-2); max-width:40ch }
+.start-progress{ height:6px; margin:24px 0 8px; border-radius:3px; background:#e6ecf2; overflow:hidden }
+.start-progress i{ display:block; height:100%; border-radius:3px; background:linear-gradient(90deg,#8CBE68,#E08B45); transition:width .3s ease }
+.start-status{ margin:0 0 16px; font-size:12.5px; color:#7b8795; min-height:1.4em }
+.start-status.err{ color:#a3283f }
+.btn.big{ padding:14px 28px; font-size:16px }
+.btn:disabled{ opacity:.45; cursor:default }
+.btn.primary:disabled:hover{ background:var(--accent) }
+.start-hint{ margin:18px 0 6px; font-size:12.5px; color:#7b8795 }
+.start .linkbtn{ font-size:13px }
+@media (max-width:640px){ .start-card{ padding:26px 20px 20px } .start .c3{ display:none } }
 
 /* ---------- nút xoay góc nhìn ---------- */
 .camrot{

@@ -1,14 +1,13 @@
-import React, { useState, useCallback } from 'react'
+import React, { useState, useCallback, useEffect } from 'react'
 import { createRoot } from 'react-dom/client'
 import App from './App'
 import Page2D from './Page2D'
+import { LangProvider, useLang, UI } from './i18n'
+import { seo } from './content'
+import './loading'            // gắn DefaultLoadingManager (tiến trình tải cho màn hình khởi động, mốc OQ-04 window.__loadMs)
 import './styles.css'
-import { DefaultLoadingManager } from 'three'
 
-// OQ-04: mốc "tải xong nhóm tài nguyên bắt buộc" = lúc mọi .glb/.jpg đã nạp, tính từ khi mở trang
-DefaultLoadingManager.onLoad = () => { if (!window.__loadMs) window.__loadMs = Math.round(performance.now()) }
-
-// ---------- chọn chế độ hiển thị: 3D hay 2D (OQ-02, FR-047) ----------
+// ---------- chọn chế độ hiển thị: 3D hay 2D (OQ-02, FR-005, FR-047) ----------
 function hasWebGL() {
   try {
     const c = document.createElement('canvas')
@@ -36,6 +35,17 @@ class Guard extends React.Component {
   render() { return this.state.failed ? this.props.fallback : this.props.children }
 }
 
+// Tiêu đề + mô tả theo ngôn ngữ đang chọn (FR-056 phần động; thẻ tĩnh nằm trong index.html)
+function Head() {
+  const { lang, t } = useLang()
+  useEffect(() => {
+    document.title = t(seo.title)
+    const m = document.querySelector('meta[name="description"]')
+    if (m) m.setAttribute('content', t(seo.description))
+  }, [lang, t])
+  return null
+}
+
 function Root() {
   const [mode, setMode] = useState(() => (CAN_3D ? pickMode() : '2d'))
   const choose = useCallback((m) => {
@@ -45,11 +55,10 @@ function Root() {
   }, [])
 
   if (mode === '2d') {
-    return <Page2D canRun3D={CAN_3D} onSwitch3D={() => choose('3d')}
-                   notice={CAN_3D ? null : 'Thiết bị này không hiển thị được thế giới 3D — bạn đang xem bản 2D đầy đủ nội dung.'} />
+    return <Page2D canRun3D={CAN_3D} onSwitch3D={() => choose('3d')} notice={CAN_3D ? null : UI.noWebgl} />
   }
   return (
-    <Guard fallback={<Page2D canRun3D={false} notice="Thế giới 3D gặp lỗi khi hiển thị — đây là bản 2D với đầy đủ nội dung." />}>
+    <Guard fallback={<Page2D canRun3D={false} notice={UI.crashed} />}>
       <App onSwitch2D={() => choose('2d')} />
     </Guard>
   )
@@ -57,6 +66,9 @@ function Root() {
 
 createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <Root />
+    <LangProvider>
+      <Head />
+      <Root />
+    </LangProvider>
   </React.StrictMode>
 )

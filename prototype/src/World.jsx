@@ -284,7 +284,7 @@ export function Island({ island, active, onOpen }) {
     <group position={[x, island.y, z]}>
       <IslandModel url={island.model} />
       {/* FR-017: chỉ dấu vùng tương tác */}
-      <group onClick={(e) => { e.stopPropagation(); onOpen(island.id) }}>
+      <group onClick={(e) => { e.stopPropagation(); onOpen && onOpen(island.id) }}>
         <mesh ref={ring} position={[0, 0.18, 0]} rotation={[-Math.PI / 2, 0, 0]}>
           <ringGeometry args={[island.ir - 0.22, island.ir, 48]} />
           <meshBasicMaterial color="#ffffff" transparent opacity={0.16} />

@@ -2,11 +2,42 @@
 <html lang="vi">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>Prototype — Thế giới 3D</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <!-- FR-056 / AST-19: thẻ chia sẻ & SEO. Chữ ở đây là bản tĩnh (bot chia sẻ không chạy JS) — đồng bộ với seo trong src/content.js.
+         *** MOCK *** chủ portfolio thay tên, mô tả, địa chỉ og:url và ảnh public/og.jpg bằng bản thật. -->
+    <title>Tên Của Bạn — Portfolio 3D</title>
+    <meta name="description" content="Portfolio Business Analyst dạng thế giới 3D: 5 hòn đảo trôi trên mây, mỗi đảo một chương — giới thiệu, kỹ năng, dự án, kinh nghiệm, liên hệ." />
+    <meta name="theme-color" content="#DCEEF6" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Tên Của Bạn — Portfolio" />
+    <meta property="og:title" content="Tên Của Bạn — Portfolio 3D" />
+    <meta property="og:description" content="Business Analyst · Fintech & Chứng khoán. Khám phá portfolio dạng thế giới 3D — hoặc xem bản 2D đầy đủ nội dung." />
+    <meta property="og:image" content="/og.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Năm hòn đảo trôi trên mây — thế giới portfolio 3D" />
+    <meta property="og:locale" content="vi_VN" />
+    <meta property="og:locale:alternate" content="en_US" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Tên Của Bạn — Portfolio 3D" />
+    <meta name="twitter:description" content="Business Analyst · Fintech & Chứng khoán. Khám phá portfolio dạng thế giới 3D — hoặc xem bản 2D đầy đủ nội dung." />
+    <meta name="twitter:image" content="/og.jpg" />
+    <!-- Khi đã có tên miền: thêm <link rel="canonical"> và og:url tuyệt đối, cùng hreflang cho ?lang=vi / ?lang=en (FR-071) -->
+
+    <link rel="preload" as="image" href="/models/sky/AST14_sky.jpg" />
   </head>
   <body>
     <div id="root"></div>
+    <noscript>
+      <div style="font-family:system-ui,sans-serif;padding:40px 24px;max-width:60ch;margin:0 auto;line-height:1.6">
+        <h1>Tên Của Bạn — Portfolio</h1>
+        <p>Trang này cần JavaScript để hiển thị (thế giới 3D hoặc bản 2D). Hãy bật JavaScript rồi tải lại.</p>
+        <p>This page needs JavaScript to display (the 3D world or the 2D version). Please enable JavaScript and reload.</p>
+      </div>
+    </noscript>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

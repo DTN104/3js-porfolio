@@ -4,23 +4,24 @@ import { Sky, Clouds, Island, Scenery, Bridge, Avatar, CameraRig } from './World
 import { attachInput, freezeInput } from './input'
 import { islands, bridges } from './content'
 import { Joystick, InteractButton, Stats, usePinchZoom, isTouchDevice, CameraButtons } from './Touch'
+import { useLang, UI, KIND_ICON, LangSwitch } from './i18n'
+import { ZoneBody } from './ZoneContent'
+import StartScreen from './Start'
 
-// Nhãn + biểu tượng theo loại vật thể (AST-06…10) cho đầu bảng nội dung
-const KIND = {
-  house:    { icon: '🏠', label: 'Căn nhà' },
-  workshop: { icon: '🛠️', label: 'Xưởng làm việc' },
-  gallery:  { icon: '🖼️', label: 'Khu trưng bày' },
-  monument: { icon: '🏛️', label: 'Cột mốc' },
-  mailbox:  { icon: '✉️', label: 'Hòm thư' }
-}
+const ZONE_IDS = new Set(islands.map(z => z.id))
+const hashZone = () => { const h = decodeURIComponent(location.hash.slice(1)); return ZONE_IDS.has(h) ? h : null }
 
 export default function App({ onSwitch2D }) {
+  const { t } = useLang()
   const body = useRef()
   const zoom = useRef(1)
   const [near, setNear] = useState(null)      // FR-019: đảo đang trong tầm tương tác
   const [open, setOpen] = useState(null)      // FR-020: bảng nội dung đang mở
   const [help, setHelp] = useState(false)
   const [hint, setHint] = useState(true)      // FR-022
+  // FR-001: 'start' = màn hình khởi động, 'leaving' = đang mờ dần, 'play' = trong thế giới. ?nostart bỏ qua (QA / chụp ảnh).
+  const [phase, setPhase] = useState(() => (/[?&]nostart\b/.test(location.search) ? 'play' : 'start'))
+  const playing = phase === 'play'
 
   const isTouch = useMemo(() => isTouchDevice(), [])
   const showStats = useMemo(() => /[?&]stats\b/.test(location.search), [])   // góc đo hiệu năng: thêm ?stats vào địa chỉ
@@ -33,12 +34,30 @@ export default function App({ onSwitch2D }) {
 
   const openedAt = useRef(0)                   // chống cú click "xuyên" từ nút ✋ sang lớp nền vừa hiện ra
   const openZone = useCallback((id) => {
-    if (!id) return
+    if (!id || !ZONE_IDS.has(id)) return
     openedAt.current = performance.now()
     setOpen(id); setHint(false)
   }, [])
+  const closeZone = useCallback(() => setOpen(null), [])
   const closeIfSettled = useCallback(() => { if (performance.now() - openedAt.current > 400) setOpen(null) }, [])
-  useEffect(() => { window.__open = openZone }, [openZone])   // hook QA
+
+  const start = useCallback(() => {
+    setPhase(p => (p === 'start' ? 'leaving' : p))
+  }, [])
+  useEffect(() => {
+    if (phase !== 'leaving') return
+    const tm = setTimeout(() => setPhase('play'), 450)
+    return () => clearTimeout(tm)
+  }, [phase])
+  useEffect(() => { window.__open = openZone; window.__start = start }, [openZone, start])   // hook QA
+
+  // FR-058: liên kết #<id đảo> mở đúng khu vực khi vào thế giới; mở/đóng bảng cập nhật lại địa chỉ để chia sẻ được
+  useEffect(() => { if (playing) { const h = hashZone(); if (h) openZone(h) } }, [playing, openZone])
+  useEffect(() => {
+    if (!playing) return
+    const url = new URL(location.href); url.hash = open ? open : ''
+    history.replaceState(null, '', url)
+  }, [open, playing])
 
   // Camera bay tới nhìn cận vật thể khi bảng mở (bảng bên phải trên desktop, tấm trượt dưới trên điện thoại)
   const focus = useRef(null)
@@ -47,8 +66,8 @@ export default function App({ onSwitch2D }) {
     focus.current = z ? { x: z.pos[0], y: z.y, z: z.pos[1], or: z.or, mode: isTouch ? 'sheet' : 'side' } : null
   }, [open, isTouch])
 
-  // FR-020 + EC-05: khoá di chuyển khi bảng đang mở
-  useEffect(() => { freezeInput(!!open || help) }, [open, help])
+  // FR-020 + EC-05: khoá di chuyển khi bảng đang mở, khi chưa bấm Bắt đầu
+  useEffect(() => { freezeInput(!!open || help || !playing) }, [open, help, playing])
 
   useEffect(() => {
     return attachInput({
@@ -82,10 +101,12 @@ export default function App({ onSwitch2D }) {
     return () => clearInterval(id)
   }, [])
 
+  // FR-022: gợi ý điều khiển tự ẩn sau 9 s kể từ lúc vào thế giới
   useEffect(() => {
-    const t = setTimeout(() => setHint(false), 9000)
-    return () => clearTimeout(t)
-  }, [])
+    if (!playing) return
+    const tm = setTimeout(() => setHint(false), 9000)
+    return () => clearTimeout(tm)
+  }, [playing])
 
   const openedZone = islands.find(z => z.id === open)
   const nearZone = islands.find(z => z.id === near)
@@ -113,7 +134,7 @@ export default function App({ onSwitch2D }) {
           <Clouds />
           {bridges.map(b => <Bridge key={b.id} bridge={b} />)}
           {islands.map(z => (
-            <Island key={z.id} island={z} active={near === z.id} onOpen={openZone} />
+            <Island key={z.id} island={z} active={near === z.id} onOpen={playing ? openZone : undefined} />
           ))}
           <Scenery />
           <Avatar bodyRef={body} />
@@ -121,75 +142,75 @@ export default function App({ onSwitch2D }) {
         <CameraRig target={body} zoomRef={zoom} focusRef={focus} />
       </Canvas>
 
-      <button className="iconbtn help" onClick={() => setHelp(true)} aria-label="Bảng hướng dẫn điều khiển">?</button>
-      {/* FR-047: luôn có lối sang bản 2D đầy đủ nội dung */}
-      {onSwitch2D && <button className="iconbtn mode2d" onClick={onSwitch2D} aria-label="Xem bản 2D" title="Xem bản 2D">2D</button>}
+      {phase !== 'play' && (
+        <StartScreen onStart={start} onSwitch2D={onSwitch2D} isTouch={isTouch} leaving={phase === 'leaving'} />
+      )}
 
-      <div className="stamp">prototype · đảo trôi trên mây · model và nội dung đều là bản tạm</div>
+      <button className="iconbtn help" onClick={() => setHelp(true)} aria-label={t(UI.helpBtn)} title={t(UI.helpBtn)}>?</button>
+      {/* FR-047: luôn có lối sang bản 2D đầy đủ nội dung */}
+      {onSwitch2D && <button className="iconbtn mode2d" onClick={onSwitch2D} aria-label={t(UI.view2d)} title={t(UI.view2d)}>2D</button>}
+      <LangSwitch className="topbar" />
+
+      <div className="stamp">{t(UI.stamp)}</div>
       {showStats && <Stats />}
       {!help && <CameraButtons />}
-      {isTouch && !open && !help && (
+      {isTouch && playing && !open && !help && (
         <>
           <Joystick />
           <InteractButton active={!!near} onPress={() => { if (nearRef.current) openZone(nearRef.current) }} />
         </>
       )}
 
-      {hint && !open && (isTouch
-        ? <div className="hint">Kéo <b>cần bên trái</b> để đi, đẩy mạnh để chạy. Chạm <b>✋</b> để tương tác.</div>
-        : <div className="hint">Dùng <b>W A S D</b> để đi. Giữ <b>Shift</b> để chạy. Qua đảo khác bằng <b>cầu dây</b>.</div>
-      )}
+      {playing && hint && !open && <div className="hint">{t(isTouch ? UI.hintTouch : UI.hintKeys)}</div>}
 
       {/* FR-017: chỉ dấu kèm chỉ dẫn thao tác */}
-      {nearZone && !open && (
+      {playing && nearZone && !open && (
         <div className="prompt">
-          {isTouch ? <span>✋</span> : <span className="key">E</span>} {nearZone.hint} — mở <b>{nearZone.label}</b>
+          {isTouch ? <span>✋</span> : <span className="key">E</span>} {t(nearZone.hint)} — {t(UI.open)} <b>{t(nearZone.label)}</b>
         </div>
       )}
 
       {openedZone && (
         <div className={'scrim' + (isTouch ? ' sheet-mode' : '')} onClick={closeIfSettled}>
-          <section className={'drawer ' + openedZone.kind} onClick={e => e.stopPropagation()} role="dialog" aria-label={openedZone.title}>
+          <section className={'drawer ' + openedZone.kind} onClick={e => e.stopPropagation()} role="dialog" aria-label={t(openedZone.title)}>
             <header className="dhead">
               {isTouch && <i className="grip" />}
-              <div className="kindtag"><span>{KIND[openedZone.kind].icon}</span>{KIND[openedZone.kind].label} · đảo {islands.indexOf(openedZone) + 1}/{islands.length}</div>
-              <h2>{openedZone.title}</h2>
+              <div className="kindtag"><span>{KIND_ICON[openedZone.kind]}</span>{t(UI.kinds[openedZone.kind])} · {t(UI.island)} {islands.indexOf(openedZone) + 1}/{islands.length}</div>
+              <h2>{t(openedZone.title)}</h2>
               <div className="dots">{islands.map(z => <i key={z.id} className={z.id === openedZone.id ? 'on' : ''} />)}</div>
               {/* FR-021: đóng được bằng ít nhất hai cách */}
-              <button className="close" onClick={() => setOpen(null)} aria-label="Đóng bảng nội dung">✕</button>
+              <button className="close" onClick={closeZone} aria-label={t(UI.close)}>✕</button>
             </header>
             <div className="dbody">
-              {openedZone.body.map((p, i) => <p key={i}>{p}</p>)}
-              <div className="chips">
-                {openedZone.meta.map(([k, v]) => <span key={k} className="chip"><b>{k}</b>{v}</span>)}
-              </div>
+              <ZoneBody island={openedZone} />
             </div>
-            <footer>{isTouch ? 'Chạm ra ngoài hoặc ✕ để đóng.' : <>Đóng bằng nút ✕ hoặc phím <b>Esc</b>.</>}</footer>
+            <footer>{t(isTouch ? UI.closeTouch : UI.closeKeys)}</footer>
           </section>
         </div>
       )}
 
       {help && (
         <div className="panelwrap" onClick={() => setHelp(false)}>
-          <section className="panel help-panel" onClick={e => e.stopPropagation()} role="dialog" aria-label="Điều khiển">
+          <section className="panel help-panel" onClick={e => e.stopPropagation()} role="dialog" aria-label={t(UI.controls)}>
             <header>
-              <h2>Điều khiển</h2>
-              <button onClick={() => setHelp(false)} aria-label="Đóng bảng hướng dẫn">✕</button>
+              <h2>{t(UI.controls)}</h2>
+              <button onClick={() => setHelp(false)} aria-label={t(UI.close)}>✕</button>
             </header>
             <table>
               <tbody>
-                <tr><td>Di chuyển</td><td><span className="key">W</span><span className="key">A</span><span className="key">S</span><span className="key">D</span> hoặc phím mũi tên</td></tr>
-                <tr><td>Chạy</td><td>giữ <span className="key">Shift</span></td></tr>
-                <tr><td>Tương tác</td><td><span className="key">E</span> hoặc bấm chuột vào vật thể</td></tr>
-                <tr><td>Đóng bảng</td><td><span className="key">Esc</span></td></tr>
-                <tr><td>Phóng to / thu nhỏ</td><td>con lăn chuột</td></tr>
-                <tr><td>Xoay góc nhìn</td><td><span className="key">Q</span><span className="key">R</span> hoặc nút ↶ ↷ góc trên phải — mỗi lần 90°, hướng đi đổi theo</td></tr>
-                <tr><td>Sang đảo khác</td><td>đi qua cầu dây — không nhảy, không rơi</td></tr>
-                <tr><td>Bản 2D</td><td>nút <b>2D</b> góc trên trái — cùng nội dung, không cần WebGL; thêm <code>?mode=2d</code> vào địa chỉ để mở thẳng</td></tr>
-                <tr><td>Màn cảm ứng</td><td>cần bên trái để đi (đẩy mạnh = chạy) · ✋ để tương tác · véo hai ngón để phóng to / thu nhỏ</td></tr>
+                <tr><td>{t(UI.help.move[0])}</td><td><span className="key">W</span><span className="key">A</span><span className="key">S</span><span className="key">D</span> {t(UI.help.move[1])}</td></tr>
+                <tr><td>{t(UI.help.run[0])}</td><td>{t(UI.help.run[1])} <span className="key">Shift</span></td></tr>
+                <tr><td>{t(UI.help.interact[0])}</td><td><span className="key">E</span> {t(UI.help.interact[1])}</td></tr>
+                <tr><td>{t(UI.help.closeP[0])}</td><td><span className="key">Esc</span></td></tr>
+                <tr><td>{t(UI.help.zoom[0])}</td><td>{t(UI.help.zoom[1])}</td></tr>
+                <tr><td>{t(UI.help.rotate[0])}</td><td><span className="key">Q</span><span className="key">R</span> {t(UI.help.rotate[1])}</td></tr>
+                <tr><td>{t(UI.help.cross[0])}</td><td>{t(UI.help.cross[1])}</td></tr>
+                <tr><td>{t(UI.help.lang[0])}</td><td>{t(UI.help.lang[1])}</td></tr>
+                <tr><td>{t(UI.help.mode2d[0])}</td><td>{t(UI.help.mode2d[1])}</td></tr>
+                <tr><td>{t(UI.help.touch[0])}</td><td>{t(UI.help.touch[1])}</td></tr>
               </tbody>
             </table>
-            <footer>FR-037, FR-038 — bảng này gọi ra được bất kỳ lúc nào.</footer>
+            <footer>FR-037, FR-038</footer>
           </section>
         </div>
       )}

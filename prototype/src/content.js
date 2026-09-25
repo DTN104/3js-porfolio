@@ -14,64 +14,39 @@ export function bridgeY(b, t) {
 
 export const islands = [
   {
-    id: 'gioi-thieu', model: '/models/islands/AST03a_Island01_Intro.glb', label: 'Giới thiệu', hint: 'Căn nhà',
+    id: 'gioi-thieu', model: '/models/islands/AST03a_Island01_Intro.glb', label: { vi: 'Giới thiệu', en: 'About' }, hint: { vi: 'Căn nhà', en: 'The cottage' },
     pos: [-24, 12], r: 9, y: 0,
     kind: 'house', ir: 4.2, or: 3.3,
     grass: '#8CBE68', rock: '#9E8E7C',
-    title: 'Giới thiệu',
-    body: [
-      'Khu vực mở đầu: tên, vai trò nghề nghiệp và mô tả ngắn.',
-      'Đây là đảo xuất phát — nhân vật luôn khởi tạo tại đây (FR-008).'
-    ],
-    meta: [['Vật thể', 'AST-06'], ['Đảo', 'AST-03'], ['Requirement', 'FR-016, FR-023']]
+    title: { vi: 'Giới thiệu', en: 'About me' }
   },
   {
-    id: 'ky-nang', model: '/models/islands/AST03b_Island02_Skills.glb', label: 'Kỹ năng', hint: 'Xưởng làm việc',
+    id: 'ky-nang', model: '/models/islands/AST03b_Island02_Skills.glb', label: { vi: 'Kỹ năng', en: 'Skills' }, hint: { vi: 'Xưởng làm việc', en: 'The workshop' },
     pos: [-8, -6], r: 8, y: 2.2,
     kind: 'workshop', ir: 4.0, or: 2.0,
     grass: '#8CBE68', rock: '#9E8E7C',
-    title: 'Kỹ năng',
-    body: [
-      'Nhóm kỹ năng theo lĩnh vực, mỗi nhóm là một hạng mục nội dung.',
-      'Số lượng nhóm đổi được mà không phải dựng lại model — dùng chung nguồn với chế độ 2D (FR-078).'
-    ],
-    meta: [['Vật thể', 'AST-07'], ['Đảo', 'AST-03'], ['Requirement', 'FR-024']]
+    title: { vi: 'Kỹ năng', en: 'Skills' }
   },
   {
-    id: 'du-an', model: '/models/islands/AST03c_Island03_Projects.glb', label: 'Dự án', hint: 'Khu trưng bày',
+    id: 'du-an', model: '/models/islands/AST03c_Island03_Projects.glb', label: { vi: 'Dự án', en: 'Projects' }, hint: { vi: 'Khu trưng bày', en: 'The gallery' },
     pos: [10, 10], r: 9.5, y: 0.8,
     kind: 'gallery', ir: 4.6, or: 3.1,
     grass: '#8CBE68', rock: '#9E8E7C',
-    title: 'Dự án',
-    body: [
-      'Một vật thể chung cho toàn bộ danh sách dự án — mặt trưng bày để trống, số dự án đổi mà không phải dựng lại model.',
-      'Đây là phương án đang khuyến nghị ở OQ-19.'
-    ],
-    meta: [['Vật thể', 'AST-08'], ['Câu hỏi', 'OQ-19'], ['Requirement', 'FR-025, FR-059']]
+    title: { vi: 'Dự án', en: 'Projects' }
   },
   {
-    id: 'kinh-nghiem', model: '/models/islands/AST03d_Island04_Experience.glb', label: 'Kinh nghiệm', hint: 'Cột mốc',
+    id: 'kinh-nghiem', model: '/models/islands/AST03d_Island04_Experience.glb', label: { vi: 'Kinh nghiệm', en: 'Experience' }, hint: { vi: 'Cột mốc', en: 'The milestones' },
     pos: [27, -8], r: 8, y: 3.0,
     kind: 'monument', ir: 4.0, or: 2.3,
     grass: '#8CBE68', rock: '#9E8E7C',
-    title: 'Kinh nghiệm',
-    body: [
-      'Dòng thời gian nghề nghiệp, mỗi cột mốc là một giai đoạn.',
-      'Thứ tự các đảo chính là thứ tự tường thuật: giới thiệu → kỹ năng → dự án → kinh nghiệm → liên hệ.'
-    ],
-    meta: [['Vật thể', 'AST-09'], ['Đảo', 'AST-03'], ['Requirement', 'FR-026']]
+    title: { vi: 'Kinh nghiệm', en: 'Experience' }
   },
   {
-    id: 'lien-he', model: '/models/islands/AST03e_Island05_Contact.glb', label: 'Liên hệ & CV', hint: 'Hòm thư',
+    id: 'lien-he', model: '/models/islands/AST03e_Island05_Contact.glb', label: { vi: 'Liên hệ & CV', en: 'Contact & CV' }, hint: { vi: 'Hòm thư', en: 'The mailbox' },
     pos: [37, 12], r: 7.5, y: 1.2,
     kind: 'mailbox', ir: 3.8, or: 1.5,
     grass: '#8CBE68', rock: '#9E8E7C',
-    title: 'Liên hệ & CV',
-    body: [
-      'Thư điện tử, liên kết mạng xã hội và nút tải CV.',
-      'Không có form gửi trên trang — đã chốt ở OQ-01.'
-    ],
-    meta: [['Vật thể', 'AST-10'], ['Đảo', 'AST-03'], ['Requirement', 'FR-032, FR-033, FR-035']]
+    title: { vi: 'Liên hệ & CV', en: 'Contact & CV' }
   }
 ]
 
@@ -129,14 +104,16 @@ export const SPAWN = [islands[0].pos[0] + 3.5, islands[0].y, islands[0].pos[1] +
 /* ============================================================================
    NỘI DUNG PORTFOLIO — nguồn dùng chung cho thế giới 3D và trang 2D (OQ-02, FR-078).
    *** MOCK *** — toàn bộ chữ dưới đây là dữ liệu giữ chỗ để dựng bố cục; chủ portfolio thay bằng nội dung thật.
-   Song ngữ (OQ-03) sau này: mỗi chuỗi -> { vi: '…', en: '…' }, cấu trúc không đổi.
+   Song ngữ (OQ-03): chuỗi viết dạng { vi: '…', en: '…' }; chuỗi thường dùng chung cho cả hai ngôn ngữ.
    ============================================================================ */
+const T = (vi, en) => ({ vi, en })
 
 export const profile = {
-  name: 'Tên Của Bạn',
-  role: 'Business Analyst · Fintech & Chứng khoán',
-  tagline: 'Biến yêu cầu nghiệp vụ thành sản phẩm số dùng được — từ BRD tới bàn giao và kiểm thử.',
-  location: 'TP. Hồ Chí Minh',
+  name: T('Tên Của Bạn', 'Your Name'),
+  role: T('Business Analyst · Fintech & Chứng khoán', 'Business Analyst · Fintech & Securities'),
+  tagline: T('Biến yêu cầu nghiệp vụ thành sản phẩm số dùng được — từ BRD tới bàn giao và kiểm thử.',
+             'Turning business needs into working digital products — from BRD to hand-off and testing.'),
+  location: T('TP. Hồ Chí Minh', 'Ho Chi Minh City'),
   available: true,                                  // FR-034: trạng thái "sẵn sàng nhận cơ hội"
   avatar: null,                                     // '/img/avatar.jpg' — chưa có thì hiện chữ cái đầu
   cv: '/cv.pdf',                                    // FR-033: nút tải CV
@@ -150,43 +127,63 @@ export const profile = {
 export const zones = {
   'gioi-thieu': {
     intro: [
-      'Tôi là Business Analyst với nhiều năm làm việc trong ngành chứng khoán, đứng giữa đội nghiệp vụ, đội phát triển và hạ tầng để đưa yêu cầu đi từ ý tưởng tới tính năng chạy thật.',
-      'Thế mạnh của tôi là mô hình hoá quy trình, viết tài liệu yêu cầu rõ ràng và theo sát tới lúc kiểm thử — gần đây tập trung vào các sản phẩm ứng dụng AI cho phân tích đầu tư.'
+      T('Tôi là Business Analyst với nhiều năm làm việc trong ngành chứng khoán, đứng giữa đội nghiệp vụ, đội phát triển và hạ tầng để đưa yêu cầu đi từ ý tưởng tới tính năng chạy thật.',
+        'I am a Business Analyst with years in the securities industry, sitting between business, engineering and infrastructure teams to take requirements from idea to a feature that actually ships.'),
+      T('Thế mạnh của tôi là mô hình hoá quy trình, viết tài liệu yêu cầu rõ ràng và theo sát tới lúc kiểm thử — gần đây tập trung vào các sản phẩm ứng dụng AI cho phân tích đầu tư.',
+        'My strengths are process modelling, clear requirement documents and staying with a feature through testing — lately focused on AI products for investment research.')
     ],
-    facts: [['Kinh nghiệm', '7+ năm'], ['Lĩnh vực', 'Chứng khoán · Fintech'], ['Vai trò', 'BA · Product'], ['Ngôn ngữ', 'Tiếng Việt · English']]
+    facts: [
+      [T('Kinh nghiệm', 'Experience'), T('7+ năm', '7+ years')],
+      [T('Lĩnh vực', 'Domain'), T('Chứng khoán · Fintech', 'Securities · Fintech')],
+      [T('Vai trò', 'Roles'), 'BA · Product'],
+      [T('Ngôn ngữ', 'Languages'), T('Tiếng Việt · English', 'Vietnamese · English')]
+    ]
   },
   'ky-nang': {
     groups: [
-      { name: 'Phân tích nghiệp vụ', items: ['BRD / SRS', 'User Story & AC', 'BPMN', 'Sequence diagram', 'Traceability matrix'] },
-      { name: 'Sản phẩm & dữ liệu', items: ['SQL', 'BigQuery', 'Python (cơ bản)', 'Dashboard', 'Kiểm thử UAT'] },
-      { name: 'AI ứng dụng', items: ['Prompt design', 'Đánh giá chatbot', 'Pipeline sinh báo cáo', 'MCP / tool use'] },
-      { name: 'Nghiệp vụ chứng khoán', items: ['Giao dịch & lưu ký', 'Corporate action', 'KYC / tuân thủ', 'Vận hành hệ thống'] }
+      { name: T('Phân tích nghiệp vụ', 'Business analysis'), items: ['BRD / SRS', T('User Story & AC', 'User stories & AC'), 'BPMN', 'Sequence diagram', 'Traceability matrix'] },
+      { name: T('Sản phẩm & dữ liệu', 'Product & data'), items: ['SQL', 'BigQuery', T('Python (cơ bản)', 'Python (basic)'), 'Dashboard', T('Kiểm thử UAT', 'UAT')] },
+      { name: T('AI ứng dụng', 'Applied AI'), items: ['Prompt design', T('Đánh giá chatbot', 'Chatbot evaluation'), T('Pipeline sinh báo cáo', 'Report-generation pipeline'), 'MCP / tool use'] },
+      { name: T('Nghiệp vụ chứng khoán', 'Securities domain'), items: [T('Giao dịch & lưu ký', 'Trading & custody'), 'Corporate action', T('KYC / tuân thủ', 'KYC / compliance'), T('Vận hành hệ thống', 'System operations')] }
     ]
   },
   'du-an': {
     projects: [
-      { title: 'Cổng thông báo quyền cổ đông tự động', year: '2025', role: 'BA chính',
-        summary: 'Hệ thống gửi email + cổng web thông báo corporate action cho khách hàng tổ chức, thay quy trình thủ công.',
+      { title: T('Cổng thông báo quyền cổ đông tự động', 'Automated corporate-action notifications'), year: '2025', role: T('BA chính', 'Lead BA'),
+        summary: T('Hệ thống gửi email + cổng web thông báo corporate action cho khách hàng tổ chức, thay quy trình thủ công.',
+                   'Email + web portal notifying institutional clients of corporate actions, replacing a manual process.'),
         tags: ['BRD', 'BPMN', 'Email automation'], image: null, url: null },
-      { title: 'Trợ lý AI sinh báo cáo phân tích cổ phiếu', year: '2025', role: 'BA · Prompt design',
-        summary: 'Pipeline lấy dữ liệu tài chính, sinh báo cáo theo mẫu và đánh giá chất lượng đầu ra.',
-        tags: ['AI', 'BigQuery', 'Đánh giá chất lượng'], image: null, url: null },
-      { title: 'Giao dịch thoả thuận trên ứng dụng di động', year: '2024', role: 'BA',
-        summary: 'Bổ sung luồng đặt lệnh thoả thuận cho app: yêu cầu, quy tắc nghiệp vụ, thiết kế cùng UX, test case.',
+      { title: T('Trợ lý AI sinh báo cáo phân tích cổ phiếu', 'AI assistant for equity research reports'), year: '2025', role: 'BA · Prompt design',
+        summary: T('Pipeline lấy dữ liệu tài chính, sinh báo cáo theo mẫu và đánh giá chất lượng đầu ra.',
+                   'Pipeline that pulls financial data, generates templated reports and scores output quality.'),
+        tags: ['AI', 'BigQuery', T('Đánh giá chất lượng', 'Quality evaluation')], image: null, url: null },
+      { title: T('Giao dịch thoả thuận trên ứng dụng di động', 'Negotiated trading on the mobile app'), year: '2024', role: 'BA',
+        summary: T('Bổ sung luồng đặt lệnh thoả thuận cho app: yêu cầu, quy tắc nghiệp vụ, thiết kế cùng UX, test case.',
+                   'Added a negotiated-order flow to the app: requirements, business rules, design with UX, test cases.'),
         tags: ['Mobile', 'User Story', 'UAT'], image: null, url: null }
     ]
   },
   'kinh-nghiem': {
     timeline: [
-      { from: '2023', to: 'nay', org: 'Công ty Chứng khoán A', title: 'Business Analyst · Khối CNTT',
-        bullets: ['Chủ trì yêu cầu cho các sản phẩm khách hàng tổ chức và AI', 'Điều phối nghiệp vụ – phát triển – hạ tầng'] },
-      { from: '2019', to: '2023', org: 'Sở Giao dịch Chứng khoán B', title: 'Chuyên viên vận hành hệ thống giao dịch',
-        bullets: ['Vận hành, điều phối UAT hệ thống giao dịch', 'Xử lý dữ liệu sau giao dịch'] },
-      { from: '2017', to: '2019', org: 'Công ty C', title: 'Chuyên viên phân tích',
-        bullets: ['Bắt đầu với phân tích quy trình và báo cáo'] }
+      { from: '2023', to: T('nay', 'now'), org: T('Công ty Chứng khoán A', 'Securities Company A'), title: T('Business Analyst · Khối CNTT', 'Business Analyst · IT Division'),
+        bullets: [T('Chủ trì yêu cầu cho các sản phẩm khách hàng tổ chức và AI', 'Owned requirements for institutional-client and AI products'),
+                  T('Điều phối nghiệp vụ – phát triển – hạ tầng', 'Coordinated business, engineering and infrastructure')] },
+      { from: '2019', to: '2023', org: T('Sở Giao dịch Chứng khoán B', 'Stock Exchange B'), title: T('Chuyên viên vận hành hệ thống giao dịch', 'Trading-system operations specialist'),
+        bullets: [T('Vận hành, điều phối UAT hệ thống giao dịch', 'Operated the trading system and coordinated UAT'),
+                  T('Xử lý dữ liệu sau giao dịch', 'Post-trade data processing')] },
+      { from: '2017', to: '2019', org: T('Công ty C', 'Company C'), title: T('Chuyên viên phân tích', 'Analyst'),
+        bullets: [T('Bắt đầu với phân tích quy trình và báo cáo', 'Started with process analysis and reporting')] }
     ]
   },
   'lien-he': {
-    note: 'Muốn trao đổi về BA, sản phẩm fintech hay ứng dụng AI trong đầu tư? Gửi email hoặc kết nối qua LinkedIn.'
+    note: T('Muốn trao đổi về BA, sản phẩm fintech hay ứng dụng AI trong đầu tư? Gửi email hoặc kết nối qua LinkedIn.',
+            'Want to talk BA, fintech products or AI in investing? Send an email or connect on LinkedIn.')
   }
+}
+
+// Thẻ chia sẻ / SEO (AST-19, FR-056) — index.html dùng bản tĩnh; giữ ở đây để đồng bộ khi đổi nội dung
+export const seo = {
+  title: T('Tên Của Bạn — Portfolio 3D', 'Your Name — 3D Portfolio'),
+  description: T('Portfolio Business Analyst dạng thế giới 3D: 5 hòn đảo trôi trên mây, mỗi đảo một chương — giới thiệu, kỹ năng, dự án, kinh nghiệm, liên hệ.',
+                 'A Business Analyst portfolio as a 3D world: five floating islands, one chapter each — about, skills, projects, experience, contact.')
 }
