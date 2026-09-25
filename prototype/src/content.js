@@ -125,3 +125,68 @@ export function surfaceAt(x, z) {
 }
 
 export const SPAWN = [islands[0].pos[0] + 3.5, islands[0].y, islands[0].pos[1] + 4.5]
+
+/* ============================================================================
+   NỘI DUNG PORTFOLIO — nguồn dùng chung cho thế giới 3D và trang 2D (OQ-02, FR-078).
+   *** MOCK *** — toàn bộ chữ dưới đây là dữ liệu giữ chỗ để dựng bố cục; chủ portfolio thay bằng nội dung thật.
+   Song ngữ (OQ-03) sau này: mỗi chuỗi -> { vi: '…', en: '…' }, cấu trúc không đổi.
+   ============================================================================ */
+
+export const profile = {
+  name: 'Tên Của Bạn',
+  role: 'Business Analyst · Fintech & Chứng khoán',
+  tagline: 'Biến yêu cầu nghiệp vụ thành sản phẩm số dùng được — từ BRD tới bàn giao và kiểm thử.',
+  location: 'TP. Hồ Chí Minh',
+  available: true,                                  // FR-034: trạng thái "sẵn sàng nhận cơ hội"
+  avatar: null,                                     // '/img/avatar.jpg' — chưa có thì hiện chữ cái đầu
+  cv: '/cv.pdf',                                    // FR-033: nút tải CV
+  email: 'you@example.com',                         // FR-035: chỉ hiển thị, không có form (OQ-01)
+  socials: [                                        // FR-036
+    { label: 'LinkedIn', url: 'https://linkedin.com/in/your-handle' },
+    { label: 'GitHub', url: 'https://github.com/your-handle' }
+  ]
+}
+
+export const zones = {
+  'gioi-thieu': {
+    intro: [
+      'Tôi là Business Analyst với nhiều năm làm việc trong ngành chứng khoán, đứng giữa đội nghiệp vụ, đội phát triển và hạ tầng để đưa yêu cầu đi từ ý tưởng tới tính năng chạy thật.',
+      'Thế mạnh của tôi là mô hình hoá quy trình, viết tài liệu yêu cầu rõ ràng và theo sát tới lúc kiểm thử — gần đây tập trung vào các sản phẩm ứng dụng AI cho phân tích đầu tư.'
+    ],
+    facts: [['Kinh nghiệm', '7+ năm'], ['Lĩnh vực', 'Chứng khoán · Fintech'], ['Vai trò', 'BA · Product'], ['Ngôn ngữ', 'Tiếng Việt · English']]
+  },
+  'ky-nang': {
+    groups: [
+      { name: 'Phân tích nghiệp vụ', items: ['BRD / SRS', 'User Story & AC', 'BPMN', 'Sequence diagram', 'Traceability matrix'] },
+      { name: 'Sản phẩm & dữ liệu', items: ['SQL', 'BigQuery', 'Python (cơ bản)', 'Dashboard', 'Kiểm thử UAT'] },
+      { name: 'AI ứng dụng', items: ['Prompt design', 'Đánh giá chatbot', 'Pipeline sinh báo cáo', 'MCP / tool use'] },
+      { name: 'Nghiệp vụ chứng khoán', items: ['Giao dịch & lưu ký', 'Corporate action', 'KYC / tuân thủ', 'Vận hành hệ thống'] }
+    ]
+  },
+  'du-an': {
+    projects: [
+      { title: 'Cổng thông báo quyền cổ đông tự động', year: '2025', role: 'BA chính',
+        summary: 'Hệ thống gửi email + cổng web thông báo corporate action cho khách hàng tổ chức, thay quy trình thủ công.',
+        tags: ['BRD', 'BPMN', 'Email automation'], image: null, url: null },
+      { title: 'Trợ lý AI sinh báo cáo phân tích cổ phiếu', year: '2025', role: 'BA · Prompt design',
+        summary: 'Pipeline lấy dữ liệu tài chính, sinh báo cáo theo mẫu và đánh giá chất lượng đầu ra.',
+        tags: ['AI', 'BigQuery', 'Đánh giá chất lượng'], image: null, url: null },
+      { title: 'Giao dịch thoả thuận trên ứng dụng di động', year: '2024', role: 'BA',
+        summary: 'Bổ sung luồng đặt lệnh thoả thuận cho app: yêu cầu, quy tắc nghiệp vụ, thiết kế cùng UX, test case.',
+        tags: ['Mobile', 'User Story', 'UAT'], image: null, url: null }
+    ]
+  },
+  'kinh-nghiem': {
+    timeline: [
+      { from: '2023', to: 'nay', org: 'Công ty Chứng khoán A', title: 'Business Analyst · Khối CNTT',
+        bullets: ['Chủ trì yêu cầu cho các sản phẩm khách hàng tổ chức và AI', 'Điều phối nghiệp vụ – phát triển – hạ tầng'] },
+      { from: '2019', to: '2023', org: 'Sở Giao dịch Chứng khoán B', title: 'Chuyên viên vận hành hệ thống giao dịch',
+        bullets: ['Vận hành, điều phối UAT hệ thống giao dịch', 'Xử lý dữ liệu sau giao dịch'] },
+      { from: '2017', to: '2019', org: 'Công ty C', title: 'Chuyên viên phân tích',
+        bullets: ['Bắt đầu với phân tích quy trình và báo cáo'] }
+    ]
+  },
+  'lien-he': {
+    note: 'Muốn trao đổi về BA, sản phẩm fintech hay ứng dụng AI trong đầu tư? Gửi email hoặc kết nối qua LinkedIn.'
+  }
+}

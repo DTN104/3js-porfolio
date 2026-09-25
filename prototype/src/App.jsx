@@ -14,7 +14,7 @@ const KIND = {
   mailbox:  { icon: '✉️', label: 'Hòm thư' }
 }
 
-export default function App() {
+export default function App({ onSwitch2D }) {
   const body = useRef()
   const zoom = useRef(1)
   const [near, setNear] = useState(null)      // FR-019: đảo đang trong tầm tương tác
@@ -122,6 +122,8 @@ export default function App() {
       </Canvas>
 
       <button className="iconbtn help" onClick={() => setHelp(true)} aria-label="Bảng hướng dẫn điều khiển">?</button>
+      {/* FR-047: luôn có lối sang bản 2D đầy đủ nội dung */}
+      {onSwitch2D && <button className="iconbtn mode2d" onClick={onSwitch2D} aria-label="Xem bản 2D" title="Xem bản 2D">2D</button>}
 
       <div className="stamp">prototype · đảo trôi trên mây · model và nội dung đều là bản tạm</div>
       {showStats && <Stats />}
@@ -183,6 +185,7 @@ export default function App() {
                 <tr><td>Phóng to / thu nhỏ</td><td>con lăn chuột</td></tr>
                 <tr><td>Xoay góc nhìn</td><td><span className="key">Q</span><span className="key">R</span> hoặc nút ↶ ↷ góc trên phải — mỗi lần 90°, hướng đi đổi theo</td></tr>
                 <tr><td>Sang đảo khác</td><td>đi qua cầu dây — không nhảy, không rơi</td></tr>
+                <tr><td>Bản 2D</td><td>nút <b>2D</b> góc trên trái — cùng nội dung, không cần WebGL; thêm <code>?mode=2d</code> vào địa chỉ để mở thẳng</td></tr>
                 <tr><td>Màn cảm ứng</td><td>cần bên trái để đi (đẩy mạnh = chạy) · ✋ để tương tác · véo hai ngón để phóng to / thu nhỏ</td></tr>
               </tbody>
             </table>
