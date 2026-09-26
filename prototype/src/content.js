@@ -6,11 +6,15 @@
 
 export const EDGE_MARGIN = 0.9   // OQ-21 — phương án đề xuất: chặn mềm ở mép, không cho rơi
 export const BRIDGE_HALF = 1.25  // nửa chiều rộng mặt cầu
-// AST-12: mặt ván võng theo parabol. PHẢI khớp SAG trong specs/.../assets-3d/bridges/build_bridge.py,
-// nếu không nhân vật lơ lửng trên ván (hoặc chìm) ở giữa cầu.
+// AST-12: giữ hai đoạn nằm trên đảo phẳng với mặt cỏ, chỉ võng ở khoảng trống.
+// Công thức này phải khớp frame() trong specs/.../assets-3d/bridges/build_bridge.py.
 export const BRIDGE_SAG = 0.4
+const BRIDGE_LANDING = 1.8
 export function bridgeY(b, t) {
-  return b.fromY + (b.toY - b.fromY) * t - BRIDGE_SAG * 4 * t * (1 - t)
+  const u = Math.max(0, Math.min(1, (t * b.len - BRIDGE_LANDING) / (b.len - 2 * BRIDGE_LANDING)))
+  const rise = u * u * (3 - 2 * u)
+  const sag = 16 * u * u * (1 - u) * (1 - u)
+  return b.fromY + (b.toY - b.fromY) * rise - BRIDGE_SAG * sag
 }
 
 export const islands = [
@@ -54,7 +58,7 @@ export const islands = [
 // AST-12: cầu dây nối hai đảo liền kề theo thứ tự tường thuật.
 // Điểm đầu thụt vào trong mặt cỏ để vùng đi được của cầu và của đảo chồng lên nhau,
 // tránh khe hở làm nhân vật kẹt ở mép.
-const INSET = 1.8
+const INSET = BRIDGE_LANDING
 // Bán kính mặt cỏ theo hướng cầu; dùng kích thước top của GLB thay vì bán kính tròn danh nghĩa.
 const topRadius = (island, ux, uz) => 1 / Math.hypot(ux / island.top[0], uz / island.top[1])
 

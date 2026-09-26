@@ -4,7 +4,8 @@
 #
 # Hệ trục: dựng dọc -Y (Blender) => +Z trong three.js; ngang = X; cao = Z.
 # Gốc = điểm đầu cầu, mặt ván tại z=0 => đặt ở (from.x, fromY, from.z) quay rotation.y = yaw là khớp.
-# Mặt ván võng theo z(t) = dy*t - SAG*4t(1-t); content.js phải nội suy đúng công thức này (bridgeY).
+# Hai đoạn hạ cánh nằm ngang với cỏ; mặt ván chỉ đổi cao độ và võng giữa hai mép đảo.
+# content.js phải nội suy đúng công thức này (bridgeY).
 import bpy, bmesh, math, random, os
 from mathutils import Vector
 
@@ -12,6 +13,7 @@ OUT_GLB = "/Users/td-macbook-07/Work/threejs-portfolio/prototype/public/models/b
 OUT_SRC = "/Users/td-macbook-07/Work/threejs-portfolio/specs/001-3d-world-portfolio/assets-3d/bridges"
 
 SAG = 0.40            # võng mặt ván ở giữa (spec: "about half a meter" tính cả dây tay)
+LANDING = 1.8         # phần cầu nằm trên đảo, phẳng với mặt cỏ
 HAND = 0.95           # dây tay cao trên mặt ván
 HAND_SAG = 0.12       # dây tay võng thêm so với mặt ván
 HALF_W = 1.25         # nửa chiều rộng lọt lòng giữa hai dây (spec 2,5 m)
@@ -37,7 +39,7 @@ def get_mats():
     out = []
     for k in KEYS:
         h = PAL[k]; n = "B_" + k
-        m = bpy.data.materials.get(n) or bpy.data.materials.new(n)
+        m = bpy.data.materials.new(n)
         m.use_nodes = True
         b = next(x for x in m.node_tree.nodes if x.type == 'BSDF_PRINCIPLED')
         b.inputs['Base Color'].default_value = (s2l(int(h[0:2],16)), s2l(int(h[2:4],16)), s2l(int(h[4:6],16)), 1)
@@ -51,8 +53,9 @@ def frame(t, L, dy, extra_sag=0.0):
     """Trả về (điểm trên mặt ván, tiếp tuyến đơn vị, pháp tuyến lên) trong mặt YZ."""
     sag = SAG + extra_sag
     y = -L * t
-    z = dy * t - sag * 4 * t * (1 - t)
-    dz = dy - sag * 4 * (1 - 2 * t)
+    u = max(0.0, min(1.0, (L * t - LANDING) / (L - 2 * LANDING)))
+    z = dy * u * u * (3 - 2 * u) - sag * 16 * u * u * (1 - u) * (1 - u)
+    dz = (dy * 6 * u * (1 - u) - sag * 32 * u * (1 - u) * (1 - 2 * u)) * L / (L - 2 * LANDING)
     ty, tz = -L, dz
     n = math.hypot(ty, tz); ty /= n; tz /= n
     uy, uz = tz, -ty                        # T × X — huong LEN (X × T cho ra huong xuong vi T doc -Y)
