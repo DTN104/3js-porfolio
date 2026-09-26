@@ -22,8 +22,8 @@ GAP = 0.06
 POST_EVERY = 2.0
 
 # 4 cầu — số lấy từ content.js (len = hypot(to-from), dy = toY - fromY)
-BRIDGES = [("cau-0", 10.683, 2.20), ("cau-1", 10.183, -1.40),
-           ("cau-2", 10.859, 2.20), ("cau-3", 10.461, -1.80)]
+BRIDGES = [("cau-0", 11.797, 2.20), ("cau-1", 11.110, -1.40),
+           ("cau-2", 13.752, 2.20), ("cau-3", 14.051, -1.80)]
 
 PAL = {"woodL": "A87A4F", "woodD": "7A5636", "rockL": "9E8E7C", "rockD": "6E6255"}
 KEYS = list(PAL.keys())

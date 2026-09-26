@@ -1,6 +1,7 @@
 // Chủ đề thế giới: Đảo trôi trên mây (OQ-06 đã chốt).
 // Toạ độ [x, z] tính bằng mét. y = cao độ mặt cỏ của đảo.
-// AST-03: đường kính đảo 15–19 m → r = 7,5…9,5. AST-12: cầu dây 10,2–10,9 m là lối đi duy nhất.
+// AST-03: đường kính đảo 15–19 m → r = 7,5…9,5. AST-12: cầu dây là lối đi duy nhất.
+// top = bán trục mặt cỏ đo từ GLB; đảo Kinh nghiệm hẹp hơn nhiều theo trục z.
 // or = bán kính vật cản của vật thể tương tác, theo kích thước spec AST-06…10 (nhà 6 m -> 3,3; khu trưng bày 5,5 m -> 3,1).
 
 export const EDGE_MARGIN = 0.9   // OQ-21 — phương án đề xuất: chặn mềm ở mép, không cho rơi
@@ -15,35 +16,35 @@ export function bridgeY(b, t) {
 export const islands = [
   {
     id: 'gioi-thieu', model: '/models/islands/AST03a_Island01_Intro.glb', label: { vi: 'Giới thiệu', en: 'About' }, hint: { vi: 'Căn nhà', en: 'The cottage' },
-    pos: [-24, 12], r: 9, y: 0,
+    pos: [-24, 12], r: 9, top: [9, 8.07], y: 0,
     kind: 'house', ir: 4.2, or: 3.3,
     grass: '#8CBE68', rock: '#9E8E7C',
     title: { vi: 'Giới thiệu', en: 'About me' }
   },
   {
     id: 'ky-nang', model: '/models/islands/AST03b_Island02_Skills.glb', label: { vi: 'Kỹ năng', en: 'Skills' }, hint: { vi: 'Xưởng làm việc', en: 'The workshop' },
-    pos: [-8, -6], r: 8, y: 2.2,
+    pos: [-8, -6], r: 8, top: [6.99, 7.87], y: 2.2,
     kind: 'workshop', ir: 4.0, or: 2.0,
     grass: '#8CBE68', rock: '#9E8E7C',
     title: { vi: 'Kỹ năng', en: 'Skills' }
   },
   {
     id: 'du-an', model: '/models/islands/AST03c_Island03_Projects.glb', label: { vi: 'Dự án', en: 'Projects' }, hint: { vi: 'Khu trưng bày', en: 'The gallery' },
-    pos: [10, 10], r: 9.5, y: 0.8,
+    pos: [10, 10], r: 9.5, top: [9.22, 9.25], y: 0.8,
     kind: 'gallery', ir: 4.6, or: 3.1,
     grass: '#8CBE68', rock: '#9E8E7C',
     title: { vi: 'Dự án', en: 'Projects' }
   },
   {
     id: 'kinh-nghiem', model: '/models/islands/AST03d_Island04_Experience.glb', label: { vi: 'Kinh nghiệm', en: 'Experience' }, hint: { vi: 'Cột mốc', en: 'The milestones' },
-    pos: [27, -8], r: 8, y: 3.0,
+    pos: [27, -8], r: 8, top: [8, 4.4], y: 3.0,
     kind: 'monument', ir: 4.0, or: 2.3,
     grass: '#8CBE68', rock: '#9E8E7C',
     title: { vi: 'Kinh nghiệm', en: 'Experience' }
   },
   {
     id: 'lien-he', model: '/models/islands/AST03e_Island05_Contact.glb', label: { vi: 'Liên hệ & CV', en: 'Contact & CV' }, hint: { vi: 'Hòm thư', en: 'The mailbox' },
-    pos: [37, 12], r: 7.5, y: 1.2,
+    pos: [37, 12], r: 7.5, top: [7.5, 7.09], y: 1.2,
     kind: 'mailbox', ir: 3.8, or: 1.5,
     grass: '#8CBE68', rock: '#9E8E7C',
     title: { vi: 'Liên hệ & CV', en: 'Contact & CV' }
@@ -54,6 +55,8 @@ export const islands = [
 // Điểm đầu thụt vào trong mặt cỏ để vùng đi được của cầu và của đảo chồng lên nhau,
 // tránh khe hở làm nhân vật kẹt ở mép.
 const INSET = 1.8
+// Bán kính mặt cỏ theo hướng cầu; dùng kích thước top của GLB thay vì bán kính tròn danh nghĩa.
+const topRadius = (island, ux, uz) => 1 / Math.hypot(ux / island.top[0], uz / island.top[1])
 
 export const bridges = [[0, 1], [1, 2], [2, 3], [3, 4]].map(([ia, ib], i) => {
   const A = islands[ia], B = islands[ib]
@@ -61,8 +64,9 @@ export const bridges = [[0, 1], [1, 2], [2, 3], [3, 4]].map(([ia, ib], i) => {
   const dz = B.pos[1] - A.pos[1]
   const d = Math.hypot(dx, dz)
   const ux = dx / d, uz = dz / d
-  const from = [A.pos[0] + ux * (A.r - INSET), A.pos[1] + uz * (A.r - INSET)]
-  const to   = [B.pos[0] - ux * (B.r - INSET), B.pos[1] - uz * (B.r - INSET)]
+  const ar = topRadius(A, ux, uz) - INSET, br = topRadius(B, ux, uz) - INSET
+  const from = [A.pos[0] + ux * ar, A.pos[1] + uz * ar]
+  const to   = [B.pos[0] - ux * br, B.pos[1] - uz * br]
   return {
     id: 'cau-' + i, a: ia, b: ib,
     from, to, fromY: A.y, toY: B.y,
@@ -78,9 +82,10 @@ export const obstacles = islands.map(z => ({ pos: z.pos, r: z.or }))
 // ok:false nếu vị trí đó là khoảng không giữa hai đảo.
 export function surfaceAt(x, z) {
   for (const is of islands) {
-    const d = Math.hypot(x - is.pos[0], z - is.pos[1])
-    if (d <= is.r - EDGE_MARGIN) {
-      return { ok: true, y: is.y, on: 'dao', id: is.id, edge: (is.r - EDGE_MARGIN) - d }
+    const [rx, rz] = is.top
+    const d = Math.hypot((x - is.pos[0]) / (rx - EDGE_MARGIN), (z - is.pos[1]) / (rz - EDGE_MARGIN))
+    if (d <= 1) {
+      return { ok: true, y: is.y, on: 'dao', id: is.id, edge: (1 - d) * Math.min(rx, rz) }
     }
   }
   for (const b of bridges) {

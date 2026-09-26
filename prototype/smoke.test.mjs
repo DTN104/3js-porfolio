@@ -16,7 +16,15 @@ for (const bridge of bridges) {
   assert.equal(bridgeY(bridge, 0), bridge.fromY)
   assert.equal(bridgeY(bridge, 1), bridge.toY)
   assert.equal(surfaceAt((bridge.from[0] + bridge.to[0]) / 2, (bridge.from[1] + bridge.to[1]) / 2).id, bridge.id)
+  assert.equal(surfaceAt(...bridge.from).id, islands[bridge.a].id)
+  assert.equal(surfaceAt(...bridge.to).id, islands[bridge.b].id)
+  const glb = readFileSync(new URL(`./public/models/bridges/${bridge.id}.glb`, import.meta.url))
+  const json = JSON.parse(glb.toString('utf8', 20, 20 + glb.readUInt32LE(12)))
+  const deck = json.accessors[json.meshes[0].primitives[0].attributes.POSITION]
+  assert.ok(Math.abs(deck.min[2] + deck.max[2] - bridge.len) < 0.01)
 }
+const narrowIsland = islands[3]
+assert.equal(surfaceAt(narrowIsland.pos[0], narrowIsland.pos[1] + narrowIsland.top[1]).ok, false)
 
 // The focused object projects to the center of the visible scene, not the full screen.
 for (const [width, height, right, bottom] of [[1440,900,434,0],[884,771,434,0],[390,844,0,489]]) {
