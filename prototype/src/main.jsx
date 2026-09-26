@@ -1,10 +1,9 @@
-import React, { useState, useCallback, useEffect } from 'react'
+import React, { useState, useCallback, useEffect, lazy, Suspense } from 'react'
 import { createRoot } from 'react-dom/client'
-import App from './App'
+const App = lazy(() => import('./App'))
 import Page2D from './Page2D'
 import { LangProvider, useLang, UI } from './i18n'
 import { seo } from './content'
-import './loading'            // gắn DefaultLoadingManager (tiến trình tải cho màn hình khởi động, mốc OQ-04 window.__loadMs)
 import './styles.css'
 
 // ---------- chọn chế độ hiển thị: 3D hay 2D (OQ-02, FR-005, FR-047) ----------
@@ -47,6 +46,7 @@ function Head() {
 }
 
 function Root() {
+  const { t } = useLang()
   const [mode, setMode] = useState(() => (CAN_3D ? pickMode() : '2d'))
   const choose = useCallback((m) => {
     try { localStorage.setItem('mode', m) } catch {}
@@ -59,7 +59,9 @@ function Root() {
   }
   return (
     <Guard fallback={<Page2D canRun3D={false} notice={UI.crashed} />}>
-      <App onSwitch2D={() => choose('2d')} />
+      <Suspense fallback={<div className="start"><div className="start-card"><p role="status">{t(UI.loading)}</p><button className="btn" onClick={() => choose('2d')}>{t(UI.view2d)}</button></div></div>}>
+        <App onSwitch2D={() => choose('2d')} />
+      </Suspense>
     </Guard>
   )
 }

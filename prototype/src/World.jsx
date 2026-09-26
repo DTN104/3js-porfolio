@@ -3,13 +3,14 @@ import { useFrame, useThree, useLoader } from '@react-three/fiber'
 import * as THREE from 'three'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { input } from './input'
+import { useLang, UI } from './i18n'
 import { islands, bridges, obstacles, surfaceAt, SPAWN } from './content'
 
 const WALK = 4.6
 const RUN = 9.2
 
 // Camera nhìn xuống 45°, xoay được theo bước 90° (camera.js); hướng đi quy chiếu theo camera hiện tại (FR-010).
-import { cam, camHoriz, camFwd, camRight } from './camera'
+import { cam, camHoriz, camFwd, camRight, frameForPanel } from './camera'
 
 // Ngẫu nhiên tất định — cùng một hạt giống luôn cho cùng một bố cục cây cối.
 function rng(seed) {
@@ -84,6 +85,25 @@ export function Clouds() {
                      args={[part.geometry, part.material, puffs[k].length]} frustumCulled={false} renderOrder={-1} />
     )
   })
+}
+
+// Canvas textures give signs readable text without another rendering dependency.
+function WorldLabel({ text, position }) {
+  const texture = useMemo(() => {
+    const canvas = document.createElement('canvas')
+    canvas.width = 512; canvas.height = 96
+    const ctx = canvas.getContext('2d')
+    ctx.fillStyle = '#fbfcfd'; ctx.beginPath(); ctx.roundRect(2, 2, 508, 92, 24); ctx.fill()
+    ctx.fillStyle = '#16202b'; ctx.font = '600 32px system-ui'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'
+    ctx.fillText(text, 256, 48, 470)
+    const map = new THREE.CanvasTexture(canvas)
+    map.colorSpace = THREE.SRGBColorSpace
+    return map
+  }, [text])
+  useLayoutEffect(() => () => texture.dispose(), [texture])
+  return <sprite position={position} scale={[4.8, 0.9, 1]}>
+    <spriteMaterial map={texture} transparent depthWrite={false} />
+  </sprite>
 }
 
 /* --------------------------------------------------------------- một hòn đảo */
@@ -269,6 +289,7 @@ function IslandModel({ url }) {
 }
 
 export function Island({ island, active, onOpen }) {
+  const { t } = useLang()
   const ring = useRef()
   const [x, z] = island.pos
 
@@ -283,6 +304,7 @@ export function Island({ island, active, onOpen }) {
   return (
     <group position={[x, island.y, z]}>
       <IslandModel url={island.model} />
+      <WorldLabel text={t(island.label)} position={[0, island.or * 1.5 + 2, 0]} />
       {/* FR-017: chỉ dấu vùng tương tác */}
       <group onClick={(e) => { e.stopPropagation(); onOpen && onOpen(island.id) }}>
         <mesh ref={ring} position={[0, 0.18, 0]} rotation={[-Math.PI / 2, 0, 0]}>
@@ -298,6 +320,7 @@ export function Island({ island, active, onOpen }) {
 /* --------------------------------------------------------------- AST-12 cầu dây */
 
 export function Bridge({ bridge }) {
+  const { t } = useLang()
   // AST-12 — mỗi cầu một model dựng parametric đúng chiều dài + chênh cao từ content.js
   // (specs/.../assets-3d/bridges/build_bridge.py). Gốc model = đầu cầu, mặt ván tại y=0,
   // trục dọc cầu = +Z => đặt tại from, quay theo yaw là khớp. Độ võng khớp bridgeY() trong content.js.
@@ -310,7 +333,11 @@ export function Bridge({ bridge }) {
   const [ax, az] = bridge.from
   const [bx, bz] = bridge.to
   const yaw = Math.atan2(bx - ax, bz - az)
-  return <primitive object={scene} position={[ax, bridge.fromY, az]} rotation={[0, yaw, 0]} />
+  return <>
+    <primitive object={scene} position={[ax, bridge.fromY, az]} rotation={[0, yaw, 0]} />
+    <WorldLabel text={t(UI.toward) + t(islands[bridge.b].label)} position={[ax, bridge.fromY + 2, az]} />
+    <WorldLabel text={t(UI.toward) + t(islands[bridge.a].label)} position={[bx, bridge.toY + 2, bz]} />
+  </>
 }
 
 /* --------------------------------------------------------------- nhân vật */
@@ -320,15 +347,13 @@ export function Avatar({ bodyRef }) {
   const dir = useRef(0)
   const surfY = useRef(SPAWN[1])
 
-  // AST-01 + AST-02: model có xương, 3 clip Idle / Walk / Run — dựng bằng
-  // specs/.../assets-3d/character/build_character.py. Model nhìn về +Z, khớp rotation.y = atan2(mx, mz).
-  const gltf = useLoader(GLTFLoader, '/models/character/AST01.glb')
+  // Nhân vật Hunyuan đã gắn xương và có 3 clip Idle / Walk / Run.
+  const gltf = useLoader(GLTFLoader, '/models/character/DatAnimated.glb')
   const mixer = useMemo(() => new THREE.AnimationMixer(gltf.scene), [gltf])
   const actions = useMemo(() => {
     const m = {}
     for (const clip of gltf.animations) m[clip.name] = mixer.clipAction(clip)
-    // tốc độ phát: clip Walk 1 s/chu kỳ, Run 0,67 s — nhân lên cho hợp 4,6 / 9,2 m/s của prototype
-    // (asset-prompts 4.2 đã ghi: tốc độ prototype cao hơn clip chuẩn, cần chốt — xem "Đề xuất thay đổi")
+    // Tăng nhịp chân theo tốc độ di chuyển của thế giới.
     if (m.Walk) m.Walk.timeScale = 1.7
     if (m.Run) m.Run.timeScale = 1.6
     return m
@@ -421,7 +446,7 @@ export function Avatar({ bodyRef }) {
 
   return (
     <group ref={bodyRef} position={SPAWN}>
-      <primitive object={gltf.scene} />
+      <primitive object={gltf.scene} scale={1.3} />
     </group>
   )
 }
@@ -443,24 +468,20 @@ export function CameraRig({ target, zoomRef, focusRef }) {
     const step = Math.min(dt, 0.05)
     // xoay góc nhìn mượt về góc đích (nút ↶ ↷ / phím Q R)
     cam.yaw = THREE.MathUtils.damp(cam.yaw, cam.yawTarget, 7, step)
-    const H = camHoriz(), RGT = camRight()
+    const H = camHoriz()
     const f = focusRef && focusRef.current
     let px, py, pz, rate
     if (f) {
-      // Khoảng cách sao cho vật thể (đường chéo mặt bằng ≈ 2,8·or, nhìn xiên) chiếm ~55% bề ngang phần màn còn trống;
-      // màn dọc tự lùi xa hơn vì fov ngang hẹp.
-      const aspect = size.width / size.height
-      const tanH = Math.tan(camera.fov * Math.PI / 360)
-      const D = Math.max(8, (f.or * 2.8) / (0.55 * 2 * tanH * Math.min(aspect, 1.2)))
-      const k = D / 1.687                                  // hướng camera (ngang √2·k, cao 0.92·k) có độ dài 1.687·k
-      px = f.x + H.x * k * 1.4142; py = f.y + k * 0.92; pz = f.z + H.z * k * 1.4142
-      // 'side': bảng che 28% bên phải -> dịch điểm nhìn sang phải để vật thể vào giữa phần trống
-      // 'sheet': tấm trượt che 58% dưới -> dịch điểm nhìn xuống để vật thể nằm giữa phần trên
-      const dx = f.mode === 'side' ? 0.14 * 2 * D * tanH * aspect : 0
-      const dy = f.mode === 'sheet' ? -0.29 * 2 * D * tanH : 0
-      aim.current.set(f.x + RGT.x * dx, f.y + 0.5 + f.or * 0.35 + dy, f.z + RGT.z * dx)
+      const frame = frameForPanel(size.width, size.height, f.right, f.bottom, f.or, camera.fov)
+      camera.setViewOffset(size.width, size.height, frame.offsetX, frame.offsetY, size.width, size.height)
+      aim.current.set(f.x, f.y + 0.5 + f.or * 0.35, f.z)
+      const k = frame.distance / 1.687
+      px = aim.current.x + H.x * k * 1.4142
+      py = aim.current.y + k * 0.92
+      pz = aim.current.z + H.z * k * 1.4142
       rate = 3.2                                   // bay tới chậm, có cảm giác "điện ảnh"
     } else {
+      if (camera.view?.enabled) camera.clearViewOffset()
       const z = zoomRef.current
       px = t.position.x + H.x * 19.8 * z; py = t.position.y + 14 * z; pz = t.position.z + H.z * 19.8 * z
       aim.current.set(t.position.x, t.position.y + 0.9, t.position.z)

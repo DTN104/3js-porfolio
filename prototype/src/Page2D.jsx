@@ -32,7 +32,8 @@ export default function Page2D({ onSwitch3D, canRun3D, notice }) {
     }, { rootMargin: '-40% 0px -50% 0px' })
     els.forEach(el => io.observe(el))
     // FR-058: #<id đảo> trên địa chỉ -> cuộn tới đúng section (kể cả khi vừa chuyển từ 3D sang, không tải lại trang)
-    const h = decodeURIComponent(location.hash.slice(1))
+    let h = ''
+    try { h = decodeURIComponent(location.hash.slice(1)) } catch {}
     const target = h && document.getElementById(h)
     if (target) target.scrollIntoView({ block: 'start' })
     return () => io.disconnect()
@@ -64,8 +65,8 @@ export default function Page2D({ onSwitch3D, canRun3D, notice }) {
           <p className="tagline">{t(profile.tagline)}</p>
           <p className="meta">{t(profile.location)}</p>
           <div className="contact-row">
-            <a className="btn primary" href={'mailto:' + profile.email}>{t(UI.contact)}</a>
-            <a className="btn" href={profile.cv} download>{t(UI.downloadCv)}</a>
+            {profile.email && <a className="btn primary" href={'mailto:' + profile.email}>{t(UI.contact)}</a>}
+            {profile.cv && <a className="btn" href={profile.cv} download>{t(UI.downloadCv)}</a>}
             {canRun3D && <button className="btn ghost" onClick={onSwitch3D}>{t(UI.explore3d)}</button>}
           </div>
         </div>

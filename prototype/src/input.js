@@ -1,7 +1,7 @@
 // Trạng thái bàn phím ở mức module — đọc trong useFrame, không gây re-render.
 // FR-013: nhiều phím cùng lúc; nhả hết khi cửa sổ mất tiêu điểm.
 
-import { rotateCamera } from './camera'
+import { rotateCamera } from './camera.js'
 
 const held = new Set()
 let frozen = false
@@ -43,7 +43,8 @@ export function freezeInput(v) {
 
 export function attachInput({ onInteract, onEscape, onHelp }) {
   const down = (e) => {
-    if (e.repeat) return
+    if (e.repeat || e.defaultPrevented || e.target?.closest?.('dialog, input, textarea, select, [contenteditable="true"]')) return
+    if (frozen) return
     if (e.code === 'Escape') { onEscape && onEscape(); return }
     if (e.key === '?') { onHelp && onHelp(); return }
     if (e.code === 'KeyE') { onInteract && onInteract(); return }

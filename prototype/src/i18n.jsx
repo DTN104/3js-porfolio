@@ -59,6 +59,12 @@ export function LangSwitch({ className = '' }) {
 
 // Chuỗi giao diện (không phải nội dung portfolio)
 export const UI = {
+  destinations: { vi: 'Đi nhanh đến đảo', en: 'Visit an island' },
+  toward: { vi: 'Đến ', en: 'To ' },
+  contactPending: { vi: 'Thông tin liên hệ sẽ được cập nhật.', en: 'Contact details will be added soon.' },
+  problem: { vi: 'Bài toán', en: 'Problem' },
+  contribution: { vi: 'Cách thực hiện', en: 'Implementation' },
+  result: { vi: 'Kết quả', en: 'Result' },
   kicker:       { vi: 'Portfolio · thế giới 3D', en: 'Portfolio · 3D world' },
   start:        { vi: 'Bắt đầu khám phá', en: 'Start exploring' },
   loading:      { vi: 'Đang tải thế giới…', en: 'Loading the world…' },

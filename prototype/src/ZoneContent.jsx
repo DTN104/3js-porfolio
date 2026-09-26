@@ -49,6 +49,11 @@ export function Projects({ data }) {
           <p className="meta">{t(p.role)} · {p.year}</p>
           <p>{t(p.summary)}</p>
           <ul className="chips small">{p.tags.map((tag, j) => <li key={j}>{t(tag)}</li>)}</ul>
+          {p.problem && <dl className="project-story">
+            <dt>{t(UI.problem)}</dt><dd>{t(p.problem)}</dd>
+            <dt>{t(UI.contribution)}</dt><dd>{t(p.contribution)}</dd>
+            <dt>{t(UI.result)}</dt><dd>{t(p.result)}</dd>
+          </dl>}
           {/* FR-027/FR-028: tối đa hai liên kết ngoài, mở tab mới; không có giá trị thì không hiện */}
           {(p.url || p.source) && (
             <p className="links">
@@ -108,12 +113,11 @@ export function Contact({ data }) {
       {profile.available && <span className="badge">{t(UI.available)}</span>}
       <p className="lead">{t(data.note)}</p>
       <div className="contact-row">
-        <a className="btn primary" href={'mailto:' + profile.email}>{profile.email}</a>
-        <CopyEmail />
+        {profile.email && <><a className="btn primary" href={'mailto:' + profile.email}>{profile.email}</a><CopyEmail /></>}
         {profile.socials.map(s => <a key={s.label} className="btn" href={s.url} target="_blank" rel="noreferrer">{s.label}</a>)}
-        <a className="btn" href={profile.cv} download>{t(UI.downloadCvPdf)}</a>
+        {profile.cv && <a className="btn" href={profile.cv} download>{t(UI.downloadCvPdf)}</a>}
       </div>
-      <p className="fine">{t(UI.noForm)}</p>
+      <p className="fine">{t(profile.email || profile.socials.length || profile.cv ? UI.noForm : UI.contactPending)}</p>
     </>
   )
 }

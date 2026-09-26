@@ -77,7 +77,7 @@ export function usePinchZoom(zoomRef, min = 0.55, max = 1.9) {
   useEffect(() => {
     const pts = new Map()
     let startDist = 0, startZoom = 1
-    const skip = (e) => e.pointerType !== 'touch' || (e.target.closest && e.target.closest('.touch-ui, .panelwrap'))
+    const skip = (e) => e.pointerType !== 'touch' || e.target.tagName !== 'CANVAS'
     const down = (e) => {
       if (skip(e)) return
       pts.set(e.pointerId, [e.clientX, e.clientY])

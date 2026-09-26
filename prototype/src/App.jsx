@@ -1,20 +1,22 @@
-import { Suspense, useEffect, useRef, useState, useCallback, useMemo } from 'react'
+import { Suspense, useEffect, useLayoutEffect, useRef, useState, useCallback, useMemo } from 'react'
 import { Canvas } from '@react-three/fiber'
 import { Sky, Clouds, Island, Scenery, Bridge, Avatar, CameraRig } from './World'
 import { attachInput, freezeInput } from './input'
-import { islands, bridges } from './content'
+import { islands, bridges, islandSpawn, surfaceAt } from './content'
 import { Joystick, InteractButton, Stats, usePinchZoom, isTouchDevice, CameraButtons } from './Touch'
 import { useLang, UI, KIND_ICON, LangSwitch } from './i18n'
 import { ZoneBody } from './ZoneContent'
 import StartScreen from './Start'
+import Modal from './Modal'
 
 const ZONE_IDS = new Set(islands.map(z => z.id))
-const hashZone = () => { const h = decodeURIComponent(location.hash.slice(1)); return ZONE_IDS.has(h) ? h : null }
+const hashZone = () => { try { const h = decodeURIComponent(location.hash.slice(1)); return ZONE_IDS.has(h) ? h : null } catch { return null } }
 
 export default function App({ onSwitch2D }) {
   const { t } = useLang()
   const body = useRef()
   const zoom = useRef(1)
+  const [current, setCurrent] = useState(islands[0].id)
   const [near, setNear] = useState(null)      // FR-019: đảo đang trong tầm tương tác
   const [open, setOpen] = useState(null)      // FR-020: bảng nội dung đang mở
   const [help, setHelp] = useState(false)
@@ -38,6 +40,13 @@ export default function App({ onSwitch2D }) {
     openedAt.current = performance.now()
     setOpen(id); setHint(false)
   }, [])
+  const visit = (id) => {
+    const island = islands.find(z => z.id === id)
+    if (!island || !body.current) return
+    body.current.position.set(...islandSpawn(island))
+    setCurrent(id)
+    openZone(id)
+  }
   const closeZone = useCallback(() => setOpen(null), [])
   const closeIfSettled = useCallback(() => { if (performance.now() - openedAt.current > 400) setOpen(null) }, [])
 
@@ -61,10 +70,23 @@ export default function App({ onSwitch2D }) {
 
   // Camera bay tới nhìn cận vật thể khi bảng mở (bảng bên phải trên desktop, tấm trượt dưới trên điện thoại)
   const focus = useRef(null)
-  useEffect(() => {
+  const drawer = useRef(null)
+  useLayoutEffect(() => {
     const z = islands.find(i => i.id === open)
-    focus.current = z ? { x: z.pos[0], y: z.y, z: z.pos[1], or: z.or, mode: isTouch ? 'sheet' : 'side' } : null
-  }, [open, isTouch])
+    if (!z) { focus.current = null; return }
+    const measure = () => {
+      const rect = drawer.current.getBoundingClientRect()
+      const sheet = rect.width > window.innerWidth * 0.9
+      focus.current = { x: z.pos[0], y: z.y, z: z.pos[1], or: z.or,
+        right: sheet ? 0 : window.innerWidth - rect.left,
+        bottom: sheet ? window.innerHeight - rect.top : 0 }
+    }
+    const observer = new ResizeObserver(measure)
+    observer.observe(drawer.current)
+    window.addEventListener('resize', measure)
+    measure()
+    return () => { observer.disconnect(); window.removeEventListener('resize', measure) }
+  }, [open])
 
   // FR-020 + EC-05: khoá di chuyển khi bảng đang mở, khi chưa bấm Bắt đầu
   useEffect(() => { freezeInput(!!open || help || !playing) }, [open, help, playing])
@@ -80,6 +102,7 @@ export default function App({ onSwitch2D }) {
   // FR-011: phóng to / thu nhỏ trong khoảng giới hạn
   useEffect(() => {
     const onWheel = (e) => {
+      if (e.target.tagName !== 'CANVAS' || e.ctrlKey) return
       zoom.current = Math.min(1.9, Math.max(0.55, zoom.current + Math.sign(e.deltaY) * 0.08))
     }
     window.addEventListener('wheel', onWheel, { passive: true })
@@ -91,6 +114,8 @@ export default function App({ onSwitch2D }) {
     const id = setInterval(() => {
       const g = body.current
       if (!g) return
+      const surface = surfaceAt(g.position.x, g.position.z)
+      if (surface.on === 'dao') setCurrent(surface.id)
       let best = null, bestD = Infinity
       for (const z of islands) {
         const d = Math.hypot(g.position.x - z.pos[0], g.position.z - z.pos[1])
@@ -151,7 +176,11 @@ export default function App({ onSwitch2D }) {
       {onSwitch2D && <button className="iconbtn mode2d" onClick={onSwitch2D} aria-label={t(UI.view2d)} title={t(UI.view2d)}>2D</button>}
       <LangSwitch className="topbar" />
 
-      <div className="stamp">{t(UI.stamp)}</div>
+      {playing && <nav className={'island-nav' + (isTouch ? ' touch-nav' : '')} aria-label={t(UI.destinations)}>
+        {islands.map((z, i) => <button key={z.id} onClick={() => visit(z.id)} aria-current={current === z.id ? 'location' : undefined}>
+          <span aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>{t(z.label)}
+        </button>)}
+      </nav>}
       {showStats && <Stats />}
       {!help && <CameraButtons />}
       {isTouch && playing && !open && !help && (
@@ -171,30 +200,30 @@ export default function App({ onSwitch2D }) {
       )}
 
       {openedZone && (
-        <div className={'scrim' + (isTouch ? ' sheet-mode' : '')} onClick={closeIfSettled}>
-          <section className={'drawer ' + openedZone.kind} onClick={e => e.stopPropagation()} role="dialog" aria-label={t(openedZone.title)}>
+        <Modal className={'scrim' + (isTouch ? ' sheet-mode' : '')} label={t(openedZone.title)} onClose={closeIfSettled}>
+          <section ref={drawer} className={'drawer ' + openedZone.kind}>
             <header className="dhead">
               {isTouch && <i className="grip" />}
               <div className="kindtag"><span>{KIND_ICON[openedZone.kind]}</span>{t(UI.kinds[openedZone.kind])} · {t(UI.island)} {islands.indexOf(openedZone) + 1}/{islands.length}</div>
               <h2>{t(openedZone.title)}</h2>
               <div className="dots">{islands.map(z => <i key={z.id} className={z.id === openedZone.id ? 'on' : ''} />)}</div>
               {/* FR-021: đóng được bằng ít nhất hai cách */}
-              <button className="close" onClick={closeZone} aria-label={t(UI.close)}>✕</button>
+              <button className="close" autoFocus onClick={closeZone} aria-label={t(UI.close)}>✕</button>
             </header>
             <div className="dbody">
               <ZoneBody island={openedZone} context="drawer" />
             </div>
             <footer>{t(isTouch ? UI.closeTouch : UI.closeKeys)}</footer>
           </section>
-        </div>
+        </Modal>
       )}
 
       {help && (
-        <div className="panelwrap" onClick={() => setHelp(false)}>
-          <section className="panel help-panel" onClick={e => e.stopPropagation()} role="dialog" aria-label={t(UI.controls)}>
+        <Modal className="panelwrap" label={t(UI.controls)} onClose={() => setHelp(false)}>
+          <section className="panel help-panel">
             <header>
               <h2>{t(UI.controls)}</h2>
-              <button onClick={() => setHelp(false)} aria-label={t(UI.close)}>✕</button>
+              <button autoFocus onClick={() => setHelp(false)} aria-label={t(UI.close)}>✕</button>
             </header>
             {/* FR-039: bộ thao tác theo loại thiết bị — cảm ứng thì không mô tả phím */}
             <table>
@@ -226,9 +255,9 @@ export default function App({ onSwitch2D }) {
                 )}
               </tbody>
             </table>
-            <footer>FR-037, FR-038</footer>
+            <footer>{t(UI.closeKeys)}</footer>
           </section>
-        </div>
+        </Modal>
       )}
     </>
   )

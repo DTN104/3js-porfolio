@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import Modal from './Modal'
 import { profile } from './content'
 import { useLang, UI, LangSwitch } from './i18n'
 import { useLoading } from './loading'
@@ -14,17 +14,9 @@ export default function StartScreen({ onStart, onSwitch2D, isTouch, leaving }) {
   const ready = L.done && !L.error
   const pct = L.done ? 100 : L.total ? Math.min(96, Math.round(L.loaded / L.total * 100)) : 0
 
-  useEffect(() => {
-    if (!ready || leaving) return
-    const onKey = (e) => {
-      if (e.code === 'Enter' || e.code === 'Space' || e.code === 'NumpadEnter') { e.preventDefault(); onStart() }
-    }
-    window.addEventListener('keydown', onKey)
-    return () => window.removeEventListener('keydown', onKey)
-  }, [ready, leaving, onStart])
 
   return (
-    <div className={'start' + (leaving ? ' leave' : '')} role="dialog" aria-modal="true" aria-label={t(UI.kicker)}>
+    <Modal className={'start' + (leaving ? ' leave' : '')} label={t(UI.kicker)}>
       <i className="cloud c1" /><i className="cloud c2" /><i className="cloud c3" />
       <LangSwitch className="start-lang" />
       <div className="start-card">
@@ -47,6 +39,6 @@ export default function StartScreen({ onStart, onSwitch2D, isTouch, leaving }) {
         <p className="start-hint">{isTouch ? t(UI.startHintTouch) : t(UI.startHintKeys)}</p>
         {onSwitch2D && <button className="linkbtn" onClick={onSwitch2D}>{t(UI.view2d)}</button>}
       </div>
-    </div>
+    </Modal>
   )
 }

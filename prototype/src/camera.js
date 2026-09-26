@@ -24,3 +24,15 @@ export function camHoriz() { return _h.set(Math.sin(cam.yaw), 0, Math.cos(cam.ya
 export function camFwd() { return _f.set(-Math.sin(cam.yaw), 0, -Math.cos(cam.yaw)) }
 // "Phải" của người xem
 export function camRight() { return _r.set(Math.cos(cam.yaw), 0, -Math.sin(cam.yaw)) }
+
+// Fit the object into the unobscured viewport, with space around its bounds.
+export function frameForPanel(width, height, right, bottom, radius, fov) {
+  const visibleWidth = Math.max(1, width - right)
+  const visibleHeight = Math.max(1, height - bottom)
+  const span = Math.min(visibleWidth, visibleHeight) / height
+  return {
+    distance: Math.max(8, radius * 2.8 / (1.4 * Math.tan(fov * Math.PI / 360) * span)),
+    offsetX: right / 2,
+    offsetY: bottom / 2
+  }
+}

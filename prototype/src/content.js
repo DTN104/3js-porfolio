@@ -99,7 +99,11 @@ export function surfaceAt(x, z) {
   return { ok: false }
 }
 
-export const SPAWN = [islands[0].pos[0] + 3.5, islands[0].y, islands[0].pos[1] + 4.5]
+export function islandSpawn(island) {
+  const distance = island.or + 1.2
+  return [island.pos[0] + distance * 0.6, island.y, island.pos[1] + distance * 0.8]
+}
+export const SPAWN = islandSpawn(islands[0])
 
 /* ============================================================================
    NỘI DUNG PORTFOLIO — nguồn dùng chung cho thế giới 3D và trang 2D (OQ-02, FR-078).
@@ -109,82 +113,69 @@ export const SPAWN = [islands[0].pos[0] + 3.5, islands[0].y, islands[0].pos[1] +
 const T = (vi, en) => ({ vi, en })
 
 export const profile = {
-  name: T('Tên Của Bạn', 'Your Name'),
-  role: T('Business Analyst · Fintech & Chứng khoán', 'Business Analyst · Fintech & Securities'),
-  tagline: T('Biến yêu cầu nghiệp vụ thành sản phẩm số dùng được — từ BRD tới bàn giao và kiểm thử.',
-             'Turning business needs into working digital products — from BRD to hand-off and testing.'),
+  name: T('Dat Nguyen', 'Dat Nguyen'),
+  role: T('Lập trình viên Frontend', 'Frontend Developer'),
+  tagline: T('Tập trung vào frontend, có thêm kỹ năng phát triển backend.',
+             'Focused on frontend development, with additional backend skills.'),
   location: T('TP. Hồ Chí Minh', 'Ho Chi Minh City'),
   available: true,                                  // FR-034: trạng thái "sẵn sàng nhận cơ hội"
   avatar: null,                                     // '/img/avatar.jpg' — chưa có thì hiện chữ cái đầu
-  cv: '/cv.pdf',                                    // FR-033: nút tải CV
-  email: 'you@example.com',                         // FR-035: chỉ hiển thị, không có form (OQ-01)
-  socials: [                                        // FR-036
-    { label: 'LinkedIn', url: 'https://linkedin.com/in/your-handle' },
-    { label: 'GitHub', url: 'https://github.com/your-handle' }
-  ]
+  cv: null,                                    // FR-033: nút tải CV
+  email: null,                         // FR-035: chỉ hiển thị, không có form (OQ-01)
+  socials: [] // Add verified profile URLs here.
 }
 
 export const zones = {
   'gioi-thieu': {
     intro: [
-      T('Tôi là Business Analyst với nhiều năm làm việc trong ngành chứng khoán, đứng giữa đội nghiệp vụ, đội phát triển và hạ tầng để đưa yêu cầu đi từ ý tưởng tới tính năng chạy thật.',
-        'I am a Business Analyst with years in the securities industry, sitting between business, engineering and infrastructure teams to take requirements from idea to a feature that actually ships.'),
-      T('Thế mạnh của tôi là mô hình hoá quy trình, viết tài liệu yêu cầu rõ ràng và theo sát tới lúc kiểm thử — gần đây tập trung vào các sản phẩm ứng dụng AI cho phân tích đầu tư.',
-        'My strengths are process modelling, clear requirement documents and staying with a feature through testing — lately focused on AI products for investment research.')
+      T('Tôi là lập trình viên frontend, tập trung vào xây dựng giao diện và trải nghiệm trên web.',
+        'I am a frontend developer focused on building web interfaces and experiences.'),
+      T('Bên cạnh frontend, tôi cũng có một số kỹ năng phát triển backend.',
+        'Alongside frontend development, I also have some backend development skills.')
     ],
     facts: [
-      [T('Kinh nghiệm', 'Experience'), T('7+ năm', '7+ years')],
-      [T('Lĩnh vực', 'Domain'), T('Chứng khoán · Fintech', 'Securities · Fintech')],
-      [T('Vai trò', 'Roles'), 'BA · Product'],
-      [T('Ngôn ngữ', 'Languages'), T('Tiếng Việt · English', 'Vietnamese · English')]
+      [T('Vai trò chính', 'Primary role'), 'Frontend Developer'],
+      [T('Kỹ năng bổ sung', 'Additional skills'), T('Phát triển backend', 'Backend development')]
     ]
   },
   'ky-nang': {
     groups: [
-      { name: T('Phân tích nghiệp vụ', 'Business analysis'), items: ['BRD / SRS', T('User Story & AC', 'User stories & AC'), 'BPMN', 'Sequence diagram', 'Traceability matrix'] },
-      { name: T('Sản phẩm & dữ liệu', 'Product & data'), items: ['SQL', 'BigQuery', T('Python (cơ bản)', 'Python (basic)'), 'Dashboard', T('Kiểm thử UAT', 'UAT')] },
-      { name: T('AI ứng dụng', 'Applied AI'), items: ['Prompt design', T('Đánh giá chatbot', 'Chatbot evaluation'), T('Pipeline sinh báo cáo', 'Report-generation pipeline'), 'MCP / tool use'] },
-      { name: T('Nghiệp vụ chứng khoán', 'Securities domain'), items: [T('Giao dịch & lưu ký', 'Trading & custody'), 'Corporate action', T('KYC / tuân thủ', 'KYC / compliance'), T('Vận hành hệ thống', 'System operations')] }
+      { name: 'Frontend', items: [T('Phát triển giao diện web', 'Web interface development')] },
+      { name: 'Backend', items: [T('Có thêm kỹ năng backend — công nghệ cụ thể sẽ được bổ sung', 'Additional backend skills — specific technologies to be added')] }
     ]
   },
   'du-an': {
-    // FR-026/027: image = '/img/xxx.jpg' (chưa có thì hiện năm); url = bản chạy thử, source = mã nguồn — null thì không hiển thị
+    // Chỉ giữ dự án có trong repo; bổ sung dự án thực tế khi chủ portfolio cung cấp.
     projects: [
-      { title: T('Cổng thông báo quyền cổ đông tự động', 'Automated corporate-action notifications'), year: '2025', role: T('BA chính', 'Lead BA'),
-        summary: T('Hệ thống gửi email + cổng web thông báo corporate action cho khách hàng tổ chức, thay quy trình thủ công.',
-                   'Email + web portal notifying institutional clients of corporate actions, replacing a manual process.'),
-        tags: ['BRD', 'BPMN', 'Email automation'], image: null, url: null, source: null },
-      { title: T('Trợ lý AI sinh báo cáo phân tích cổ phiếu', 'AI assistant for equity research reports'), year: '2025', role: 'BA · Prompt design',
-        summary: T('Pipeline lấy dữ liệu tài chính, sinh báo cáo theo mẫu và đánh giá chất lượng đầu ra.',
-                   'Pipeline that pulls financial data, generates templated reports and scores output quality.'),
-        tags: ['AI', 'BigQuery', T('Đánh giá chất lượng', 'Quality evaluation')], image: null, url: null, source: null },
-      { title: T('Giao dịch thoả thuận trên ứng dụng di động', 'Negotiated trading on the mobile app'), year: '2024', role: 'BA',
-        summary: T('Bổ sung luồng đặt lệnh thoả thuận cho app: yêu cầu, quy tắc nghiệp vụ, thiết kế cùng UX, test case.',
-                   'Added a negotiated-order flow to the app: requirements, business rules, design with UX, test cases.'),
-        tags: ['Mobile', 'User Story', 'UAT'], image: null, url: null, source: null }
+      { title: T('Portfolio thế giới 3D', '3D world portfolio'), year: '2026', role: 'Frontend',
+        summary: T('Portfolio gồm năm hòn đảo tương tác, có nội dung song ngữ và chế độ đọc 2D.',
+                   'A portfolio with five interactive islands, bilingual content and a 2D reading mode.'),
+        problem: T('Giới thiệu năng lực phát triển web qua một trải nghiệm tương tác mà vẫn cho phép đọc nhanh nội dung.',
+                   'Present web development through an interactive experience while keeping the content easy to read.'),
+        contribution: T('Dùng React Three Fiber để dựng thế giới, điều khiển nhân vật và camera; dùng chung nội dung giữa 2D và 3D.',
+                        'Use React Three Fiber for the world, character controls and camera, with shared content across 2D and 3D.'),
+        result: T('Một prototype có năm đảo, hai ngôn ngữ và bản 2D. Chưa có số liệu sử dụng thực tế.',
+                  'A working prototype with five islands, two languages and a 2D mode. No live usage metrics yet.'),
+        tags: ['React', 'Three.js', 'React Three Fiber'], image: '/og.jpg', url: null, source: null }
     ]
   },
   'kinh-nghiem': {
+    // Chưa có thông tin công ty hoặc thời gian làm việc được xác nhận.
     timeline: [
-      { from: '2023', to: T('nay', 'now'), org: T('Công ty Chứng khoán A', 'Securities Company A'), title: T('Business Analyst · Khối CNTT', 'Business Analyst · IT Division'),
-        bullets: [T('Chủ trì yêu cầu cho các sản phẩm khách hàng tổ chức và AI', 'Owned requirements for institutional-client and AI products'),
-                  T('Điều phối nghiệp vụ – phát triển – hạ tầng', 'Coordinated business, engineering and infrastructure')] },
-      { from: '2019', to: '2023', org: T('Sở Giao dịch Chứng khoán B', 'Stock Exchange B'), title: T('Chuyên viên vận hành hệ thống giao dịch', 'Trading-system operations specialist'),
-        bullets: [T('Vận hành, điều phối UAT hệ thống giao dịch', 'Operated the trading system and coordinated UAT'),
-                  T('Xử lý dữ liệu sau giao dịch', 'Post-trade data processing')] },
-      { from: '2017', to: '2019', org: T('Công ty C', 'Company C'), title: T('Chuyên viên phân tích', 'Analyst'),
-        bullets: [T('Bắt đầu với phân tích quy trình và báo cáo', 'Started with process analysis and reporting')] }
+      { from: '…', to: '…', org: T('Thông tin sẽ được bổ sung', 'Details to be added'), title: 'Frontend Developer',
+        bullets: [T('Lịch sử làm việc và các đóng góp cụ thể sẽ được cập nhật.',
+                    'Work history and specific contributions will be added.')] }
     ]
   },
   'lien-he': {
-    note: T('Muốn trao đổi về BA, sản phẩm fintech hay ứng dụng AI trong đầu tư? Gửi email hoặc kết nối qua LinkedIn.',
-            'Want to talk BA, fintech products or AI in investing? Send an email or connect on LinkedIn.')
+    note: T('Muốn trao đổi về phát triển frontend hoặc một dự án web? Gửi email hoặc kết nối qua LinkedIn.',
+            'Want to discuss frontend development or a web project? Send an email or connect on LinkedIn.')
   }
 }
 
 // Thẻ chia sẻ / SEO (AST-19, FR-056) — index.html dùng bản tĩnh; giữ ở đây để đồng bộ khi đổi nội dung
 export const seo = {
-  title: T('Tên Của Bạn — Portfolio 3D', 'Your Name — 3D Portfolio'),
-  description: T('Portfolio Business Analyst dạng thế giới 3D: 5 hòn đảo trôi trên mây, mỗi đảo một chương — giới thiệu, kỹ năng, dự án, kinh nghiệm, liên hệ.',
-                 'A Business Analyst portfolio as a 3D world: five floating islands, one chapter each — about, skills, projects, experience, contact.')
+  title: T('Dat Nguyen — Portfolio 3D', 'Dat Nguyen — 3D Portfolio'),
+  description: T('Portfolio lập trình viên frontend dạng thế giới 3D: 5 hòn đảo trôi trên mây, mỗi đảo một chương — giới thiệu, kỹ năng, dự án, kinh nghiệm, liên hệ.',
+                 'A frontend developer portfolio as a 3D world: five floating islands, one chapter each — about, skills, projects, experience, contact.')
 }
