@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { profile, zones } from './content'
 import { useLang, UI } from './i18n'
 
@@ -36,33 +36,63 @@ export function Skills({ data }) {
   )
 }
 
-export function Projects({ data }) {
+export function Projects({ data, context }) {
   const { t } = useLang()
+  const [selected, setSelected] = useState(null)
+  const root = useRef(null)
+  const heading = useRef(null)
+  useEffect(() => {
+    if (selected === null) return
+    const drawerBody = root.current?.closest('.dbody')
+    if (drawerBody) drawerBody.scrollTop = 0
+    else root.current?.scrollIntoView({ block: 'start' })
+    heading.current?.focus()
+  }, [selected])
+  const project = data.projects[selected]
   return (
-    <div className="grid-3">
-      {data.projects.map((p, i) => (
-        <article key={i} className="card project">
-          <div className="thumb" aria-hidden="true">
-            {p.image ? <img src={p.image} alt="" loading="lazy" /> : <span>{p.year}</span>}
+    <div className={'projects' + (context === 'drawer' ? ' drawer-projects' : '')} ref={root}>
+      {project ? (
+        <article className="project-detail">
+          <button type="button" className="project-back" onClick={() => { setSelected(null); requestAnimationFrame(() => root.current?.querySelectorAll('.project-tile')[selected]?.focus()) }}>
+            ← {t(UI.allProjects)}
+          </button>
+          <div className="project-detail-head">
+            <div>
+              <p className="project-eyebrow">{String(selected + 1).padStart(2, '0')} / {String(data.projects.length).padStart(2, '0')} · {project.year}</p>
+              <h3 ref={heading} tabIndex={-1}>{t(project.title)}</h3>
+              <p className="project-role">{t(project.role)}</p>
+            </div>
+            <div className="project-detail-art" aria-hidden="true">{project.image ? <img src={project.image} alt="" /> : <span>{t(project.title).split(/\s+/).slice(0, 2).map(word => word[0]).join('').toUpperCase()}</span>}</div>
           </div>
-          <h3>{p.url ? <a href={p.url} target="_blank" rel="noreferrer">{t(p.title)}</a> : t(p.title)}</h3>
-          <p className="meta">{t(p.role)} · {p.year}</p>
-          <p>{t(p.summary)}</p>
-          <ul className="chips small">{p.tags.map((tag, j) => <li key={j}>{t(tag)}</li>)}</ul>
-          {p.problem && <dl className="project-story">
-            <dt>{t(UI.problem)}</dt><dd>{t(p.problem)}</dd>
-            <dt>{t(UI.contribution)}</dt><dd>{t(p.contribution)}</dd>
-            <dt>{t(UI.result)}</dt><dd>{t(p.result)}</dd>
-          </dl>}
-          {/* FR-027/FR-028: tối đa hai liên kết ngoài, mở tab mới; không có giá trị thì không hiện */}
-          {(p.url || p.source) && (
-            <p className="links">
-              {p.url && <a href={p.url} target="_blank" rel="noreferrer">{t(UI.demo)} ↗</a>}
-              {p.source && <a href={p.source} target="_blank" rel="noreferrer">{t(UI.source)} ↗</a>}
-            </p>
-          )}
+          <p className="project-intro">{t(project.summary)}</p>
+          <ul className="chips small">{project.tags.map((tag, i) => <li key={i}>{t(tag)}</li>)}</ul>
+          <dl className="project-story">
+            {project.problem && <><dt>{t(UI.problem)}</dt><dd>{t(project.problem)}</dd></>}
+            {project.contribution && <><dt>{t(UI.contribution)}</dt><dd>{t(project.contribution)}</dd></>}
+            {project.result && <><dt>{t(UI.result)}</dt><dd>{t(project.result)}</dd></>}
+          </dl>
+          {(project.url || project.source) && <p className="project-links">
+            {project.url && <a className="btn primary" href={project.url} target="_blank" rel="noreferrer">{t(UI.demo)} ↗</a>}
+            {project.source && <a className="btn" href={project.source} target="_blank" rel="noreferrer">{t(UI.source)} ↗</a>}
+          </p>}
         </article>
-      ))}
+      ) : <>
+        <p className="project-count">{data.projects.length} {t(UI.projectCount)}</p>
+        <div className="project-grid">
+          {data.projects.map((p, i) => (
+            <button key={i} type="button" className="project-tile" onClick={() => setSelected(i)}>
+              <span className="project-art" aria-hidden="true">{p.image ? <img src={p.image} alt="" loading="lazy" /> : <span>{t(p.title).split(/\s+/).slice(0, 2).map(word => word[0]).join('').toUpperCase()}</span>}</span>
+              <span className="project-tile-body">
+                <span className="project-tile-meta">{t(p.role)} · {p.year}</span>
+                <strong>{t(p.title)}</strong>
+                <span className="project-tile-summary">{t(p.summary)}</span>
+                <span className="project-tile-tags">{p.tags.slice(0, 3).join(' · ')}</span>
+                <span className="project-tile-action">{t(UI.viewProject)} <span aria-hidden="true">→</span></span>
+              </span>
+            </button>
+          ))}
+        </div>
+      </>}
     </div>
   )
 }

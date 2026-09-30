@@ -136,7 +136,26 @@ canvas{display:block; touch-action:none}
 .dbody .facts div{ padding:10px 12px } .dbody .facts dd{ font-size:14px }
 .dbody .grid-2, .dbody .grid-3{ grid-template-columns:1fr; gap:10px }
 .dbody .card{ padding:14px 16px; box-shadow:none }
-.dbody .project .thumb{ aspect-ratio:21/9; font-size:18px }
+.drawer-projects .project-grid{ grid-template-columns:1fr; gap:8px }
+.drawer-projects .project-count{ margin-bottom:8px }
+.drawer-projects .project-tile{ flex-direction:row; align-items:center; min-height:90px; border-radius:11px; box-shadow:none }
+.drawer-projects .project-tile:hover{ transform:none; background:#f6f9fb }
+.drawer-projects .project-art{ width:64px; min-width:64px; height:64px; margin:10px; aspect-ratio:1; border-radius:8px; font-size:21px }
+.drawer-projects .project-tile-body{ gap:3px; min-width:0; padding:9px 12px 9px 0 }
+.drawer-projects .project-tile strong{ font-size:15px }
+.drawer-projects .project-tile-meta{ font-size:11px }
+.drawer-projects .project-tile-summary{ font-size:12px; -webkit-line-clamp:2 }
+.drawer-projects .project-tile-tags{ display:none }
+.drawer-projects .project-tile-action{ padding:0; font-size:12px }
+.drawer-projects .project-detail{ padding:0; border:0; border-radius:0; box-shadow:none; background:transparent }
+.drawer-projects .project-detail-head{ display:block; margin:14px 0 }
+.drawer-projects .project-detail h3{ font-size:23px }
+.drawer-projects .project-detail-art{ display:none }
+.drawer-projects .project-intro{ font-size:14px }
+.drawer-projects .project-detail .chips{ margin-bottom:14px }
+.drawer-projects .project-story{ display:block }
+.drawer-projects .project-story dt{ padding:13px 0 0; border:0 }
+.drawer-projects .project-story dd{ padding:3px 0 13px }
 .dbody .timeline li{ grid-template-columns:1fr; gap:2px; padding-bottom:16px }
 .dbody .timeline .when{ padding-top:0 }
 .dbody .contact-row{ margin-top:12px }
@@ -257,7 +276,6 @@ canvas{display:block; touch-action:none}
 .facts div{ background:#fff; border:1px solid var(--line); border-radius:12px; padding:12px 14px }
 .facts dt{ font-size:11.5px; color:#7b8795; text-transform:uppercase; letter-spacing:.06em } .facts dd{ margin:4px 0 0; font-weight:600 }
 .grid-2{ display:grid; grid-template-columns:repeat(auto-fit, minmax(260px,1fr)); gap:14px }
-.grid-3{ display:grid; grid-template-columns:repeat(auto-fit, minmax(240px,1fr)); gap:14px }
 .card{ background:#fff; border:1px solid var(--line); border-radius:14px; padding:16px 18px; box-shadow:0 2px 10px -6px rgba(20,30,40,.2) }
 .card h3{ margin:0 0 8px; font-size:16px }
 .card h3 a{ color:inherit }
@@ -265,9 +283,31 @@ canvas{display:block; touch-action:none}
 .chips{ display:flex; flex-wrap:wrap; gap:6px; list-style:none; margin:0; padding:0 }
 .chips li{ font-size:12.5px; padding:4px 10px; border-radius:999px; background:#eef2f6; color:var(--ink) }
 .chips.small li{ font-size:11.5px; padding:3px 8px }
-.project .thumb{ aspect-ratio:16/9; border-radius:10px; margin:-4px 0 12px; display:grid; place-items:center; overflow:hidden;
-  background:linear-gradient(135deg,#DCEEF6,#8CBE68 140%); color:#fff; font:700 22px/1 ui-sans-serif,system-ui; text-shadow:0 1px 4px rgba(0,0,0,.2) }
-.project .thumb img{ width:100%; height:100%; object-fit:cover }
+.projects{ scroll-margin-top:74px }
+.project-count{ margin:0 0 12px; color:var(--ink-2); font-size:13px }
+.project-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr)); gap:16px }
+.project-tile{ display:flex; flex-direction:column; padding:0; min-width:0; border:1px solid var(--line); border-radius:16px; overflow:hidden; background:#fff; color:var(--ink); text-align:left; font:inherit; cursor:pointer; box-shadow:0 3px 14px -8px rgba(20,30,40,.22); transition:transform .18s,box-shadow .18s,border-color .18s }
+.project-tile:hover{ transform:translateY(-3px); border-color:#a9b9c8; box-shadow:0 12px 24px -12px rgba(20,30,40,.35) }
+.project-art,.project-detail-art{ display:grid; place-items:center; overflow:hidden; background:linear-gradient(135deg,#DCEEF6,#8CBE68 140%); color:var(--accent); font-weight:750; letter-spacing:-.05em }
+.project-art{ width:100%; aspect-ratio:16/8; font-size:clamp(34px,6vw,60px) }
+.project-art img,.project-detail-art img{ width:100%; height:100%; object-fit:cover }
+.project-tile-body{ display:flex; flex:1; flex-direction:column; align-items:flex-start; gap:8px; padding:17px 19px 18px }
+.project-tile-meta,.project-tile-tags,.project-eyebrow{ color:#667689; font-size:12px; font-weight:650; letter-spacing:.02em }
+.project-tile strong{ font-size:19px; line-height:1.25 }
+.project-tile-summary{ color:var(--ink-2); font-size:14px; line-height:1.55; display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:3; overflow:hidden }
+.project-tile-tags{ margin-top:auto; padding-top:4px }
+.project-tile-action{ padding-top:5px; color:var(--accent); font-size:13px; font-weight:750 }
+.project-detail{ padding:clamp(18px,3vw,30px); background:#fff; border:1px solid var(--line); border-radius:18px; box-shadow:0 4px 20px -12px rgba(20,30,40,.24) }
+.project-back{ padding:0; border:0; background:none; color:var(--accent); font:700 13px/1.5 ui-sans-serif,system-ui; cursor:pointer }
+.project-back:hover{ text-decoration:underline }
+.project-detail-head{ display:grid; grid-template-columns:minmax(0,1fr) minmax(170px,36%); gap:20px; align-items:center; margin:20px 0 }
+.project-detail h3{ margin:4px 0 6px; font-size:clamp(24px,3vw,34px); line-height:1.15; letter-spacing:-.025em }
+.project-detail .project-eyebrow{ margin:0 }
+.project-role{ margin:0; color:var(--ink-2); font-size:14px }
+.project-detail-art{ aspect-ratio:16/9; border-radius:12px; font-size:34px }
+.project-intro{ max-width:70ch; margin:0 0 15px; color:var(--ink-2); font-size:16px; line-height:1.65 }
+.project-detail .chips{ margin-bottom:22px }
+.project-links{ display:flex; flex-wrap:wrap; gap:8px; margin:22px 0 0 }
 .timeline{ list-style:none; margin:0; padding:0 0 0 4px; border-left:2px solid var(--line) }
 .timeline li{ display:grid; grid-template-columns:110px 1fr; gap:14px; padding:0 0 22px 18px; position:relative }
 .timeline li::before{ content:''; position:absolute; left:-7px; top:6px; width:10px; height:10px; border-radius:50%; background:#6E6255; box-shadow:0 0 0 3px #f6f9fb }
@@ -277,8 +317,6 @@ canvas{display:block; touch-action:none}
 .fine{ font-size:12.5px; color:#7b8795; margin-top:12px }
 .who{ margin:0 0 12px; display:flex; flex-wrap:wrap; align-items:baseline; gap:4px 10px }
 .who b{ font-size:17px } .who span{ font-size:13.5px; color:var(--ink-2); font-weight:600 }
-.project .links{ display:flex; gap:12px; margin:10px 0 0; font-size:13px; font-weight:600 }
-.project .links a{ color:var(--accent) }
 .btn.copy.done{ background:#e4f4e7; border-color:#bfe3c6; color:#2c6e3b }
 .dbody .badge{ margin-bottom:10px }
 .p2d-foot{ display:flex; flex-wrap:wrap; justify-content:space-between; gap:8px; max-width:1040px; margin:0 auto; padding:20px clamp(16px,4vw,40px) 36px; border-top:1px solid var(--line); font-size:12.5px; color:#7b8795 }
@@ -304,9 +342,11 @@ dialog::backdrop{background:transparent}
 .prompt{bottom:100px;max-width:calc(100% - 32px)}
 .touch-nav{bottom:calc(180px + env(safe-area-inset-bottom))}
 .touch-nav ~ .prompt{bottom:calc(266px + env(safe-area-inset-bottom))}
-.project-story{margin:14px 0 0}
-.project-story dt{font-weight:700;font-size:12px;color:var(--ink);margin-top:12px}
-.project-story dd{margin:4px 0 0;font-size:14px;line-height:1.6;color:var(--ink-2)}
+.project-story{ margin:0; display:grid; grid-template-columns:minmax(110px,150px) minmax(0,1fr); border-top:1px solid var(--line) }
+.project-story dt,.project-story dd{ margin:0; padding:15px 0; border-bottom:1px solid var(--line); line-height:1.6 }
+.project-story dt{ padding-right:16px; color:var(--ink); font-size:13px; font-weight:750 }
+.project-story dd{ color:var(--ink-2); font-size:14px }
+@media(max-width:600px){ .project-detail-head,.project-story{ grid-template-columns:1fr }.project-detail-head{ gap:12px }.project-story dt{ padding:14px 0 0; border:0 }.project-story dd{ padding:2px 0 14px } }
 @media(max-width:760px){
   .scrim{background:linear-gradient(180deg,transparent 35%,rgba(16,26,36,.32))}
   .drawer{top:auto;left:0;right:0;bottom:0;width:100%;height:min(58dvh,520px);border-radius:20px 20px 0 0;padding-bottom:env(safe-area-inset-bottom);animation:sheetIn .34s ease}

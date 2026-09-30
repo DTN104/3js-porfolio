@@ -163,9 +163,19 @@ export const zones = {
                    'Present web development through an interactive experience while keeping the content easy to read.'),
         contribution: T('Dùng React Three Fiber để dựng thế giới, điều khiển nhân vật và camera; dùng chung nội dung giữa 2D và 3D.',
                         'Use React Three Fiber for the world, character controls and camera, with shared content across 2D and 3D.'),
-        result: T('Một prototype có năm đảo, hai ngôn ngữ và bản 2D. Chưa có số liệu sử dụng thực tế.',
-                  'A working prototype with five islands, two languages and a 2D mode. No live usage metrics yet.'),
-        tags: ['React', 'Three.js', 'React Three Fiber'], image: '/og.jpg', url: null, source: null }
+        result: T('Prototype hoàn chỉnh với năm đảo tương tác, nội dung song ngữ và bản 2D để đọc nhanh trên mọi thiết bị.',
+                  'A working prototype with five interactive islands, bilingual content and a 2D mode for quick reading on any device.'),
+        tags: ['React', 'Three.js', 'React Three Fiber'], image: '/og.jpg', url: null, source: null },
+      { title: 'Ticket Hub', year: '2026', role: T('Frontend Developer · Hỗ trợ backend', 'Frontend Developer · Backend support'),
+        summary: T('Dự án nhóm xây dựng hệ thống quản lý yêu cầu hỗ trợ khách hàng bằng Remix, tập trung thông tin từ các kênh như Zalo, Facebook và email.',
+                   'A team project built with Remix to manage customer support requests, bringing together information from channels such as Zalo, Facebook and email.'),
+        problem: T('Thông tin yêu cầu nằm rải rác ở nhiều kênh, khiến nhân viên mất thời gian thu thập, tổng hợp và theo dõi tiến độ xử lý.',
+                   'Request information was scattered across channels, making it time-consuming for staff to collect details, consolidate them and track progress.'),
+        contribution: T('Là lập trình viên frontend duy nhất trong nhóm, tôi phụ trách toàn bộ giao diện trên Remix: danh sách và bộ lọc ticket, màn hình chi tiết, phân công, cập nhật trạng thái, trao đổi, tệp đính kèm và xuất Excel. Phối hợp với các thành viên backend để kết nối dữ liệu và luồng xử lý; đồng thời hỗ trợ tạo cơ sở dữ liệu và viết các service phía server.',
+                        'As the team’s sole frontend developer, I built the entire interface in Remix: ticket lists and filters, detail views, assignment, status updates, conversations, attachments and Excel export. I collaborated with backend developers to connect data and workflows, and also helped create the database and write server-side services.'),
+        result: T('Hệ thống giúp nhân viên thu thập, tổng hợp và tra cứu yêu cầu trên một nơi, giảm thao tác thủ công và thời gian chuyển đổi giữa Zalo, Facebook cùng các kênh khác. Lịch sử trao đổi và trạng thái xử lý được tập trung, thuận tiện cho việc theo dõi và bàn giao giữa nhân viên.',
+                  'The system gives staff one place to collect, consolidate and look up requests, reducing manual work and time spent switching between Zalo, Facebook and other channels. Centralized conversation history and ticket status make progress tracking and handovers easier.'),
+        tags: ['Remix', 'React', 'TypeScript', 'PostgreSQL', 'Socket.IO'], image: null, url: null, source: null }
     ]
   },
   'kinh-nghiem': {
