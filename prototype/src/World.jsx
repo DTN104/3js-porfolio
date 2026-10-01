@@ -224,6 +224,8 @@ function scatterIsland(island, halfX, halfZ, kitA, kitB, dirs) {
     for (let t = 0; t < tries; t++) {
       const x = (rand() * 2 - 1) * A, z = (rand() * 2 - 1) * B
       if ((x * x) / (A * A) + (z * z) / (B * B) > 1) continue
+      // Keep the viewing corridor in front of the Projects projector clear.
+      if (island.kind === 'gallery' && x + z > 2 && Math.abs(x - z) < 4) continue
       if (Math.hypot(x, z) < island.or + r + 0.7) continue  // vật thể tương tác + vòng chỉ dấu
       if (onPath(x, z, dirs, 2.0 + r)) continue
       if (placed.some(p => Math.hypot(p.x - x, p.z - z) < p.r + r + 0.25)) continue
@@ -471,7 +473,16 @@ export function CameraRig({ target, zoomRef, focusRef }) {
     const H = camHoriz()
     const f = focusRef && focusRef.current
     let px, py, pz, rate
-    if (f) {
+    if (f?.projector) {
+      if (camera.view?.enabled) camera.clearViewOffset()
+      aim.current.set(f.x + 2.2, f.y + (f.detail ? 3.05 : 2.5), f.z + 2.2)
+      const fitWidth = (f.detail ? 6.8 : 5.65) / (2 * Math.tan(camera.fov * Math.PI / 360) * size.width / size.height) * 1.12
+      const distance = size.width < 600 ? 25 : Math.max(f.detail ? 7.6 : 11, fitWidth)
+      px = aim.current.x + H.x * distance
+      py = aim.current.y + distance * (f.detail ? 0.16 : 0.48)
+      pz = aim.current.z + H.z * distance
+      rate = 3.2
+    } else if (f) {
       const frame = frameForPanel(size.width, size.height, f.right, f.bottom, f.or, camera.fov)
       camera.setViewOffset(size.width, size.height, frame.offsetX, frame.offsetY, size.width, size.height)
       aim.current.set(f.x, f.y + 0.5 + f.or * 0.35, f.z)

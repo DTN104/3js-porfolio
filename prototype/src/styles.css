@@ -346,6 +346,49 @@ dialog::backdrop{background:transparent}
 .project-story dt,.project-story dd{ margin:0; padding:15px 0; border-bottom:1px solid var(--line); line-height:1.6 }
 .project-story dt{ padding-right:16px; color:var(--ink); font-size:13px; font-weight:750 }
 .project-story dd{ color:var(--ink-2); font-size:14px }
+.projector-controls{
+  position:fixed; z-index:8; bottom:calc(22px + env(safe-area-inset-bottom)); left:50%; transform:translateX(-50%);
+  width:min(720px,calc(100% - 28px)); display:flex; align-items:center; gap:14px; padding:10px 12px;
+  border:1px solid #ae7542; border-radius:16px; background:linear-gradient(#9b6840,#6f452d);
+  color:#fff8eb; box-shadow:0 8px 0 #513624,0 18px 35px rgba(20,30,40,.3);
+}
+.projector-controls button{font:700 14px/1.2 ui-sans-serif,system-ui;cursor:pointer}
+.projector-back{border:0;background:none;color:#fff1d5;padding:9px 4px;text-align:left}
+.projector-current{display:flex;flex:1;flex-direction:column;align-items:center;gap:3px;min-width:0;text-align:center}
+.projector-current strong{font-size:17px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%}
+.projector-current span{font-size:12px;color:#f5d9b5}
+.projector-select{max-width:165px;min-height:40px;padding:6px 8px;border:1px solid #d99b56;border-radius:9px;background:#f6dfaa;color:#563b27;font:600 12px system-ui;cursor:pointer}
+.projector-actions{display:flex;gap:6px;align-items:center}
+.projector-actions button{min-width:42px;min-height:40px;padding:8px 12px;border:1px solid #d99b56;border-radius:10px;background:#f6dfaa;color:#6c4227;box-shadow:0 3px 0 #ae7542;transition:background .18s,transform .18s,box-shadow .18s}
+.projector-actions button:hover:not(:disabled){background:#fff0c9}
+.projector-actions button:active:not(:disabled){transform:translateY(2px);box-shadow:0 1px 0 #ae7542}
+.projector-actions button:disabled{opacity:.45;cursor:default}
+.projector-actions .projector-enter{background:#fff9ed;color:#263a5d}
+.projector-mobile-screen{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+@media(max-width:600px){
+  .projector-mobile-screen{position:fixed;width:auto;height:auto;clip-path:none;z-index:7;top:76px;max-height:calc(100dvh - 250px);left:14px;right:14px;overflow:auto;border:2px solid #e8b976;border-radius:16px;background:rgba(248,251,255,.97);box-shadow:0 0 32px rgba(255,221,157,.75),0 20px 48px rgba(20,30,40,.25)}
+  .projector-mobile-screen.is-detail{max-height:calc(100dvh - 210px)}
+  .projector-mobile-screen.is-detail .projector-mobile-art{height:105px}
+  .projector-mobile-screen.is-detail .projector-mobile-body p{font-size:17px;line-height:1.65}
+  .projector-mobile-head{padding:15px 18px;background:#213b60;color:#fff}
+  .projector-mobile-head span{font-size:11px;letter-spacing:.1em;color:#e7b771}
+  .projector-mobile-head h2{margin:3px 0;font-size:23px}
+  .projector-mobile-head small{color:#d5e2ef;font-size:12px}
+  .projector-mobile-body{padding:17px 18px}
+  .projector-mobile-art{height:132px;display:grid;place-items:center;border-radius:10px;background:linear-gradient(135deg,#cbe5ee,#a7c98b);color:#243c61;font-weight:700}
+  .projector-mobile-art img{width:100%;height:100%;object-fit:cover;border-radius:10px}
+  .projector-mobile-body h3{margin:19px 0 8px;font-size:20px;color:#213b60}
+  .projector-mobile-body p{margin:0;font-size:15px;line-height:1.55;color:#405673;user-select:text}
+  .projector-mobile-chapters{display:flex;gap:7px;flex-wrap:wrap;margin-top:18px;font-size:11px;color:#7b8795}
+  .projector-mobile-chapters span{padding:5px 7px;border-radius:6px;background:#e7eef6}
+  .projector-mobile-chapters .on{background:#e9a968;color:#3b2d20;font-weight:700}
+  .projector-controls{flex-wrap:wrap;gap:6px;bottom:calc(14px + env(safe-area-inset-bottom))}
+  .projector-back{order:3;width:100%;text-align:center;font-size:12px;padding:5px}
+  .projector-current{align-items:flex-start;text-align:left}
+  .projector-current strong{font-size:14px}
+  .projector-select{order:2;max-width:none;width:100%;min-height:34px}
+  .projector-actions .projector-enter{font-size:12px;max-width:115px}
+}
 @media(max-width:600px){ .project-detail-head,.project-story{ grid-template-columns:1fr }.project-detail-head{ gap:12px }.project-story dt{ padding:14px 0 0; border:0 }.project-story dd{ padding:2px 0 14px } }
 @media(max-width:760px){
   .scrim{background:linear-gradient(180deg,transparent 35%,rgba(16,26,36,.32))}

@@ -165,6 +165,11 @@ export const zones = {
                         'Use React Three Fiber for the world, character controls and camera, with shared content across 2D and 3D.'),
         result: T('Prototype hoàn chỉnh với năm đảo tương tác, nội dung song ngữ và bản 2D để đọc nhanh trên mọi thiết bị.',
                   'A working prototype with five interactive islands, bilingual content and a 2D mode for quick reading on any device.'),
+        projection: [
+          T('Giới thiệu năng lực qua trải nghiệm tương tác, nhưng vẫn cần cách đọc nội dung nhanh và rõ ràng.', 'Show web development through interaction while keeping the content quick and clear to read.'),
+          T('Dựng thế giới và điều khiển bằng React Three Fiber; dùng chung dữ liệu nội dung cho bản 2D và 3D.', 'Built the world and controls with React Three Fiber, sharing content data across 2D and 3D.'),
+          T('Prototype có năm đảo tương tác, nội dung song ngữ và chế độ 2D để đọc nhanh.', 'A prototype with five interactive islands, bilingual content and a quick-reading 2D mode.')
+        ],
         tags: ['React', 'Three.js', 'React Three Fiber'], image: '/og.jpg', url: null, source: null },
       { title: 'Ticket Hub', year: '2026', role: T('Frontend Developer · Hỗ trợ backend', 'Frontend Developer · Backend support'),
         summary: T('Dự án nhóm xây dựng hệ thống quản lý yêu cầu hỗ trợ khách hàng bằng Remix, tập trung thông tin từ các kênh như Zalo, Facebook và email.',
@@ -175,6 +180,11 @@ export const zones = {
                         'As the team’s sole frontend developer, I built the entire interface in Remix: ticket lists and filters, detail views, assignment, status updates, conversations, attachments and Excel export. I collaborated with backend developers to connect data and workflows, and also helped create the database and write server-side services.'),
         result: T('Hệ thống giúp nhân viên thu thập, tổng hợp và tra cứu yêu cầu trên một nơi, giảm thao tác thủ công và thời gian chuyển đổi giữa Zalo, Facebook cùng các kênh khác. Lịch sử trao đổi và trạng thái xử lý được tập trung, thuận tiện cho việc theo dõi và bàn giao giữa nhân viên.',
                   'The system gives staff one place to collect, consolidate and look up requests, reducing manual work and time spent switching between Zalo, Facebook and other channels. Centralized conversation history and ticket status make progress tracking and handovers easier.'),
+        projection: [
+          T('Yêu cầu rải rác ở Zalo, Facebook và các kênh khác; nhân viên mất thời gian thu thập, tổng hợp và theo dõi.', 'Requests were scattered across Zalo, Facebook and other channels, slowing collection, consolidation and tracking.'),
+          T('FE duy nhất của nhóm: xây giao diện Remix cho danh sách, lọc, chi tiết, phân công, trạng thái, trao đổi, đính kèm và xuất Excel. Hỗ trợ tạo DB và viết services.', 'The team’s sole FE developer: built the Remix UI for ticket lists, filters, details, assignment, status, conversations, attachments and Excel export. Also helped create the DB and write services.'),
+          T('Tập trung yêu cầu và lịch sử xử lý ở một nơi, giúp giảm thao tác thủ công và chuyển đổi giữa nhiều luồng; thuận tiện theo dõi, bàn giao.', 'Centralized requests and history reduce manual work and switching between channels, making tracking and handovers easier.')
+        ],
         tags: ['Remix', 'React', 'TypeScript', 'PostgreSQL', 'Socket.IO'], image: null, url: null, source: null }
     ]
   },

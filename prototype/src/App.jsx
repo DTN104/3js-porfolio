@@ -2,14 +2,17 @@ import { Suspense, useEffect, useLayoutEffect, useRef, useState, useCallback, us
 import { Canvas } from '@react-three/fiber'
 import { Sky, Clouds, Island, Scenery, Bridge, Avatar, CameraRig } from './World'
 import { attachInput, freezeInput } from './input'
-import { islands, bridges, islandSpawn, surfaceAt } from './content'
+import { islands, bridges, islandSpawn, surfaceAt, zones } from './content'
+import { cam } from './camera'
 import { Joystick, InteractButton, Stats, usePinchZoom, isTouchDevice, CameraButtons } from './Touch'
 import { useLang, UI, KIND_ICON, LangSwitch } from './i18n'
 import { ZoneBody } from './ZoneContent'
 import StartScreen from './Start'
 import Modal from './Modal'
+import Projector from './Projector'
 
 const ZONE_IDS = new Set(islands.map(z => z.id))
+const PROJECTS = zones['du-an'].projects
 const hashZone = () => { try { const h = decodeURIComponent(location.hash.slice(1)); return ZONE_IDS.has(h) ? h : null } catch { return null } }
 
 export default function App({ onSwitch2D }) {
@@ -18,8 +21,11 @@ export default function App({ onSwitch2D }) {
   const zoom = useRef(1)
   const [current, setCurrent] = useState(islands[0].id)
   const [near, setNear] = useState(null)      // FR-019: đảo đang trong tầm tương tác
-  const [open, setOpen] = useState(null)      // FR-020: bảng nội dung đang mở
+  const [open, setOpen] = useState(() => (/[?&]nostart\b/.test(location.search) ? hashZone() : null)) // FR-020
   const [help, setHelp] = useState(false)
+  const [projectIndex, setProjectIndex] = useState(0)
+  const [projectDetail, setProjectDetail] = useState(false)
+  const [projectChapter, setProjectChapter] = useState(0)
   const [hint, setHint] = useState(true)      // FR-022
   // FR-001: 'start' = màn hình khởi động, 'leaving' = đang mờ dần, 'play' = trong thế giới. ?nostart bỏ qua (QA / chụp ảnh).
   const [phase, setPhase] = useState(() => (/[?&]nostart\b/.test(location.search) ? 'play' : 'start'))
@@ -37,6 +43,7 @@ export default function App({ onSwitch2D }) {
   const openedAt = useRef(0)                   // chống cú click "xuyên" từ nút ✋ sang lớp nền vừa hiện ra
   const openZone = useCallback((id) => {
     if (!id || !ZONE_IDS.has(id)) return
+    if (id === 'du-an') { setProjectDetail(false); setProjectChapter(0); cam.yawTarget = Math.PI / 4 }
     openedAt.current = performance.now()
     setOpen(id); setHint(false)
   }, [])
@@ -47,7 +54,7 @@ export default function App({ onSwitch2D }) {
     setCurrent(id)
     openZone(id)
   }
-  const closeZone = useCallback(() => setOpen(null), [])
+  const closeZone = useCallback(() => { setOpen(null); setProjectDetail(false) }, [])
   const closeIfSettled = useCallback(() => { if (performance.now() - openedAt.current > 400) setOpen(null) }, [])
 
   const start = useCallback(() => {
@@ -74,6 +81,10 @@ export default function App({ onSwitch2D }) {
   useLayoutEffect(() => {
     const z = islands.find(i => i.id === open)
     if (!z) { focus.current = null; return }
+    if (z.id === 'du-an') {
+      focus.current = { x: z.pos[0], y: z.y, z: z.pos[1], projector: true, detail: projectDetail }
+      return
+    }
     const measure = () => {
       const rect = drawer.current.getBoundingClientRect()
       const sheet = rect.width > window.innerWidth * 0.9
@@ -86,7 +97,29 @@ export default function App({ onSwitch2D }) {
     window.addEventListener('resize', measure)
     measure()
     return () => { observer.disconnect(); window.removeEventListener('resize', measure) }
-  }, [open])
+  }, [open, projectDetail])
+
+  const stepProjector = useCallback((dir) => {
+    if (projectDetail) setProjectChapter(c => Math.max(0, Math.min(2, c + dir)))
+    else setProjectIndex(i => (i + dir + PROJECTS.length) % PROJECTS.length)
+  }, [projectDetail])
+  useEffect(() => {
+    if (open !== 'du-an' || help) return
+    const onKey = e => {
+      if (e.target?.closest?.('input, textarea, select, [contenteditable="true"]')) return
+      if (e.code === 'ArrowLeft' || e.code === 'ArrowRight') {
+        e.preventDefault(); stepProjector(e.code === 'ArrowLeft' ? -1 : 1)
+      } else if ((e.code === 'Enter' || e.code === 'KeyE') && !projectDetail && !e.target?.closest?.('button, a')) {
+        e.preventDefault(); setProjectDetail(true); setProjectChapter(0)
+      } else if (e.code === 'Escape') {
+        e.preventDefault()
+        if (projectDetail) setProjectDetail(false)
+        else closeZone()
+      }
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [open, help, projectDetail, stepProjector, closeZone])
 
   // FR-020 + EC-05: khoá di chuyển khi bảng đang mở, khi chưa bấm Bắt đầu
   useEffect(() => { freezeInput(!!open || help || !playing) }, [open, help, playing])
@@ -161,6 +194,9 @@ export default function App({ onSwitch2D }) {
           {islands.map(z => (
             <Island key={z.id} island={z} active={near === z.id} onOpen={playing ? openZone : undefined} />
           ))}
+          <Projector project={PROJECTS[projectIndex]} index={projectIndex} total={PROJECTS.length}
+            detail={projectDetail && open === 'du-an'} chapter={projectChapter}
+            onOpen={() => { if (playing) { if (open === 'du-an') setProjectDetail(true); else openZone('du-an') } }} />
           <Scenery />
           <Avatar bodyRef={body} />
         </Suspense>
@@ -176,7 +212,7 @@ export default function App({ onSwitch2D }) {
       {onSwitch2D && <button className="iconbtn mode2d" onClick={onSwitch2D} aria-label={t(UI.view2d)} title={t(UI.view2d)}>2D</button>}
       <LangSwitch className="topbar" />
 
-      {playing && <nav className={'island-nav' + (isTouch ? ' touch-nav' : '')} aria-label={t(UI.destinations)}>
+      {playing && open !== 'du-an' && <nav className={'island-nav' + (isTouch ? ' touch-nav' : '')} aria-label={t(UI.destinations)}>
         {islands.map((z, i) => <button key={z.id} onClick={() => visit(z.id)} aria-current={current === z.id ? 'location' : undefined}>
           <span aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>{t(z.label)}
         </button>)}
@@ -192,6 +228,37 @@ export default function App({ onSwitch2D }) {
 
       {playing && hint && !open && <div className="hint">{t(isTouch ? UI.hintTouch : UI.hintKeys)}</div>}
 
+      {playing && open === 'du-an' && <div className="projector-controls" aria-label={t({ vi: 'Điều khiển máy chiếu dự án', en: 'Project projector controls' })}>
+        <button type="button" className="projector-back" onClick={() => projectDetail ? setProjectDetail(false) : closeZone()}>
+          ← {t(projectDetail ? { vi: 'Chọn dự án', en: 'Choose project' } : { vi: 'Rời máy chiếu', en: 'Leave projector' })}
+        </button>
+        <div className="projector-current" aria-live="polite">
+          <strong>{t(PROJECTS[projectIndex].title)}</strong>
+          <span>{projectDetail ? `${t([UI.problem, UI.contribution, UI.result][projectChapter])} · ${projectChapter + 1} / 3` : `${projectIndex + 1} / ${PROJECTS.length}`}</span>
+        </div>
+        {!projectDetail && <select className="projector-select" value={projectIndex} onChange={e => setProjectIndex(Number(e.target.value))} aria-label={t({ vi: 'Chọn nhanh dự án', en: 'Jump to a project' })}>
+          {PROJECTS.map((project, i) => <option value={i} key={i}>{String(i + 1).padStart(2, '0')} · {t(project.title)}</option>)}
+        </select>}
+        <div className="projector-actions">
+          <button type="button" onClick={() => stepProjector(-1)} disabled={projectDetail && projectChapter === 0} aria-label={t({ vi: 'Trước', en: 'Previous' })}>←</button>
+          {!projectDetail && <button type="button" className="projector-enter" onClick={() => { setProjectDetail(true); setProjectChapter(0) }}>{t(UI.viewProject)} ↗</button>}
+          <button type="button" onClick={() => stepProjector(1)} disabled={projectDetail && projectChapter === 2} aria-label={t({ vi: 'Tiếp', en: 'Next' })}>→</button>
+        </div>
+      </div>}
+      {playing && open === 'du-an' && <article className={'projector-mobile-screen' + (projectDetail ? ' is-detail' : '')} aria-live="polite">
+        <div className="projector-mobile-head">
+          <span>{projectDetail ? `${String(projectChapter + 1).padStart(2, '0')} / 03` : `${String(projectIndex + 1).padStart(2, '0')} / ${String(PROJECTS.length).padStart(2, '0')}`}</span>
+          <h2>{t(PROJECTS[projectIndex].title)}</h2>
+          <small>{t(PROJECTS[projectIndex].role)}</small>
+        </div>
+        <div className="projector-mobile-body">
+          <div className="projector-mobile-art" aria-hidden="true">{PROJECTS[projectIndex].image ? <img src={PROJECTS[projectIndex].image} alt="" /> : <span>{PROJECTS[projectIndex].tags.slice(0, 2).join(' · ')}</span>}</div>
+          <h3>{projectDetail ? t([UI.problem, UI.contribution, UI.result][projectChapter]) : t({ vi: 'Tổng quan', en: 'Overview' })}</h3>
+          <p>{t(projectDetail ? PROJECTS[projectIndex].projection?.[projectChapter] || PROJECTS[projectIndex][['problem', 'contribution', 'result'][projectChapter]] : PROJECTS[projectIndex].summary)}</p>
+          {projectDetail && <div className="projector-mobile-chapters">{[UI.problem, UI.contribution, UI.result].map((label, i) => <span key={i} className={i === projectChapter ? 'on' : ''}>{t(label)}</span>)}</div>}
+        </div>
+      </article>}
+
       {/* FR-017: chỉ dấu kèm chỉ dẫn thao tác */}
       {playing && nearZone && !open && (
         <div className="prompt">
@@ -199,7 +266,7 @@ export default function App({ onSwitch2D }) {
         </div>
       )}
 
-      {openedZone && (
+      {openedZone && openedZone.id !== 'du-an' && (
         <Modal className={'scrim' + (isTouch ? ' sheet-mode' : '')} label={t(openedZone.title)} onClose={closeIfSettled}>
           <section ref={drawer} className={'drawer ' + openedZone.kind}>
             <header className="dhead">

@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict'
 import { readFileSync } from 'node:fs'
 import { PerspectiveCamera, Vector3 } from 'three'
-import { islands, bridges, islandSpawn, surfaceAt, bridgeY } from './src/content.js'
+import { islands, bridges, islandSpawn, surfaceAt, bridgeY, zones } from './src/content.js'
 import { frameForPanel } from './src/camera.js'
 import { input, attachInput, freezeInput } from './src/input.js'
 
@@ -33,6 +33,16 @@ for (const bridge of bridges) {
 }
 const narrowIsland = islands[3]
 assert.equal(surfaceAt(narrowIsland.pos[0], narrowIsland.pos[1] + narrowIsland.top[1]).ok, false)
+
+// Each project can be shown as a three-chapter projection in both languages.
+assert.ok(zones['du-an'].projects.length > 0)
+for (const project of zones['du-an'].projects) {
+  assert.ok(project.title && project.summary)
+  if (project.projection) {
+    assert.equal(project.projection.length, 3)
+    for (const chapter of project.projection) assert.ok(chapter.vi && chapter.en)
+  }
+}
 
 // The focused object projects to the center of the visible scene, not the full screen.
 for (const [width, height, right, bottom] of [[1440,900,434,0],[884,771,434,0],[390,844,0,489]]) {
