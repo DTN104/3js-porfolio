@@ -190,9 +190,9 @@ export default function App({ onSwitch2D }) {
         <Suspense fallback={null}>
           <Sky />
           <Clouds />
-          {bridges.map(b => <Bridge key={b.id} bridge={b} />)}
+          {bridges.map(b => <Bridge key={b.id} bridge={b} showLabels={open !== 'du-an'} />)}
           {islands.map(z => (
-            <Island key={z.id} island={z} active={near === z.id} onOpen={playing ? openZone : undefined} />
+            <Island key={z.id} island={z} active={near === z.id} onOpen={playing ? openZone : undefined} showLabels={open !== 'du-an'} />
           ))}
           <Projector project={PROJECTS[projectIndex]} index={projectIndex} total={PROJECTS.length}
             detail={projectDetail && open === 'du-an'} chapter={projectChapter}
@@ -218,7 +218,7 @@ export default function App({ onSwitch2D }) {
         </button>)}
       </nav>}
       {showStats && <Stats />}
-      {!help && <CameraButtons />}
+      {!help && open !== 'du-an' && <CameraButtons />}
       {isTouch && playing && !open && !help && (
         <>
           <Joystick />

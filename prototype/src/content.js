@@ -149,8 +149,26 @@ export const zones = {
   },
   'ky-nang': {
     groups: [
-      { name: 'Frontend', items: [T('Phát triển giao diện web', 'Web interface development')] },
-      { name: 'Backend', items: [T('Có thêm kỹ năng backend — công nghệ cụ thể sẽ được bổ sung', 'Additional backend skills — specific technologies to be added')] }
+      { name: T('Frontend · Vai trò chính', 'Frontend · Primary role'), items: [
+        'React', 'Remix', 'TypeScript', 'Tailwind CSS', 'shadcn/ui · Radix UI',
+        T('Xây dựng component tái sử dụng', 'Reusable UI components')
+      ] },
+      { name: T('Biểu mẫu & bảng dữ liệu', 'Forms & data tables'), items: [
+        'React Hook Form', 'Zod', 'TanStack Table',
+        T('Bộ lọc, sắp xếp & phân trang', 'Filtering, sorting & pagination'),
+        T('Đồng bộ bộ lọc với URL', 'URL-synchronized filters')
+      ] },
+      { name: T('Kết nối dữ liệu & luồng xử lý', 'Data integration & workflows'), items: [
+        T('Kết nối UI với Remix loader/action', 'UI integration with Remix loaders/actions'),
+        T('Cập nhật thời gian thực · Socket.IO', 'Real-time updates · Socket.IO'),
+        T('Upload & quản lý tệp đính kèm', 'File uploads & attachment management'),
+        T('Xuất Excel · SheetJS', 'Excel export · SheetJS')
+      ] },
+      { name: T('Backend · Vai trò hỗ trợ', 'Backend · Supporting role'), items: [
+        'PostgreSQL', 'Drizzle ORM',
+        T('Hỗ trợ tạo schema & quan hệ dữ liệu', 'Database schema & relationships support'),
+        T('Viết server services · TypeScript', 'Server-side services · TypeScript')
+      ] }
     ]
   },
   'du-an': {
@@ -170,6 +188,10 @@ export const zones = {
           T('Dựng thế giới và điều khiển bằng React Three Fiber; dùng chung dữ liệu nội dung cho bản 2D và 3D.', 'Built the world and controls with React Three Fiber, sharing content data across 2D and 3D.'),
           T('Prototype có năm đảo tương tác, nội dung song ngữ và chế độ 2D để đọc nhanh.', 'A prototype with five interactive islands, bilingual content and a quick-reading 2D mode.')
         ],
+        contributionCards: [
+          { title: T('Thế giới & điều khiển', 'World & controls'), body: T('Dựng năm đảo, nhân vật và camera tương tác bằng React Three Fiber.', 'Built five islands, character movement and an interactive camera with React Three Fiber.') },
+          { title: T('Hai trải nghiệm, một nội dung', 'Two experiences, shared content'), body: T('Dùng chung dữ liệu cho bản 2D, 3D và nội dung song ngữ.', 'Shared the content data across 2D, 3D and both languages.') }
+        ],
         tags: ['React', 'Three.js', 'React Three Fiber'], image: '/og.jpg', url: null, source: null },
       { title: 'Ticket Hub', year: '2026', role: T('Frontend Developer · Hỗ trợ backend', 'Frontend Developer · Backend support'),
         summary: T('Dự án nhóm xây dựng hệ thống quản lý yêu cầu hỗ trợ khách hàng bằng Remix, tập trung thông tin từ các kênh như Zalo, Facebook và email.',
@@ -184,6 +206,10 @@ export const zones = {
           T('Yêu cầu rải rác ở Zalo, Facebook và các kênh khác; nhân viên mất thời gian thu thập, tổng hợp và theo dõi.', 'Requests were scattered across Zalo, Facebook and other channels, slowing collection, consolidation and tracking.'),
           T('FE duy nhất của nhóm: xây giao diện Remix cho danh sách, lọc, chi tiết, phân công, trạng thái, trao đổi, đính kèm và xuất Excel. Hỗ trợ tạo DB và viết services.', 'The team’s sole FE developer: built the Remix UI for ticket lists, filters, details, assignment, status, conversations, attachments and Excel export. Also helped create the DB and write services.'),
           T('Tập trung yêu cầu và lịch sử xử lý ở một nơi, giúp giảm thao tác thủ công và chuyển đổi giữa nhiều luồng; thuận tiện theo dõi, bàn giao.', 'Centralized requests and history reduce manual work and switching between channels, making tracking and handovers easier.')
+        ],
+        contributionCards: [
+          { title: T('FE duy nhất · Remix', 'Sole frontend developer · Remix'), body: T('Toàn bộ UI: danh sách, lọc, chi tiết, phân công, trạng thái, trao đổi, đính kèm, xuất Excel.', 'Built all ticket screens: lists, filters, details, status, assignment, conversations, files and Excel export.') },
+          { title: T('Hỗ trợ backend', 'Backend support'), body: T('Phối hợp kết nối luồng xử lý; hỗ trợ tạo cơ sở dữ liệu và viết services phía server.', 'Connected workflows with the backend team; helped create the database and write server-side services.') }
         ],
         tags: ['Remix', 'React', 'TypeScript', 'PostgreSQL', 'Socket.IO'], image: null, url: null, source: null }
     ]

@@ -225,7 +225,7 @@ function scatterIsland(island, halfX, halfZ, kitA, kitB, dirs) {
       const x = (rand() * 2 - 1) * A, z = (rand() * 2 - 1) * B
       if ((x * x) / (A * A) + (z * z) / (B * B) > 1) continue
       // Keep the viewing corridor in front of the Projects projector clear.
-      if (island.kind === 'gallery' && x + z > 2 && Math.abs(x - z) < 4) continue
+      if (island.kind === 'gallery' && x + z > 1 && Math.abs(x - z) < 9 + r) continue
       if (Math.hypot(x, z) < island.or + r + 0.7) continue  // vật thể tương tác + vòng chỉ dấu
       if (onPath(x, z, dirs, 2.0 + r)) continue
       if (placed.some(p => Math.hypot(p.x - x, p.z - z) < p.r + r + 0.25)) continue
@@ -290,7 +290,7 @@ function IslandModel({ url }) {
   return <primitive object={scene} />
 }
 
-export function Island({ island, active, onOpen }) {
+export function Island({ island, active, onOpen, showLabels = true }) {
   const { t } = useLang()
   const ring = useRef()
   const [x, z] = island.pos
@@ -306,14 +306,14 @@ export function Island({ island, active, onOpen }) {
   return (
     <group position={[x, island.y, z]}>
       <IslandModel url={island.model} />
-      <WorldLabel text={t(island.label)} position={[0, island.or * 1.5 + 2, 0]} />
+      {showLabels && <WorldLabel text={t(island.label)} position={[0, island.or * 1.5 + 2, 0]} />}
       {/* FR-017: chỉ dấu vùng tương tác */}
       <group onClick={(e) => { e.stopPropagation(); onOpen && onOpen(island.id) }}>
         <mesh ref={ring} position={[0, 0.18, 0]} rotation={[-Math.PI / 2, 0, 0]}>
           <ringGeometry args={[island.ir - 0.22, island.ir, 48]} />
           <meshBasicMaterial color="#ffffff" transparent opacity={0.16} />
         </mesh>
-        <ZoneObject island={island} />
+        {island.kind !== 'gallery' && <ZoneObject island={island} />}
       </group>
     </group>
   )
@@ -321,7 +321,7 @@ export function Island({ island, active, onOpen }) {
 
 /* --------------------------------------------------------------- AST-12 cầu dây */
 
-export function Bridge({ bridge }) {
+export function Bridge({ bridge, showLabels = true }) {
   const { t } = useLang()
   // AST-12 — mỗi cầu một model dựng parametric đúng chiều dài + chênh cao từ content.js
   // (specs/.../assets-3d/bridges/build_bridge.py). Gốc model = đầu cầu, mặt ván tại y=0,
@@ -337,8 +337,8 @@ export function Bridge({ bridge }) {
   const yaw = Math.atan2(bx - ax, bz - az)
   return <>
     <primitive object={scene} position={[ax, bridge.fromY, az]} rotation={[0, yaw, 0]} />
-    <WorldLabel text={t(UI.toward) + t(islands[bridge.b].label)} position={[ax, bridge.fromY + 2, az]} />
-    <WorldLabel text={t(UI.toward) + t(islands[bridge.a].label)} position={[bx, bridge.toY + 2, bz]} />
+    {showLabels && <WorldLabel text={t(UI.toward) + t(islands[bridge.b].label)} position={[ax, bridge.fromY + 2, az]} />}
+    {showLabels && <WorldLabel text={t(UI.toward) + t(islands[bridge.a].label)} position={[bx, bridge.toY + 2, bz]} />}
   </>
 }
 
@@ -475,11 +475,11 @@ export function CameraRig({ target, zoomRef, focusRef }) {
     let px, py, pz, rate
     if (f?.projector) {
       if (camera.view?.enabled) camera.clearViewOffset()
-      aim.current.set(f.x + 2.2, f.y + (f.detail ? 3.05 : 2.5), f.z + 2.2)
-      const fitWidth = (f.detail ? 6.8 : 5.65) / (2 * Math.tan(camera.fov * Math.PI / 360) * size.width / size.height) * 1.12
-      const distance = size.width < 600 ? 25 : Math.max(f.detail ? 7.6 : 11, fitWidth)
+      aim.current.set(f.x + 1.8, f.y + 2.6, f.z + 2.8)
+      const fitWidth = (f.detail ? 9.5 : 9) / (2 * Math.tan(camera.fov * Math.PI / 360) * size.width / size.height) * 1.08
+      const distance = size.width < 600 ? 25 : Math.max(f.detail ? 9.8 : 11.3, fitWidth)
       px = aim.current.x + H.x * distance
-      py = aim.current.y + distance * (f.detail ? 0.16 : 0.48)
+      py = aim.current.y + distance * (f.detail ? 0.28 : 0.34)
       pz = aim.current.z + H.z * distance
       rate = 3.2
     } else if (f) {

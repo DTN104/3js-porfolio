@@ -34,6 +34,15 @@ for (const bridge of bridges) {
 const narrowIsland = islands[3]
 assert.equal(surfaceAt(narrowIsland.pos[0], narrowIsland.pos[1] + narrowIsland.top[1]).ok, false)
 
+// Shared skills content must be readable in both portfolio modes and languages.
+for (const group of zones['ky-nang'].groups) {
+  assert.ok(group.items.length > 0)
+  for (const value of [group.name, ...group.items]) {
+    if (typeof value === 'string') assert.ok(value.trim())
+    else assert.ok(value.vi?.trim() && value.en?.trim())
+  }
+}
+
 // Each project can be shown as a three-chapter projection in both languages.
 assert.ok(zones['du-an'].projects.length > 0)
 for (const project of zones['du-an'].projects) {
@@ -41,6 +50,12 @@ for (const project of zones['du-an'].projects) {
   if (project.projection) {
     assert.equal(project.projection.length, 3)
     for (const chapter of project.projection) assert.ok(chapter.vi && chapter.en)
+  }
+  if (project.contributionCards) {
+    assert.equal(project.contributionCards.length, 2)
+    for (const card of project.contributionCards) {
+      assert.ok(card.title.vi && card.title.en && card.body.vi && card.body.en)
+    }
   }
 }
 
